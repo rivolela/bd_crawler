@@ -1,0 +1,34 @@
+callback get offers Zanox from BD: >> 50
+0 '>>urlToCrawler:' 'http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[1230218/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]'
+
+
+adding attribute dataProductId: 3095104 in:
+3095104
+1 '>>urlToCrawler:' 'http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[1230534/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]'
+
+
+adding attribute dataProductId: 3095104 in:
+3095104
+2 '>>urlToCrawler:' 'http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[32743/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]'
+
+
+adding attribute dataProductId: 2031498 in:
+2031498
+3 '>>urlToCrawler:' 'http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[33271/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]'
+
+
+adding attribute dataProductId: 2031957 in:
+2031957
+4 '>>urlToCrawler:' 'http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[34205/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]'
+
+
+adding attribute dataProductId: 2032753 in:
+2032753
+5 '>>urlToCrawler:' 'http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[515862/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]'
+
+
+adding attribute dataProductId: 2420458 in:
+2420458
+6 '>>urlToCrawler:' 'http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[517744/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]'
+
+
