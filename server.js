@@ -9,7 +9,7 @@ var mongoose = require('./config/mongoose'),
 var db = mongoose();
 var app = express();
 
-app.listen(3000);
+app.listen(8080);
 
 var task = cron.schedule('50 17 * * *', function(err){
   console.log('starting zanox job ...');
