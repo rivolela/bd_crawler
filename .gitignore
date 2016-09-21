@@ -1,0 +1,10 @@
+# Created by https://www.gitignore.io/api/node
+
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Heroku
+.env

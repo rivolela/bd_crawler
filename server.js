@@ -11,14 +11,18 @@ var app = express();
 
 //app.listen(3000);
 
-var taskZanox_01 = cron.schedule('00 16 * * *', function(err){
+if(process.env.NODE_ENV = 'production'){
+	app.listen(8080);
+}
+
+var taskZanox_01 = cron.schedule('15 16 * * *', function(err){
   console.log('starting zanox job ...');
   zanoxJob.start(function(){
   	console.log("job zanox finished !")
   });
 },false);
 
-var taskWalmart_01 = cron.schedule('10 16 * * *', function(err){
+var taskWalmart_01 = cron.schedule('20 16 * * *', function(err){
   console.log('starting zanox job ...');
   walmartJob.start(function(){
   	console.log("walmart zanox finished !");
