@@ -9,24 +9,24 @@ var mongoose = require('./config/mongoose'),
 var db = mongoose();
 var app = express();
 
-app.listen(8080);
+//app.listen(3000);
 
-var task = cron.schedule('50 17 * * *', function(err){
+var taskZanox_01 = cron.schedule('00 16 * * *', function(err){
   console.log('starting zanox job ...');
   zanoxJob.start(function(){
   	console.log("job zanox finished !")
   });
 },false);
 
-var task2 = cron.schedule('55 17 * * *', function(err){
+var taskWalmart_01 = cron.schedule('10 16 * * *', function(err){
   console.log('starting zanox job ...');
   walmartJob.start(function(){
   	console.log("walmart zanox finished !");
   });
 },false);
 
-task.start();
-task2.start();
+taskZanox_01.start();
+taskWalmart_01.start();
 
 
 module.exports = app;

@@ -9,6 +9,9 @@ module.exports = function(grunt){
 			},
 			test:{
 				NODE_ENV: 'test'
+			},
+			prod:{
+				NODE_ENV: 'production'
 			}
 		},
 		// nodemon:{
@@ -116,12 +119,19 @@ module.exports = function(grunt){
 	// grunt.registerTask('debug',['env:dev','lint','concurrent:debug']);
 	grunt.registerTask('test',['env:test','mochaTest']);
 
-	grunt.registerTask('server','Start a custom web server', function() {
+	grunt.registerTask('server_dev','Start a custom web server in development', function() {
     	grunt.log.writeln('Started web server on port 3000');
     	require('./server.js').listen(3000);
 	});
 
-	grunt.registerTask('dev',['env:dev','server','watch']);
+	grunt.registerTask('server_prod','Start a custom web server in production', function() {
+    	grunt.log.writeln('Started web server on port 3000');
+    	require('./server.js').listen(3000);
+	});
+
+	grunt.registerTask('dev',['env:dev','server_dev','watch']);
+
+	grunt.registerTask('prod',['env:prod','server_prod','watch']);
 
 	// grunt.registerTask('lint',['jshint','csslint']);
 };

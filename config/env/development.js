@@ -1,6 +1,6 @@
 module.exports = {
 // Development configuration options
-	db:'mongodb://localhost/pickoout',
+	db:'mongodb://127.0.0.1:27017/pickoout_dev',
 	sessionSecret:'developmentSessionSecret'
 };
 
