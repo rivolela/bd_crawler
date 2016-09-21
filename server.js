@@ -11,18 +11,22 @@ var app = express();
 
 //app.listen(3000);
 
-if(process.env.NODE_ENV = 'production'){
-	app.listen(8080);
-}
+
+var server_port = process.env.PORT || 80;
+
+app.listen(server_port,function() {
+    console.log('Server runnning on port %d', server_port);
+});
+
 
 var taskZanox_01 = cron.schedule('15 16 * * *', function(err){
   console.log('starting zanox job ...');
   zanoxJob.start(function(){
-  	console.log("job zanox finished !")
+  	console.log("job zanox finished !");
   });
 },false);
 
-var taskWalmart_01 = cron.schedule('20 16 * * *', function(err){
+var taskWalmart_01 = cron.schedule('10 16 * * *', function(err){
   console.log('starting zanox job ...');
   walmartJob.start(function(){
   	console.log("walmart zanox finished !");

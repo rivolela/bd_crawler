@@ -19,6 +19,8 @@ var items = 'items=50';
 var url = 'https://' + host + uri + '?' + connectid + '&' + programs + '&' + query + '&' + category + '&' + items ;
 
 
+// Code here will be linted with JSHint.
+/* jshint ignore:start */
 describe('Zanox Unit Tests:',function(done){
 
 	//var offer = new Offer();
@@ -108,6 +110,7 @@ describe('Zanox Unit Tests:',function(done){
 	});
 
 });
-
+// Code here will be ignored by JSHint.
+/* jshint ignore:end */
 
 

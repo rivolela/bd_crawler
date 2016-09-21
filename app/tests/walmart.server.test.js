@@ -14,7 +14,8 @@ var uri = "/item/1230534/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=x
 
 
 
-
+// Code here will be linted with JSHint.
+/* jshint ignore:start */
 describe('Walmart Advertiser Server Tests:',function(done){
 	
 	var Context = {};
@@ -180,21 +181,11 @@ describe('Walmart Advertiser Server Tests:',function(done){
 	});
 
 });
+// Code here will be ignored by JSHint.
+/* jshint ignore:end */
 
 
 
-
-//https://www.walmart.com.br/item/1230534/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox&zanpid=2206732065930961920&utm_term=httpwwwskimlinkscom
-// var http = require("http");
-
-// var options = {
-//   host: "proxy",
-//   port: 8080,
-//   path: "http://www.google.com",
-//   headers: {
-//     Host: "www.google.com"
-//   }
-// };
 
 
 

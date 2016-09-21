@@ -97,7 +97,8 @@ describe('Offer Unit Tests:',function(done){
 		it('Should get array walmart offers from DB >>',function(done){
 			query = {
 				advertiser:'walmart'
-			}
+			};
+			
 			this.timeout(5000);
 
 			offerController.getOffersBD(query,function(offersArray){

@@ -56,7 +56,7 @@ var setDataProducts = function(currentItem,arrayProductsWalmart,next){
           console.log('\n');
           setDataProducts(currentItem+1,arrayProductsWalmart,next);
         });
-      };
+      }
     });
 
   }else{
@@ -113,7 +113,7 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
             });
 
           });
-        };
+        }
       });
 
     }else{
@@ -145,17 +145,17 @@ var getReviewsFromHtml = function(body,product,next){
         });
 
         if($(this).children('.customer-review-head').children('.star-rating').children('.star-rating-content').children('div').hasClass('star-rating-value-10')){
-          review.rating = 1
+          review.rating = 1;
         }else if($(this).children('.customer-review-head').children('.star-rating').children('.star-rating-content').children('div').hasClass('star-rating-value-20')){
-          review.rating = 2
+          review.rating = 2;
         }else if($(this).children('.customer-review-head').children('.star-rating').children('.star-rating-content').children('div').hasClass('star-rating-value-30')){
-          review.rating  = 3
+          review.rating  = 3;
         }else if($(this).children('.customer-review-head').children('.star-rating').children('.star-rating-content').children('div').hasClass('star-rating-value-40')){
-          review.rating = 4
+          review.rating = 4;
         }else if ($(this).children('.customer-review-head').children('.star-rating').children('.star-rating-content').children('div').hasClass('star-rating-value-50')){
-          review.rating = 5
+          review.rating = 5;
         } else {
-          review.rating = 0
+          review.rating = 0;
         }
 
         review.category = product.category,
@@ -164,7 +164,7 @@ var getReviewsFromHtml = function(body,product,next){
         review.manufacturer = product.manufacturer,
         review.ean = product.ean,
 
-        review.title = review.title.replace(/['"]+/g, '');
+        review.title = review.title.replace(/['"]+/g,'');// jshint ignore:line
         review.description = review.description.replace(/['"]+/g, '');
         review.location = review.location.replace(new RegExp('\r?\n','g'), ' ');
 
@@ -180,7 +180,7 @@ var getReviewsFromHtml = function(body,product,next){
   }catch(error){
     console.log('An error has occurred >> walmart.server.controller >>  getReviewsFromHtml : '+ error.message);
     throw error ;
-  };
+  }
 };
   
 

@@ -76,7 +76,7 @@ function start(next){
 		});
 	});
 	
-};
+}
 
 exports.start = start;
 // start();

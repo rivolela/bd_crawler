@@ -42,13 +42,13 @@ var getOffersContext = function(url,itemsByPage,next){
 var getPagination = function(currentPage,totalPaginacao,paginationArray,next){
 	
 	if(currentPage < totalPaginacao){
-		var pagination = new Object();
+		var pagination = new Object();// jshint ignore:line
 		pagination.url = urlZanox + "&page=" + currentPage;
   		paginationArray.push(pagination);
 		getPagination(currentPage+1,totalPaginacao,paginationArray,next);
 	}else if( totalPaginacao < 0){
 		totalPaginacao = 0;
-		var pagination = new Object();
+		var pagination = new Object();// jshint ignore:line
 		pagination.url = urlZanox + "&page=" + currentPage;
   		paginationArray.push(pagination);
 		getPagination(currentPage+1,totalPaginacao,paginationArray,next);
@@ -69,10 +69,10 @@ var getItemsByPagination = function(currentPage,paginationArray,next){
       		else {
       			flatten(json),{ 
 	   				maxDepth: 10 
-	   			};
+	   			};// jshint ignore:line
 	   			paginationArray[currentPage].items = json.items;
 
-	   			getItemsByPagination(currentPage+1,paginationArray,next)
+	   			getItemsByPagination(currentPage+1,paginationArray,next);
 			}
     	});
 	}else{
@@ -87,12 +87,12 @@ var getProductsByPagination = function(currentPage,paginationArray,productsArray
 
 		call.getJson(paginationArray[currentPage].url,function(json,response,error) {
     		if(error) {
-        		console.log('error: '+ error)
+        		console.log('error: '+ error);
       		} 
       		else {
       			flatten(json),{ 
 	   				maxDepth: 10 
-	   			};
+	   			};// jshint ignore:line
 
 	   			var currentItem = 0;
 

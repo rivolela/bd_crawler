@@ -14,23 +14,23 @@ module.exports = function(grunt){
 				NODE_ENV: 'production'
 			}
 		},
-		// nodemon:{
-		// 	dev:{
-		// 		script:'server.js',
-		// 		options:{
-		// 			ext:'js,html',
-		// 			watch:['server.js','config/**/*.js','app/**/*.js','public/**/*.html','public/css/**/*.less']
-		// 		}
-		// 	},
-		// 	debug:{
-		// 		script:'server.js',
-		// 		options:{
-		// 			nodeArgs:['--debug'],
-		// 			ext:'js,html',
-		// 			watch:['server.js','config/**/*.js','app/**/*.js']
-		// 		}
-		// 	}
-		// },
+		nodemon:{
+			dev:{
+				script:'server.js',
+				options:{
+					ext:'js,html',
+					watch:['server.js','config/**/*.js','app/**/*.js','public/**/*.html','public/css/**/*.less']
+				}
+			},
+			debug:{
+				script:'server.js',
+				options:{
+					nodeArgs:['--debug'],
+					ext:'js,html',
+					watch:['server.js','config/**/*.js','app/**/*.js']
+				}
+			}
+		},
 		mochaTest:{
 			//src:'app/tests/review.server.tests.js',
 			src:'app/tests/**/*.js',
@@ -83,23 +83,23 @@ module.exports = function(grunt){
 				tasks:['jshint']
 			},
 		},
-		// concurrent:{
-		// 	dev:{
-		// 		tasks:['nodemon','watch'],
-		// 		options:{
-		// 			logConcurrentOutput:true
-		// 		}
-		// 	},
-		// 	debug:{
-		// 		tasks:['nodemon:debug','watch','node-inspector'],
-		// 		options:{
-		// 			logConcurrentOutput:true
-		// 		}
-		// 	}
-		// },
-		// 'node-inspector':{
-		// 	debug:{}
-		// }
+		concurrent:{
+			dev:{
+				tasks:['nodemon','watch'],
+				options:{
+					logConcurrentOutput:true
+				}
+			},
+			debug:{
+				tasks:['nodemon:debug','watch','node-inspector'],
+				options:{
+					logConcurrentOutput:true
+				}
+			}
+		},
+		'node-inspector':{
+			debug:{}
+		}
 	});
 
 	grunt.loadNpmTasks('grunt-env');
@@ -116,22 +116,16 @@ module.exports = function(grunt){
 	grunt.loadNpmTasks('grunt-contrib-less');
 
 	grunt.registerTask('default',['env:dev']);
-	// grunt.registerTask('debug',['env:dev','lint','concurrent:debug']);
+	grunt.registerTask('debug',['env:dev','jshint','concurrent:debug']);
 	grunt.registerTask('test',['env:test','mochaTest']);
 
-	grunt.registerTask('server_dev','Start a custom web server in development', function() {
-    	grunt.log.writeln('Started web server on port 3000');
-    	require('./server.js').listen(3000);
-	});
+	// grunt.registerTask('server_dev','Start a custom web server in development', function() {
+ //    	grunt.log.writeln('Started web server on port 3000');
+ //    	require('./server.js').listen(3000);
+	// });
 
-	grunt.registerTask('server_prod','Start a custom web server in production', function() {
-    	grunt.log.writeln('Started web server on port 3000');
-    	require('./server.js').listen(3000);
-	});
+	//grunt.registerTask('dev',['env:dev','server_dev','watch']);
 
-	grunt.registerTask('dev',['env:dev','server_dev','watch']);
-
-	grunt.registerTask('prod',['env:prod','server_prod','watch']);
 
 	// grunt.registerTask('lint',['jshint','csslint']);
 };
