@@ -19,14 +19,14 @@ app.listen(server_port,function() {
 });
 
 
-var taskZanox_01 = cron.schedule('16 25 * * *', function(err){
+var taskZanox_01 = cron.schedule('30 16 * * *', function(err){
   console.log('starting zanox job ...');
   zanoxJob.start(function(){
   	console.log("job zanox finished !");
   });
 },false);
 
-var taskWalmart_01 = cron.schedule('16 30 * * *', function(err){
+var taskWalmart_01 = cron.schedule('35 16 * * *', function(err){
   console.log('starting zanox job ...');
   walmartJob.start(function(){
   	console.log("walmart zanox finished !");
