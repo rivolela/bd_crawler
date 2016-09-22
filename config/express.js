@@ -3,7 +3,7 @@ var config = require('./config'),
 	morgan = require('morgan'),
 	compress = require('compression'),
  	bodyParser = require('body-parser'),
- 	session = require('express-session'),
+ 	cookieSession = require('cookie-session'),
 	methodOverride = require('method-override');
 
 module.exports = function () {
@@ -22,12 +22,20 @@ module.exports = function () {
 
 	app.use(bodyParser.json());
 	app.use(methodOverride());
-	app.use(session({
-		saveUninitialized: true,
-		resave:true,
+	app.use(cookieSession({
+		name: 'session',
 		secret:config.sessionSecret
 	}));
 
+
+	app.use(function (req, res, next) {
+  		// Update views 
+  		req.session.views = (req.session.views || 0) + 1;
+ 
+  		// Write response 
+  		res.end(req.session.views + ' views');
+	});
+ 
 	require('../app/routes/zanox.server.routes.js')(app);
 	require('../app/routes/walmart.server.routes.js')(app);
 

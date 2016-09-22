@@ -10,9 +10,13 @@ var db = mongoose();
 var app = express();
 
 //app.listen(3000);
+var server_port;
 
-
-var server_port = process.env.PORT || 80;
+if(process.env.NODE_ENV == 'production'){
+	server_port = process.env.PORT || 80;
+}else{
+	server_port = 3000;
+}
 
 app.listen(server_port,function() {
     console.log('Server runnning on port %d', server_port);
