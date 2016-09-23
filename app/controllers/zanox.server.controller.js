@@ -8,8 +8,8 @@ var host = 'api.zanox.com/json/2011-03-01/';
 var uri = 'products';
 var connectid = 'connectid=43EEF0445509C7205827';
 var programs = 'programs=12011';
-var query = 'q=geladeira%20brastemp';
-var category = 'merchantcategory=Eletrodomésticos / Fogões / Fogão 4 bocas';
+var query = 'q=geladeiras';
+var category = '';
 var items = 'items=50';
 var url = 'https://' + host + uri + '?' + connectid + '&' + programs + '&' + query + '&' + category + '&' + items ;
 
@@ -97,7 +97,6 @@ var getProductsByPagination = function(currentPage,paginationArray,productsArray
 	   			var currentItem = 0;
 
 	   			getDetailsProductsArray(currentItem,json,productsArray,function(productsArray){
-	   				console.log("callback get urls produtos");
 					getProductsByPagination(currentPage+1,paginationArray,productsArray,next);
 				});
 

@@ -9,14 +9,14 @@ var supertest = require("supertest")("https://www.walmart.com.br");
 
 var apiZanox = "http://api.zanox.com/json/2011-03-01/products?connectid=43EEF0445509C7205827&q=fogao+brastemp&programs=12011";
 
-var host = 'api.zanox.com/json/2011-03-01/';
-var uri = 'products';
-var connectid = 'connectid=43EEF0445509C7205827';
-var programs = 'programs=12011';
-var query = 'q=geladeira%20brastemp';
-var category = 'merchantcategory=Eletrodomésticos / Fogões / Fogão 4 bocas';
-var items = 'items=50';
-var url = 'https://' + host + uri + '?' + connectid + '&' + programs + '&' + query + '&' + category + '&' + items ;
+// var host = 'api.zanox.com/json/2011-03-01/';
+// var uri = 'products';
+// var connectid = 'connectid=43EEF0445509C7205827';
+// var programs = 'programs=12011';
+// var query = 'q=geladeira%20brastemp';
+// var category = 'merchantcategory=Eletrodomésticos / Fogões / Fogão 4 bocas';
+// var items = 'items=50';
+// var url = 'https://' + host + uri + '?' + connectid + '&' + programs + '&' + query + '&' + category + '&' + items ;
 
 
 // Code here will be linted with JSHint.

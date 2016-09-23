@@ -8,7 +8,7 @@ module.exports = function(grunt){
 				NODE_ENV: 'development',
 			},
 			test:{
-				NODE_ENV: 'test'
+				NODE_ENV: 'test',
 			},
 			prod:{
 				NODE_ENV: 'production'
@@ -32,7 +32,7 @@ module.exports = function(grunt){
 			}
 		},
 		mochaTest:{
-			//src:'app/tests/review.server.tests.js',
+			//src:'app/tests/jobs/zanox.server.job.tests.js',
 			src:'app/tests/**/*.js',
 			options:{
 				reporter:'spec'
@@ -116,7 +116,7 @@ module.exports = function(grunt){
 	grunt.loadNpmTasks('grunt-contrib-less');
 
 	grunt.registerTask('default',['env:dev']);
-	grunt.registerTask('debug',['env:dev','jshint','concurrent:debug']);
+	grunt.registerTask('dev',['env:dev','jshint','concurrent:debug']);
 	grunt.registerTask('test',['env:test','mochaTest']);
 
 	// grunt.registerTask('server_dev','Start a custom web server in development', function() {

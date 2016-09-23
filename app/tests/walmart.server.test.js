@@ -142,6 +142,7 @@ describe('Walmart Advertiser Server Tests:',function(done){
 			
 
 		it('Should add info to array products: productid,totalReviewsPage and totalPaginacaoReviews', function(done) {
+			this.timeout(5000);
 			walmart.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProductsWalmart){
 				arrayProductsWalmart[1].dataProductId.should.be.equal('2033536');
 				arrayProductsWalmart[1].totalPaginacaoReviews.should.be.above(40);

@@ -27,14 +27,14 @@ module.exports = function () {
 		secret:config.sessionSecret
 	}));
 
-
-	app.use(function (req, res, next) {
-  		// Update views 
-  		req.session.views = (req.session.views || 0) + 1;
+	// example : how to use cookie informations
+	// app.use(function (req, res, next) {
+ //  		// Update views 
+ //  		req.session.views = (req.session.views || 0) + 1;
  
-  		// Write response 
-  		res.end(req.session.views + ' views');
-	});
+ //  		// Write response 
+ //  		res.end(req.session.views + ' views');
+	// });
  
 	require('../app/routes/zanox.server.routes.js')(app);
 	require('../app/routes/walmart.server.routes.js')(app);

@@ -8,7 +8,6 @@
     "compression": "1.0.11",
     "body-parser": "1.8.0",
     "method-override": "2.2.0",
-    "express-session": "1.7.6",
     "mongoose": "4.5.0",
     "flat": "2.0.1",
     "jsonfile": "2.3.1",
