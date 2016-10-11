@@ -5,9 +5,12 @@ var mongoose = require('./config/mongoose'),
  	cron = require('node-cron');
  	zanoxJob = require('./app/jobs/zanox.server.job.js');
  	walmartJob = require('./app/jobs/walmart.server.job.js');
+ 	ricardoJob = require('./app/jobs/ricardo_eletro.server.job.js');
 
 var db = mongoose();
 var app = express();
+var async = require('async');
+
 
 //app.listen(3000);
 var server_port;
@@ -22,26 +25,13 @@ app.listen(server_port,function() {
     console.log('Server runnning on port %d', server_port);
 });
 
+// job to get offer
+zanoxJob.starJob();
 
-var taskZanox_01 = cron.schedule('29 11 * * *', function(err){
-  console.log('starting zanox job ...');
-  var url = null;
-  zanoxJob.start(url,function(){
-  	console.log("job zanox finished !");
-  });
-},false);
+// jobs to get reviews
+walmartJob.starJob();
+ricardoJob.starJob();
 
-
-var taskWalmart_01 = cron.schedule('35 16 * * *', function(err){
-  console.log('starting walmart job ...');
-  walmartJob.start(function(){
-  	console.log("walmart zanox finished !");
-  });
-},false);
-
-
-taskZanox_01.start();
-taskWalmart_01.start();
 
 
 module.exports = app;

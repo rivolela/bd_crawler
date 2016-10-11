@@ -16,9 +16,9 @@ var saveArrayReviews = function(currentItem,arrayReviews,next){
 
     if(currentItem < arrayReviews.length){
      
-      var object = arrayReviews[currentItem];
+      var review = arrayReviews[currentItem];
 
-      findOneAndUpdate(query,object,function(){
+      findOneAndUpdate(query,review,function(){
         saveArrayReviews(currentItem+1,arrayReviews,next);
       });
     }else{

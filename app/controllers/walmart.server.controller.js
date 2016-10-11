@@ -72,7 +72,7 @@ var crawlerByProduct = function(currentItem,arrayProductsWalmart,next){
 
     if(arrayProductsWalmart[currentItem].totalReviewsPage > 0){
       
-      var currentPaginationReview = 1;
+      var currentPaginationReview = 0;
       
       crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsWalmart,function(arrayProductsWalmart){
         console.log('callback saveReviewsByPagination');
@@ -94,13 +94,15 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
 
   try{
       // for each review pagination
-    if(currentPaginationReview <= arrayProductsWalmart[currentItem].totalPaginacaoReviews){
+    if(currentPaginationReview < arrayProductsWalmart[currentItem].totalPaginacaoReviews){
 
       var dataProductId = arrayProductsWalmart[currentItem].dataProductId;
       var urlToCrawler = 'https://www.walmart.com.br/xhr/reviews/'+ dataProductId + '/?pageNumber=' + currentPaginationReview;
+      console.log("urlToCrawler >> ",urlToCrawler);
       var call = new requestUtile();
-
+ 
       call.getHtml(urlToCrawler,timeRequest,function(error,response,body){
+        console.log("callback getHtml >> body >> ",body);
         if(error){
           console.log("error:",error);
         }else{

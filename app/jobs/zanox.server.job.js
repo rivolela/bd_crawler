@@ -7,7 +7,17 @@ var flatten = require('flat');
 var flatten2 = require('flat');
 var urlTeste = "http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[1141205/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]";
 var cheerio = require('cheerio');
-var url ;
+var async = require('async');
+var cron = require('node-cron');
+
+var taskZanox = cron.schedule(config.zanox_schedule, function(err){
+  console.log('starting zanox job ...');
+  var url = null;
+  start(url,function(){
+  	console.log(" Zanox job finished !");
+  });
+},false);
+
 
 
 // var start = function(){
@@ -29,21 +39,23 @@ var url ;
 function start(urlSearchOffers,next){
 
 	var productsArray = [];
+	var currentPage = 0;
+	var currentItem = 0;
+	var paginationArray = [];
+	var productsArray = [];
 
-	setUrlOffers(urlSearchOffers,function(url){
+	offerController.deleteCollectionOffersBD(function(){
 
-		console.log("callback setUrlOffers >> ",url);
+		console.log("callback deleteCollectionOffersBD >>");
 
-		offerController.deleteCollectionOffersBD(function(){
+		setUrlOffers(urlSearchOffers,function(url){
 
-			console.log("callback deleteCollectionOffersBD >>");
+			console.log("callback setUrlOffers >> ",url);
 
 			zanoxController.getOffersContext(url,50,function(totalPaginacao,totalItems,itemsByPage){
 				
 				console.log("callback getOffersContext >> ");
-				var paginationArray = [];
-				var currentPage = 0;
-		    	var currentItem = 0;
+				//var paginationArray = [];
 				
 				zanoxController.getPagination(currentPage,totalPaginacao,paginationArray,function(paginationArray){
 					
@@ -74,7 +86,7 @@ function start(urlSearchOffers,next){
 
 	});
 
-	return next(productsArray);
+	//return next(productsArray);
 }
 
 
@@ -88,9 +100,9 @@ var setUrlOffers = function(urlSearchOffers,next){
 			var connectid = 'connectid=' + config.connectid;
 			var programs = 'programs=' + config.programs;
 			var query = 'q=' + config.query;
-			var category = '';
+			//var category = '';
 			var items = 'items=50';
-			var url = 'https://' + host + uri + '?' + connectid + '&' + programs + '&' + query + '&' + category + '&' + items ;
+			var url = 'https://' + host + uri + '?' + connectid + '&' + programs + '&' + query + '&' + items ;
 			return next(url);
 		}else{
 			return next(urlSearchOffers);
@@ -102,9 +114,13 @@ var setUrlOffers = function(urlSearchOffers,next){
 };
 
 
+var starJob = function(next){
+	return (taskZanox.start());
+}
 
  
 exports.start = start;
 exports.setUrlOffers = setUrlOffers;
+exports.starJob = starJob;
 // start();
 
