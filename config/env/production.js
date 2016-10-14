@@ -1,4 +1,4 @@
-module.exports = {
+gitmodule.exports = {
 // Development configuration options
 	db:'mongodb://bdeciding:rovel1954@ds035776.mlab.com:35776/heroku_5lt8spw4',
 	sessionSecret:'productSessionSecret',
@@ -17,7 +17,7 @@ module.exports = {
 	// schedule reviews jobs
 	ricardo_eletro_schedule:'0 13 * * *',
 	walmart_schedule:'0 14 * * *',
-	lojas_colombo_schedule:'53 11 * * *',
+	lojas_colombo_schedule:'50 17 * * *',
 };
 
 
