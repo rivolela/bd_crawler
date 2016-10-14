@@ -12,11 +12,11 @@ module.exports = {
 	programs:'12011,13212,16588',
 	query:'geladeira',
 	// schedule offers jobs
-	zanox_schedule:'55 11 * * *',
+	zanox_schedule:'19 19 * * *',
 	//schedule reviews jobs
 	ricardo_eletro_schedule:'34 11 * * *',
 	walmart_schedule:'35 11 * * *',
-	lojas_colombo_schedule:'30 18 * * *'
+	lojas_colombo_schedule:'12 19 * * *',
 };
 
 

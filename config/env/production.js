@@ -12,12 +12,12 @@ gitmodule.exports = {
 	query:'geladeira',
 
 	// schedule offers jobs
-	zanox_schedule:'0 8 * * *',
+	zanox_schedule:'33 18 * * *',
 
 	// schedule reviews jobs
 	ricardo_eletro_schedule:'0 13 * * *',
 	walmart_schedule:'0 14 * * *',
-	lojas_colombo_schedule:'50 17 * * *',
+	lojas_colombo_schedule:'12 19 * * *',
 };
 
 

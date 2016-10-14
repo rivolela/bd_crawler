@@ -4,11 +4,11 @@ var config = require('../../config/config.js'),
  	cron = require('node-cron');
 
 
-if(process.env.NODE_ENV == 'test_job'){
-	start(function(){
-		console.log("end test lojas colombo job");
-	});
-}
+// if(process.env.NODE_ENV == 'test_job'){
+// 	start(function(){
+// 		console.log("end test lojas colombo job");
+// 	});
+// }
 
 
 var taskColombo = cron.schedule(config.lojas_colombo_schedule, function(err){

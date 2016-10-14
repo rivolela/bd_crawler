@@ -7,9 +7,20 @@ var mongoose = require('./config/mongoose'),
  	walmartJob = require('./app/jobs/walmart.server.job.js'),
  	ricardoJob = require('./app/jobs/ricardo_eletro.server.job.js'),
  	colomboJob = require('./app/jobs/lojas_colombo.server.job.js');
+ 	async = require('async');
 
 var db = mongoose();
 var app = express();
+
+
+var taskZanox = cron.schedule(config.zanox_schedule,function(err){
+  console.log('starting zanox job ...');
+  var url = null;
+  start(url,function(){
+  	console.log(" Zanox job finished !");
+  	return next();
+  });
+},false);
 
 
 //app.listen(3000);
@@ -25,16 +36,36 @@ app.listen(server_port,function() {
     console.log('Server runnning on port %d', server_port);
 });
 
+taskZanox.start(function(){
+	console.log("call async");
+});
 
-if(process.env.NODE_ENV != 'test_job'){
-	// job to get offer
-	zanoxJob.starJob();
+// async.waterfall([
+//     function(callback) {
+//     	zanoxJob.starJob();
+//         callback();
+//     },
+//     function() {
+//         colomboJob.starJob();
+//     },
+//     // function(arg1, callback) {
+//     //     // arg1 now equals 'three'
+//     //     callback(null, 'done');
+//     // }
+// ], function (err, result) {
+//     // result now equals 'done'
+// });
 
-	// jobs to get reviews
-	walmartJob.starJob();
-	ricardoJob.starJob();
-	colomboJob.starJob();
-}
+
+// if(process.env.NODE_ENV != 'test_job'){
+// 	// job to get offer
+// 	zanoxJob.starJob();
+
+// 	// jobs to get reviews
+// 	walmartJob.starJob();
+// 	ricardoJob.starJob();
+// 	colomboJob.starJob();
+// }
 
 
 module.exports = app;
