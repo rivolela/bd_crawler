@@ -20,7 +20,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 		before(function(done){
 			var url = host + uri;
 			console.log(url);
-			var timeRequest = 0000;
+			var timeRequest = 0;
 
 			call.getHtml(html,timeRequest,function(error,response,body){
 				Context.body = body;
@@ -72,7 +72,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 		});
 
 
-		it('Should add info to array products: productid and totalPaginacaoReviews', function(done) {
+		it('Should add info to array products: productid==85169 and totalPaginacaoReviews > 1', function(done) {
 			this.timeout(2000);
 			reController.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
 				console.log("arrayProducts",arrayProducts);
@@ -108,7 +108,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 		});
 
 
-		it('Should return arrayProductsWalmart[1], for pagination 0, with 4 reviews', function(done) {
+		it('Should return arrayReviews with 4 reviews', function(done) {
 			reController.getReviewsFromHtml(Context.body,
 											Context.product,
 											function(arrayReviews){

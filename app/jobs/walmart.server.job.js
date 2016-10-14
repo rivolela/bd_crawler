@@ -18,22 +18,6 @@ var taskWalmart = cron.schedule(config.walmart_schedule, function(err){
 },false);
 
 
-// var start = function(){
-// 	// mongoose.createConnection(config.db, function(error) {
-// 	// 	if (error) {
-// 	// 		console.error('Error while connecting:\n%\n', error);
-// 	// 	}
-// 	// 	else{
-// 	// 		console.log('db connected');
-// 			startWalmart(function(){
-// 				//mongoose.createConnection.close();
-// 				console.log("end walmart task");
-// 			});
-//  // 		}
-// 	// });
-// };
-
-
 function start(next){
 
 	var currentItem = 0;
@@ -60,13 +44,12 @@ function start(next){
 
 var starJob = function(next){
 	return (taskWalmart.start());
-}
+};
 
 
 exports.start = start;
 exports.starJob = starJob;
 
-//start();
 
 
 

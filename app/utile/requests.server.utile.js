@@ -7,23 +7,30 @@ var http = require("http");
 
 module.exports = function(){
 
-	function getJson(searchUrl,next) {
-		request({
-	  		url: searchUrl, //URL to hit
-	 		method: 'GET', //Specify the method
-	    	headers: { //We can define headers too
-	    		'User-Agent': 'request',
-	    		'Content-Type': 'application/json;charset=UTF-8',
+
+	function getJson(searchUrl,timeRequest,next) {
+
+		timeRequestHtml = timeRequest;
+
+		setTimeout(timeControlCrawler,timeRequestHtml,function(){
+
+			request({
+	  			url: searchUrl, //URL to hit
+	 			method: 'GET', //Specify the method
+	    		headers: { //We can define headers too
+	    			'User-Agent': 'request',
+	    			'Content-Type': 'application/json;charset=UTF-8',
 	    		},
-	  	},function(error,response,body){
-  			if(error) {
-    			console.log("error",error);
-    			console.log("response",response);
- 			}else{
-    			var data = JSON.parse(body);
-    			return next(data,response,error);
-   			}	
-	  	});
+	  		},function(error,response,body){
+  				if(error) {
+    				console.log("error",error);
+    				console.log("response",response);
+ 				}else{
+    				var data = JSON.parse(body);
+    				return next(data,response,error);
+   				}	
+	  		});
+		});
 	}
 
 

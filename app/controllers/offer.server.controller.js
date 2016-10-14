@@ -81,12 +81,13 @@ var deleteCollectionOffersBD = function(next){
 
 
 var getOffersBD = function(query,next){
-
+	console.log(query);
 	Offer.find(query,function(err,offers){
 		if(err){
 			console.log(err);
 			return next(err);
 		}else{
+			console.log(offers);
 			return next(offers);
 		}
 	});

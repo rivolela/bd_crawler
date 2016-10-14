@@ -3,6 +3,7 @@ var should = require('should');
 var requestsUtile = require('../../../utile/requests.server.utile.js');
 var zanox = require('../../../controllers/zanox.server.controller.js');
 var Offer = require('../../../controllers/offer.server.controller.js');
+var config = require('../../../../config/config.js');
 var assert = require("assert");
 
 var supertest = require("supertest")("https://www.walmart.com.br");
@@ -31,8 +32,10 @@ describe('Zanox Unit Tests:',function(done){
   
 	describe('Testing connection api zanox >>',function(){
 		it('Should return items == 10',function(done){
+			//this.timeout(6000);
 			var call = new requestsUtile();
-			call.getJson(apiZanox,function(data,response){
+			var timeRequest = 0;
+			call.getJson(apiZanox,timeRequest,function(data,response){
 				data.items.should.be.equal(10);
 				done();
 			});

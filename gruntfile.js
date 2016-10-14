@@ -10,6 +10,9 @@ module.exports = function(grunt){
 			test:{
 				NODE_ENV: 'test',
 			},
+			test_job:{
+				NODE_ENV: 'test_job',
+			},
 			prod:{
 				NODE_ENV: 'production'
 			}
@@ -33,8 +36,8 @@ module.exports = function(grunt){
 		},
 		mochaTest:{
 			//src:'app/tests/mocha/utile/requests.server.utile.tests.js',
-			//src:'app/tests/mocha/controllers/ricardo_eletro.server.controller.tests.js',
-			src:'app/tests/mocha/**/*.js',
+			//src:'app/tests/mocha/controllers/lojas_colombo.server.controller.tests.js',
+			 src:'app/tests/mocha/**/*.js',
 			options:{
 				reporter:'spec'
 			}
@@ -134,11 +137,10 @@ module.exports = function(grunt){
 	grunt.registerTask('mocha',['env:test','server','mochaTest']);
 	grunt.registerTask('casper',['env:test','casperjs']);
 	grunt.registerTask('test',['env:test','server','casperjs','mochaTest']);
-
+	grunt.registerTask('job',['env:test_job','server','watch']);
 	
 
 	grunt.registerTask('dev',['env:dev','server','watch']);
-
 
 	// grunt.registerTask('lint',['jshint','csslint']);
 };

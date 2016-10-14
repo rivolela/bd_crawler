@@ -1,11 +1,10 @@
 var config = require('../../config/config.js');
-var mongoose = require('mongoose');
 var offerController = require('../controllers/offer.server.controller.js');
 var zanoxController = require('../controllers/zanox.server.controller.js');
 var request = require('request');
 var flatten = require('flat');
 var flatten2 = require('flat');
-var urlTeste = "http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[1141205/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]";
+var urlTeste = "http://api.zanox.com/json/2011-03-01/products?connectid=43EEF0445509C7205827&q=ventilador&programs=12011,13212,16588&items=50";
 var cheerio = require('cheerio');
 var async = require('async');
 var cron = require('node-cron');
@@ -19,20 +18,11 @@ var taskZanox = cron.schedule(config.zanox_schedule, function(err){
 },false);
 
 
-
-// var start = function(){
-// 	//mongoose.createConnection(config.db, function(error) {
-// 	//	if (error) {
-// 	//		console.error('Error while connecting:\n%\n', error);
-// 	//	}
-// 	//	else{
-// 	//		console.log('db connected');
-// 			startZanox(function(){
-// 				//mongoose.createConnection.close();
-// 			});
-//  	//	}
-//  	//});
-// };
+ // if(process.env.NODE_ENV == 'test_job'){
+	// start(urlTeste,function(){
+	// 	console.log("end test zanox job");
+	// });
+ // }
 
 
 
@@ -42,7 +32,6 @@ function start(urlSearchOffers,next){
 	var currentPage = 0;
 	var currentItem = 0;
 	var paginationArray = [];
-	var productsArray = [];
 
 	offerController.deleteCollectionOffersBD(function(){
 
@@ -86,7 +75,6 @@ function start(urlSearchOffers,next){
 
 	});
 
-	//return next(productsArray);
 }
 
 
@@ -116,11 +104,12 @@ var setUrlOffers = function(urlSearchOffers,next){
 
 var starJob = function(next){
 	return (taskZanox.start());
-}
+};
+
+
 
  
-exports.start = start;
 exports.setUrlOffers = setUrlOffers;
 exports.starJob = starJob;
-// start();
+
 

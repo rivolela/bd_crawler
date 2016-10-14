@@ -19,8 +19,8 @@ var getProductContext = function(body,next){
     var productid = $('.comentarios-avaliacao').attr('produtoid');
     var totalPaginacaoReviews = $('#SetaComentariosDireita').attr('paginatotal');
 
-    if(totalPaginacaoReviews == undefined){
-      var totalPaginacaoReviews = 0;
+    if(totalPaginacaoReviews === undefined){
+      totalPaginacaoReviews = 0;
     }
 
     console.log("productid",productid);
@@ -75,10 +75,10 @@ var getBodyProductPage = function(urlToCrawler,next){
       // this conditional exists because phantomjs doesnt work wtih mocha ( test environment )
       // the url crawler was saved by casperjs ( see test task inside gruntfile), into the public folder
       // therefore, to env test, the product page used always will be the same, the file saved by casperjs test
-      var call = new requestUtile();
+      var call2 = new requestUtile();
       var timeRequest = 0;
-      call.getHtml(urlToCrawler,timeRequest,function(error,response,body){
-        console.log("get body html by phantomjs");
+      call2.getHtml(urlToCrawler,timeRequest,function(error,response,body){
+        console.log("get body html by request");
         return next(body);
       });
     }
@@ -128,10 +128,10 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
       if(process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'development' ){
         var call = new phantomUtile();
       }else{
-         var call = new requestUtile();
+         var call = new requestUtile();// jshint ignore:line
       }
 
-      call.getHtml(urlToCrawler,config.timeRequest,function(body){
+      call.getHtml(urlToCrawler,config.timeRequest,function(body){ // jshint ignore:line
 
         getReviewsFromHtml(body,productReview,function(reviews){
           
@@ -183,7 +183,7 @@ var getReviewsFromHtml = function(body,product,next){
         var textCondensed_break_up_04 = textCondensed_break_up_03[1].match(/\d+|\D+/g);
         //[ ' ES ', '19', '/', '09', '/', '2013', ' ' ]
 
-        var resultLocal = textCondensed_break_up_03[0] + '-' + textCondensed_break_up_04[0]
+        var resultLocal = textCondensed_break_up_03[0] + '-' + textCondensed_break_up_04[0];
         // var resultAuthor_2 = resultAuthor[1].split(" ");
         // var resultLocal = resultAuthor_2[1] + ' - ' + resultAuthor_2[3];
         // var resultDate = resultAuthor_2[4].split("/");

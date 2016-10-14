@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 var url = "http://www.ricardoeletro.com.br/Produto/Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-380-Litros-Inox-DW42X/256-270-274-85169";
 var reviews_01 = 'http://www.ricardoeletro.com.br/Produto/Comentarios/5211/1';
 var reviews_02 = 'http://www.ricardoeletro.com.br/Produto/Comentarios/5211/2';
@@ -15,7 +16,7 @@ casper.test.begin('Ricardo Eletro BR Tests >> save product page html', 1, functi
         //'w' - Open file for writing. The file is created (if it does not exist) or truncated (if it exists).
         //getHTML()
         //Signature: getHTML([String selector, Boolean outer])
-        fs.write("./public/ricardo_eletro.html", casper.getHTML(undefined, true),  'w');
+        fs.write("./public_test/ricardo_eletro.html", casper.getHTML(undefined, true),  'w');
       });
 
 
@@ -33,8 +34,6 @@ casper.test.begin('Ricardo Eletro BR Tests >> save product page html', 1, functi
         test.done();
     });
 
-
-
 });
 
 
@@ -49,7 +48,7 @@ casper.test.begin('Ricardo Eletro BR Tests >> >> save review page html ', 1, fun
         //'w' - Open file for writing. The file is created (if it does not exist) or truncated (if it exists).
         //getHTML()
         //Signature: getHTML([String selector, Boolean outer])
-        fs.write("./public/ricardo_eletro_review.html", casper.getHTML(undefined, true),  'w');
+        fs.write("./public_test/ricardo_eletro_review.html", casper.getHTML(undefined, true),  'w');
       });
 
     

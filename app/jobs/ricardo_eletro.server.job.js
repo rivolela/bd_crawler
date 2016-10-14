@@ -37,7 +37,7 @@ function start(next){
 
 var starJob = function(next){
 	return (taskRicardo.start());
-}
+};
 
 
 //start();

@@ -1,18 +1,9 @@
 var flatten = require('flat');
 var requestsUtile = require('../utile/requests.server.utile.js');
 var urlZanox;
-
-//var call = new requestsUtile();
 var Offer = require('../controllers/offer.server.controller.js');
-// var host = 'api.zanox.com/json/2011-03-01/';
-// var uri = 'products';
-// var connectid = 'connectid=43EEF0445509C7205827';
-// var programs = 'programs=12011';
-// var query = 'q=geladeiras';
-// var category = '';
-// var items = 'items=50';
-// var url = 'https://' + host + uri + '?' + connectid + '&' + programs + '&' + query + '&' + category + '&' + items ;
-
+var config = require('../../config/config.js');
+var utf8_decode = require('locutus/php/xml/utf8_decode');
 
 
 var getOffersContext = function(url,itemsByPage,next){
@@ -20,10 +11,11 @@ var getOffersContext = function(url,itemsByPage,next){
 	try{
 
 		var call = new requestsUtile();
+		var timeRequest = 0;
 
 		urlZanox = url;
 
-		call.getJson(url,function(data){
+		call.getJson(url,timeRequest,function(data){
 			var totalItems = Number(data.total);
 			var totalItemsByPage = Number(data.items);
 
@@ -76,7 +68,7 @@ var getItemsByPagination = function(currentPage,paginationArray,next){
 
 			console.log("getItemsByPagination >> ",paginationArray[currentPage].url);
 
-			call.getJson(paginationArray[currentPage].url,function(json,response,error) {
+			call.getJson(paginationArray[currentPage].url,config.timeRequest,function(json,response,error) {
 	    		if(error) {
 	        		console.log('error: '+ error.message);
 	      		}
@@ -104,8 +96,9 @@ var getProductsByPagination = function(currentPage,paginationArray,productsArray
 		if(currentPage < paginationArray.length){
 
 			var call = new requestsUtile();
+			var timeRequest = 0;
 
-			call.getJson(paginationArray[currentPage].url,function(json,response,error) {
+			call.getJson(paginationArray[currentPage].url,timeRequest,function(json,response,error) {
 
 				console.log("getProductsByPagination >> ",paginationArray[currentPage].url);
 
@@ -151,6 +144,17 @@ var getDetailsProductsArray = function(currentItem,data,productsArray,next){
 				price: data.productItems.productItem[currentItem].price,
 				advertiser: data.productItems.productItem[currentItem].program.$,
 			});
+
+			// TO DO - the zanox api result, although of header response is configured to UTF-8
+			// is bringing caracteres with different encode.
+			// It is the case of Lojas Colombo BR, that is bringing names like this :
+			// Cervejeira Venax, 1 Porta, 100 Litros, IluminaÃ§Ã£o LED, Preta - EXPVQBL100"
+			if(offer.advertiser=="Lojas Colombo BR"){
+				offer.ean = utf8_decode(offer.ean);
+				offer.name = utf8_decode(offer.name);
+				offer.category = utf8_decode(offer.category);
+				offer.advertiser = utf8_decode(offer.advertiser);
+			}
 
 			productsArray.push(offer);
 

@@ -11,19 +11,22 @@ module.exports = function(){
 	var timeControlCrawler = function(next){
 		console.log("calling to crawler every >> ",timeRequestHtml," miliseconds");
 	   	next();
-	}
+	};
 
 
 	var startPhantomjsProcess = function(){
 		console.log("open phridge.spawn() process");
-	 	return phridge.spawn()
-	}
+	 	return phridge.spawn();
+	};
 
 
 	var closePhantomjsProcess = function (){
+		 // phridge.disposeAll() exits cleanly all previously created child processes.
+	    // This should be called in any case to clean up everything.
+	    //.then(closePhantomjsProcess());
 		console.log("All processes created by phridge.spawn() have been terminated");
-		return phridge.disposeAll()
-	}
+		return phridge.disposeAll();
+	};
 
 
 	var getHtml = function(searchUrl,timeRequest,next){
@@ -66,20 +69,13 @@ module.exports = function(){
 			})
 			.catch(function (err) {
 		        console.error(err.stack);
-		    })
+		    });
 		 //    .then(function(){
 			// 	closePhantomjsProcess()
 			// })
 
 		});
-
-		
-
-	    // phridge.disposeAll() exits cleanly all previously created child processes.
-	    // This should be called in any case to clean up everything.
-	    //.then(closePhantomjsProcess());
-
-	}
+	};
 
 	return {
         getHtml: getHtml,

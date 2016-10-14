@@ -9,13 +9,15 @@ var config = require('./config'),
 module.exports = function () {
 	
 	var app = express();
-	app.use(express.static('./public'));
-
-	if(process.env.NODE_ENV === 'development'){
+	
+	if((process.env.NODE_ENV === 'development') || (process.env.NODE_ENV === 'test')){
 		app.use(morgan('dev'));
+		app.use(express.static('./public_test'));
 	}else if(process.env.NODE_ENV === 'production'){
 		app.use(compress());
+		app.use(express.static('./public'));
 	}
+
 
 	app.use(bodyParser.urlencoded({
 		extended: true

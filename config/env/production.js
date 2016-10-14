@@ -3,7 +3,7 @@ module.exports = {
 	db:'mongodb://bdeciding:rovel1954@ds035776.mlab.com:35776/heroku_5lt8spw4',
 	sessionSecret:'productSessionSecret',
 	connectid:'43EEF0445509C7205827',
-	timeRequest:3000,
+	timeRequest:4000,
 	// programs ids
 	// 12011 : Walmart BR"
 	// 13212 : Ricardo Eletro BR
@@ -11,10 +11,13 @@ module.exports = {
 	programs:'12011,13212,16588',
 	query:'geladeira',
 
-	// schedule jobs
+	// schedule offers jobs
 	zanox_schedule:'0 8 * * *',
+
+	// schedule reviews jobs
 	ricardo_eletro_schedule:'0 13 * * *',
 	walmart_schedule:'0 14 * * *',
+	lojas_colombo_schedule:'53 11 * * *',
 };
 
 
