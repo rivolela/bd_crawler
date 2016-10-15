@@ -12,7 +12,7 @@ module.exports = {
 	query:'geladeira',
 
 	// schedule offers jobs
-	zanox_schedule:'33 18 * * *',
+	zanox_schedule:'0 10 * * *',
 
 	// schedule reviews jobs
 	ricardo_eletro_schedule:'0 13 * * *',
