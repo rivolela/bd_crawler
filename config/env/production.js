@@ -17,7 +17,7 @@ module.exports = {
 	// schedule reviews jobs
 	ricardo_eletro_schedule:'0 13 * * *',
 	walmart_schedule:'0 14 * * *',
-	lojas_colombo_schedule:'55 9 * * *',
+	lojas_colombo_schedule:'0 10 * * *',
 };
 
 
