@@ -9,14 +9,13 @@ var cheerio = require('cheerio');
 var async = require('async');
 var cron = require('node-cron');
 
-// var taskZanox = cron.schedule(config.zanox_schedule, function(err){
-//   console.log('starting zanox job ...');
-//   var url = null;
-//   start(url,function(){
-//   	console.log(" Zanox job finished !");
-//   	return next();
-//   });
-// },false);
+var taskZanox = cron.schedule(config.zanox_schedule, function(err){
+  console.log('starting zanox job ...');
+  var url = null;
+  start(url,function(){
+  	console.log(" Zanox job finished !");
+  });
+},false);
 
 
  // if(process.env.NODE_ENV == 'test_job'){
@@ -103,9 +102,9 @@ var setUrlOffers = function(urlSearchOffers,next){
 };
 
 
-// var starJob = function(next){
-// 	return (taskZanox.start());
-// };
+var starJob = function(next){
+	return (taskZanox.start());
+};
 
 
 

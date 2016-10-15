@@ -13,15 +13,6 @@ var db = mongoose();
 var app = express();
 
 
-var taskZanox = cron.schedule(config.zanox_schedule,function(err){
-  console.log('starting zanox job ...');
-  var url = null;
-  start(url,function(){
-  	console.log(" Zanox job finished !");
-  	return next();
-  });
-},false);
-
 
 //app.listen(3000);
 var server_port;
@@ -36,9 +27,6 @@ app.listen(server_port,function() {
     console.log('Server runnning on port %d', server_port);
 });
 
-taskZanox.start(function(){
-	console.log("call async");
-});
 
 // async.waterfall([
 //     function(callback) {
@@ -57,15 +45,13 @@ taskZanox.start(function(){
 // });
 
 
-// if(process.env.NODE_ENV != 'test_job'){
-// 	// job to get offer
-// 	zanoxJob.starJob();
+	// job to get offer
+	zanoxJob.starJob();
+	// jobs to get reviews
+	// walmartJob.starJob();
+	// ricardoJob.starJob();
+	colomboJob.starJob();
 
-// 	// jobs to get reviews
-// 	walmartJob.starJob();
-// 	ricardoJob.starJob();
-// 	colomboJob.starJob();
-// }
 
 
 module.exports = app;
