@@ -10,12 +10,12 @@ var urlTeste = "http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[1141205/sk?utm_
 var cheerio = require('cheerio');
 var cron = require('node-cron');
 
-// var taskWalmart = cron.schedule(config.walmart_schedule, function(err){
-//   console.log('starting walmart job ...');
-//   start(function(){
-//   	console.log("Walmart job finished !");
-//   });
-// },false);
+var taskWalmart = cron.schedule(config.walmart_schedule, function(err){
+  console.log('starting walmart job ...');
+  start(function(){
+  	console.log("Walmart job finished !");
+  });
+},false);
 
 
 function start(next){

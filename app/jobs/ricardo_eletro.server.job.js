@@ -4,12 +4,12 @@ var config = require('../../config/config.js'),
  	cron = require('node-cron');
 
 
-// var taskRicardo = cron.schedule(config.ricardo_eletro_schedule, function(err){
-//   console.log('starting Ricardo Eletro BR job ...');
-//   start(function(){
-//   	console.log("Ricardo Eletro BR job finished !");
-//   });
-// },false);
+var taskRicardo = cron.schedule(config.ricardo_eletro_schedule, function(err){
+  console.log('starting Ricardo Eletro BR job ...');
+  start(function(){
+  	console.log("Ricardo Eletro BR job finished !");
+  });
+},false);
 
 
 function start(next){

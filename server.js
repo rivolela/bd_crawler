@@ -28,30 +28,13 @@ app.listen(server_port,function() {
 });
 
 
-// async.waterfall([
-//     function(callback) {
-//     	zanoxJob.starJob();
-//         callback();
-//     },
-//     function() {
-//         colomboJob.starJob();
-//     },
-//     // function(arg1, callback) {
-//     //     // arg1 now equals 'three'
-//     //     callback(null, 'done');
-//     // }
-// ], function (err, result) {
-//     // result now equals 'done'
-// });
+// job to get offer
+zanoxJob.starJob();
 
-
-	// job to get offer
-	zanoxJob.starJob();
-	// jobs to get reviews
-	// walmartJob.starJob();
-	// ricardoJob.starJob();
-	colomboJob.starJob();
-
+// jobs to get reviews
+walmartJob.starJob();
+ricardoJob.starJob();
+colomboJob.starJob();
 
 
 module.exports = app;

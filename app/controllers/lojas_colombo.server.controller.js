@@ -185,8 +185,8 @@ var getReviewsFromJson = function(data,productReview,next){
       var dateReview = newdate.getTime();
         
       review.date = newdate;
-      review.title = review.title.replace(/['"]+/g,'');// jshint ignore:line
-      review.description = review.description.replace(/['"]+/g, '');
+      review.title = review.title.replace(new RegExp('\r?\n','g'), ' ');
+      review.description = review.description.replace(new RegExp('\r?\n','g'), ' ');
       review.location = review.location.replace(new RegExp('\r?\n','g'), ' ');
 
 		  console.log("Review from product ean >> ",productReview.ean);
