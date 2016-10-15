@@ -4,6 +4,12 @@ var config = require('../../config/config.js'),
  	cron = require('node-cron');
 
 
+// if(process.env.NODE_ENV == 'test_job'){
+// 	start(function(){
+// 		console.log("end test lojas colombo job");
+// 	});
+// }
+
 var taskRicardo = cron.schedule(config.ricardo_eletro_schedule, function(err){
   console.log('starting Ricardo Eletro BR job ...');
   start(function(){
@@ -26,10 +32,10 @@ function start(next){
 			  
 			console.log("callback setDataProducts > ",arrayProducts.length);
 				
-			ricardoController.crawlerByProduct(currentItem,arrayProducts,function(arrayProducts){
+			ricardoController.crawlerByProduct(currentItem,arrayProducts,function(contReview){
 
-				console.log("callback crawlerByProduct >> ",arrayProducts.length);
-				return next(arrayProducts);
+				console.log("callback crawlerByProduct >> ",contReview);
+				return next();
 			});
 		});
 	});

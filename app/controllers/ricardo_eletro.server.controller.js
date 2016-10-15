@@ -8,7 +8,7 @@ var Review = mongoose.model( 'Review', ReviewSchema);
 var iconv = require('iconv-lite');
 var encoding = require("encoding");
 var reviewController = require('./review.server.controller.js');
-
+var contReview = 0;
 
 var getProductContext = function(body,next){
   
@@ -97,8 +97,8 @@ var crawlerByProduct = function(currentItem,arrayProductsRicardo,next){
       
       var currentPaginationReview = 0;
       
-      crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsRicardo,function(arrayProductsRicardo){
-        console.log('callback saveReviewsByPagination');
+      crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsRicardo,function(contReview){
+        console.log('total of reviews saved at the moment >> ',contReview);
         crawlerByProduct(currentItem + 1,arrayProductsRicardo,next);
       });
     }else{
@@ -106,7 +106,7 @@ var crawlerByProduct = function(currentItem,arrayProductsRicardo,next){
     }
 
   }else{
-    return next(arrayProductsRicardo);
+    return next(contReview);
   }
 };
 
@@ -138,6 +138,7 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
           var currentItemArray = 0;
             
           reviewController.saveArrayReviews(currentItemArray,reviews,function(arrayReviews){
+            contReview = contReview + arrayReviews.length;
             crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProductsRicardo,next);
           });
 
@@ -145,7 +146,7 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
       });
 
     }else{
-      return next(arrayProductsRicardo);
+      return next(contReview);
     }
 
   }catch(e){
