@@ -9,12 +9,12 @@ module.exports = {
 	// 12011 : Walmart BR"
 	// 13212 : Ricardo Eletro BR
 	// 16588 : Lojas Colombo BR
-	programs:'12011,13212,16588',
-	query:'geladeira',
+	programs:'13212',
+	query:'ventilador',
 	// schedule offers jobs
-	zanox_schedule:'50 9 * * *',
+	zanox_schedule:'53 19 * * *',
 	//schedule reviews jobs
-	ricardo_eletro_schedule:'52 18 * * *',
+	ricardo_eletro_schedule:'54 19 * * *',
 	walmart_schedule:'35 11 * * *',
 	lojas_colombo_schedule:'55 9 * * *',
 };

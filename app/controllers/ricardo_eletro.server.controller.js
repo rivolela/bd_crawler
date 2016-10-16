@@ -65,7 +65,7 @@ var setDataProducts = function(currentItem,arrayProductsRicardo,next){
 var getBodyProductPage = function(urlToCrawler,next){
 
   try{
-    if(process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'development' ){
+    if(process.env.NODE_ENV != 'test'){
       var call = new phantomUtile();
       call.getHtml(urlToCrawler,config.timeRequest,function(body){
         console.log("get body html by phantomjs");
@@ -90,24 +90,28 @@ var getBodyProductPage = function(urlToCrawler,next){
 
 var crawlerByProduct = function(currentItem,arrayProductsRicardo,next){
 
-  // for each product
-  if(currentItem < arrayProductsRicardo.length){
+    try{
+      // for each product
+      if(currentItem < arrayProductsRicardo.length){
 
-    if(arrayProductsRicardo[currentItem].totalPaginacaoReviews > 0){
-      
-      var currentPaginationReview = 0;
-      
-      crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsRicardo,function(contReview){
-        console.log('total of reviews saved at the moment >> ',contReview);
-        crawlerByProduct(currentItem + 1,arrayProductsRicardo,next);
-      });
-    }else{
-      crawlerByProduct(currentItem + 1,arrayProductsRicardo,next);
+        if(arrayProductsRicardo[currentItem].totalPaginacaoReviews > 0){
+          
+          var currentPaginationReview = 0;
+          
+          crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsRicardo,function(contReview){
+            console.log('total of reviews saved at the moment >> ',contReview);
+            crawlerByProduct(currentItem + 1,arrayProductsRicardo,next);
+          });
+        }else{
+          crawlerByProduct(currentItem + 1,arrayProductsRicardo,next);
+        }
+
+      }else{
+        return next(contReview);
+      }
+    }catch(e){
+      console.log('An error has occurred >> crawlerByProduct >> '+ e.message);
     }
-
-  }else{
-    return next(contReview);
-  }
 };
 
 
