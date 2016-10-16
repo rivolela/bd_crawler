@@ -1,6 +1,10 @@
 {
   "name": "bd_crawler",
   "version": "0.0.2",
+  "engines": {
+    "node": "6.7.0",
+    "npm": "3.10.3"
+  },
   "dependencies": {
     "async": "^2.0.1",
     "body-parser": "1.8.0",

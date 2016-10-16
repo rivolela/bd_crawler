@@ -57,6 +57,7 @@ var setDataProducts = function(currentItem,arrayProducts,next){
 		      });
 
 		    });
+        
 		 }else{
 		 	return next(arrayProducts);
 		 }

@@ -1,9 +1,11 @@
-var phantom = require("phantom");
-
+var phridge = require("phridge/lib/main.js");
 // node 
-phantom.run("h1", function (selector, resolve) {
+
+phridge.spawn(function(phantom){
+    
+    phantom.run("h1", function (selector, resolve) {
     // this code runs inside PhantomJS 
- 
+    
     phantom.addCookie("cookie_name", "cookie_value", "localhost");
  
     var page = webpage.create();
@@ -25,3 +27,6 @@ phantom.run("h1", function (selector, resolve) {
     // inside node again 
     console.log("The element contains the following text: " + text);
 });
+
+})
+

@@ -4,12 +4,6 @@ var config = require('../../config/config.js'),
  	cron = require('node-cron');
 
 
-// if(process.env.NODE_ENV == 'test_job'){
-// 	start(function(){
-// 		console.log("end test lojas colombo job");
-// 	});
-// }
-
 var taskRicardo = cron.schedule(config.ricardo_eletro_schedule, function(err){
   console.log('starting Ricardo Eletro BR job ...');
   start(function(){
