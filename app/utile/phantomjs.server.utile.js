@@ -35,9 +35,8 @@ module.exports = function(){
 
 		setTimeout(timeControlCrawler,timeRequest,function(){
 
-			// phridge.spawn() creates a new PhantomJS process
-			startPhantomjsProcess()
-
+			phridge.spawn() //creates a new PhantomJS process
+			
 		    .then(function (phantom) {
 		        // phantom.openPage(url) loads a page with the given url
 		        return phantom.openPage(searchUrl);
