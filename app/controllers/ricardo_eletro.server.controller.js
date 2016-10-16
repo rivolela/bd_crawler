@@ -6,7 +6,6 @@ var mongoose = require('mongoose');
 var ReviewSchema = require('../models/review.server.model');
 var Review = mongoose.model( 'Review', ReviewSchema);
 var iconv = require('iconv-lite');
-var encoding = require("encoding");
 var reviewController = require('./review.server.controller.js');
 var contReview = 0;
 
