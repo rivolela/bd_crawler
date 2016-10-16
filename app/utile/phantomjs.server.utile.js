@@ -47,6 +47,12 @@ module.exports = function(){
 		    })
 		    .then(function (page) {
 		        // page.run(fn) runs fn inside PhantomJS
+		        page.customHeaders = {
+       				 Referer: searchUrl
+    			};
+		        page.settings = {
+        			userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5)"
+    			};
 		        return page.run(function (resolve) {
 		            // Here we're inside PhantomJS, so we can't reference variables in the scope
 
