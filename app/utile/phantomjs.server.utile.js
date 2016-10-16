@@ -35,8 +35,12 @@ module.exports = function(){
 
 		setTimeout(timeControlCrawler,timeRequest,function(){
 
-			phridge.spawn() //creates a new PhantomJS process
-			
+			phridge.spawn({
+    			// proxyAuth: "john:1234",
+    			// loadImages: false,
+    			// // passing CLI-style options does also work
+   				//  "--remote-debugger-port": 8888
+			})			
 		    .then(function (phantom) {
 		        // phantom.openPage(url) loads a page with the given url
 		        return phantom.openPage(searchUrl);

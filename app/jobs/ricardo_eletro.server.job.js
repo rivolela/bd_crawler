@@ -46,7 +46,6 @@ var starJob = function(next){
 };
 
 
-//start();
 exports.start = start;
 exports.starJob = starJob;
 

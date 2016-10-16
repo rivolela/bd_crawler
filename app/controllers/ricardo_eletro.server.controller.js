@@ -35,30 +35,35 @@ var getProductContext = function(body,next){
 
 var setDataProducts = function(currentItem,arrayProductsRicardo,next){
 
-  if(currentItem < arrayProductsRicardo.length){
+  try{
+      if(currentItem < arrayProductsRicardo.length){
 
-    var urlToCrawler = arrayProductsRicardo[currentItem].url;
-    console.log("item >> ",currentItem);
-    console.log("urlToCrawler >> ",urlToCrawler);
+      var urlToCrawler = arrayProductsRicardo[currentItem].url;
+      console.log("item >> ",currentItem);
+      console.log("urlToCrawler >> ",urlToCrawler);
 
-    getBodyProductPage(urlToCrawler,function(body){
-       
-      getProductContext(body,function(productid,totalPaginacaoReviews){
+      getBodyProductPage(urlToCrawler,function(body){
+         
+        getProductContext(body,function(productid,totalPaginacaoReviews){
 
-          arrayProductsRicardo[currentItem].dataProductId = productid;
-          arrayProductsRicardo[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
-          console.log("Product ean >> ",arrayProductsRicardo[currentItem].ean);
-          console.log("adding attribute dataProductId >> ",arrayProductsRicardo[currentItem].dataProductId);
-          console.log("adding attribute totalPaginacaoReviews >> ", arrayProductsRicardo[currentItem].totalPaginacaoReviews);
-          console.log('\n');
-          setDataProducts(currentItem+1,arrayProductsRicardo,next);
+            arrayProductsRicardo[currentItem].dataProductId = productid;
+            arrayProductsRicardo[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
+            console.log("Product ean >> ",arrayProductsRicardo[currentItem].ean);
+            console.log("adding attribute dataProductId >> ",arrayProductsRicardo[currentItem].dataProductId);
+            console.log("adding attribute totalPaginacaoReviews >> ", arrayProductsRicardo[currentItem].totalPaginacaoReviews);
+            console.log('\n');
+            setDataProducts(currentItem+1,arrayProductsRicardo,next);
+        });
+
       });
 
-    });
-
-  }else{
-    return next(arrayProductsRicardo);
+    }else{
+      return next(arrayProductsRicardo);
+    }
+  }catch(e){
+    console.log('An error has occurred >> setDataProducts >> '+ e.message);
   }
+ 
 };
 
 
