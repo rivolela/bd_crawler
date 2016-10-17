@@ -92,11 +92,13 @@ module.exports = function(){
 
 		timeRequestHtml = timeRequest;
 
+		console.log("getHtml_2 >> url >>",searchUrl);
+
 		setTimeout(timeControlCrawler,timeRequest,function(){
 			var phantom = require("phantom");
 			var _ph, _page, _outObj,_outContent;
 
-			phantom.create().then(ph => {
+			phantom.create(["--ignore-ssl-errors=true","--load-images=no","--debug=false"],{ logLevel: 'info'}).then(ph => {
 			    _ph = ph;
 			    return _ph.createPage();
 			}).then(page => {
@@ -107,7 +109,7 @@ module.exports = function(){
 			    _outObj = status;
 			    return _page.property('content')
 			}).then(content => {
-			    console.log(content);
+			    //console.log(content);
 			    _outContent = content;
 			    _page.close();
 			    _ph.exit();
