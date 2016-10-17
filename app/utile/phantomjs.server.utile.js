@@ -103,8 +103,9 @@ module.exports = function(){
 			    return _ph.createPage();
 			}).then(page => {
 			    _page = page;
+			    _page.settings.resourceTimeout = 5000;
 			    return _page.open(searchUrl);
-			}).then(status => {
+			}).then(status => {.
 			    console.log(status);
 			    _outObj = status;
 			    return _page.property('content')
