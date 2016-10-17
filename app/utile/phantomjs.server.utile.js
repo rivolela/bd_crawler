@@ -4,6 +4,7 @@ var searchUrl = "http://www.ricardoeletro.com.br/Produto/Refrigerador-Geladeira-
 var timeRequestHtml;
 var reviews = 'http://www.ricardoeletro.com.br/Produto/Comentarios/5211/1';
 var resultPhantom;
+var phantom = require("phantom");
 
 module.exports = function(){
 
@@ -86,10 +87,46 @@ module.exports = function(){
 		});
 	};
 
+
+	var getHtml_2 = function(searchUrl,timeRequest,next){
+
+		timeRequestHtml = timeRequest;
+
+		setTimeout(timeControlCrawler,timeRequest,function(){
+			var phantom = require("phantom");
+			var _ph, _page, _outObj,_outContent;
+
+			phantom.create().then(ph => {
+			    _ph = ph;
+			    return _ph.createPage();
+			}).then(page => {
+			    _page = page;
+			    return _page.open(searchUrl);
+			}).then(status => {
+			    console.log(status);
+			    _outObj = status;
+			    return _page.property('content')
+			}).then(content => {
+			    console.log(content);
+			    _outContent = content;
+			    _page.close();
+			    _ph.exit();
+			    //getOutObject(_outContent);
+			    return next(_outContent);
+			}).catch(e => console.log(e));
+
+			// function getOutObject(_outObj) {
+			//     console.log("_outObj",_outObj);
+			// }
+		});
+	};
+
+
 	return {
         getHtml: getHtml,
         startPhantomjsProcess: startPhantomjsProcess,
         timeControlCrawler: timeControlCrawler,
+        getHtml_2: getHtml_2
     };
 
 };

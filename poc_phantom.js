@@ -1,32 +1,30 @@
-var phridge = require("phridge/lib/main.js");
+//var phridge = require("phridge/lib/main.js");
+//var phantom = require("phridge/lib/Phantom.js");
+//var system = require('system');
 // node 
+//var phantom = new Phantom();
 
-phridge.spawn(function(phantom){
-    
-    phantom.run("h1", function (selector, resolve) {
-    // this code runs inside PhantomJS 
-    
-    phantom.addCookie("cookie_name", "cookie_value", "localhost");
- 
-    var page = webpage.create();
-    page.customHeaders = {
-        Referer: "http://google.com"
-    };
-    page.settings = {
-        userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5)"
-    };
-    page.open("http://www.google.com", function () {
-        var text = page.evaluate(function (selector) {
-            return document.querySelector(selector).innerText;
-        }, selector);
- 
-        // resolve the promise and pass 'text' back to node  
-        resolve(text);
-    });
-}).then(function (text) {
-    // inside node again 
-    console.log("The element contains the following text: " + text);
-});
+// node
+var phantom = require("phantom");
+var _ph, _page, _outObj;
 
-})
+phantom.create().then(ph => {
+    _ph = ph;
+    return _ph.createPage();
+}).then(page => {
+    _page = page;
+    return _page.open('https://stackoverflow.com/');
+}).then(status => {
+    console.log(status);
+    _outObj = status;
+    return _page.property('content')
+}).then(content => {
+    console.log(content);
+    _page.close();
+    _ph.exit();
+    getOutObject(_outObj);
+}).catch(e => console.log(e));
 
+function getOutObject(_outObj) {
+    console.log("_outObj",_outObj);
+}
