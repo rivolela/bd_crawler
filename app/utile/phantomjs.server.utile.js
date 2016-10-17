@@ -52,7 +52,8 @@ module.exports = function(){
        				 Referer: searchUrl
     			};
 		        page.settings = {
-        			userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5)"
+        			userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5)",
+        			resourceTimeout: 5000
     			};
 		        return page.run(function (resolve) {
 		            // Here we're inside PhantomJS, so we can't reference variables in the scope

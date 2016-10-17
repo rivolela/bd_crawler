@@ -71,7 +71,7 @@ var getBodyProductPage = function(urlToCrawler,next){
   try{
     if(process.env.NODE_ENV != 'test'){
       var call = new phantomUtile();
-      call.getHtml_2(urlToCrawler,config.timeRequest,function(body){
+      call.getHtml(urlToCrawler,config.timeRequest,function(body){
         console.log("get body html by phantomjs");
         return next(body);
       });
