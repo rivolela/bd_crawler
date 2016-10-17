@@ -98,7 +98,7 @@ module.exports = function(){
 			var phantom = require("phantom");
 			var _ph, _page, _outObj,_outContent;
 
-			phantom.create(["--ignore-ssl-errors=true","--load-images=no","--debug=false"],{ logLevel: 'info'}).then(ph => {
+			phantom.create(["--ignore-ssl-errors=true","--load-images=no","--debug=true"],{ logLevel: 'error'}).then(ph => {
 			    _ph = ph;
 			    return _ph.createPage();
 			}).then(page => {

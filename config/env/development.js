@@ -13,8 +13,8 @@ module.exports = {
 	query:'ventilador',
 	// schedule offers jobs
 	zanox_schedule:'28 18 * * *',
-	//schedule reviews jobs
-	ricardo_eletro_schedule:'20 13 * * *',
+	//schedule reviews job
+	ricardo_eletro_schedule:'10 14 * * *',
 	walmart_schedule:'35 11 * * *',
 	lojas_colombo_schedule:'16 21 * * *',
 };

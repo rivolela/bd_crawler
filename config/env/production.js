@@ -15,7 +15,7 @@ module.exports = {
 	zanox_schedule:'0 10 * * *',
 
 	// schedule reviews jobs
-	ricardo_eletro_schedule:'51 12 * * *',
+	ricardo_eletro_schedule:'30 13 * * *',
 	walmart_schedule:'0 14 * * *',
 	lojas_colombo_schedule:'22 20 * * *',
 };
