@@ -105,7 +105,7 @@ module.exports = function(){
 			    _page = page;
 			    _page.settings.resourceTimeout = 5000;
 			    return _page.open(searchUrl);
-			}).then(status => {.
+			}).then(status => {
 			    console.log(status);
 			    _outObj = status;
 			    return _page.property('content')
