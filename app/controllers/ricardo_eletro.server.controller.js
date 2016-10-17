@@ -15,7 +15,7 @@ var getProductContext = function(body,next){
 
     $ = cheerio.load(body);
 
-    var productid = $('.produto-descricao-texto-descricao').children('.comentarios-avaliacao').children('.veja-tambem-content').attr('produtoid');
+    var productid = $('.produto-descricao-texto-descricao').children('.veja-tambem-content').children('.comentarios-avaliacao').attr('produtoid');
     var totalPaginacaoReviews = $('#SetaComentariosDireita').attr('paginatotal');
 
     if(totalPaginacaoReviews === undefined){
