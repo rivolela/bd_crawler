@@ -78,10 +78,10 @@ module.exports = function(){
 	      		//qs: {from: 'blog example', time: +new Date()}, //Query string data
 	      		method: 'GET', //Specify the method
 	      		headers: { //We can define headers too
-	        		'User-Agent': 'request',
+	        		'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko)  Chrome/41.0.2228.0 Safari/537.36",
 	         		'Content-Type': 'text/html',
 	      		},
-	      		timeout: 10000,
+	      		timeout: 0,
   				followRedirect: true,
   				maxRedirects: 10,
   				gzip: true,
@@ -93,6 +93,8 @@ module.exports = function(){
 	     		   console.log(error);
 
 	     		   if (error.message.code === 'ETIMEDOUT'){
+	     		   	console.log('response:', response);
+	     		   	console.log('body:', body);
 	     		   	getHtmlGzip(searchUrl,config.timeRequest,next);
 	     		   };
 
