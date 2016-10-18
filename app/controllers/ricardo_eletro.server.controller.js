@@ -15,7 +15,7 @@ var getProductId = function(urlToCrawler,next){
   try{
     var call = new requestUtile();
 
-    call.getHtmlGzip(urlToCrawler,config.timeRequest,function(error,response,body){
+    call.getHtml(urlToCrawler,config.timeRequest,function(error,response,body){
         $ = cheerio.load(body);
         var productid = $('.comentarios-avaliacao').attr('produtoid');
         if(productid === undefined){
@@ -36,7 +36,7 @@ var getTotalPagination = function(dataProductId,next){
     var call = new requestUtile();
     var urlToCrawler = 'http://www.ricardoeletro.com.br/Produto/Comentarios/'+ dataProductId + '/' + 0;
 
-    call.getHtmlGzip(urlToCrawler,config.timeRequest,function(error,response,body){
+    call.getHtml(urlToCrawler,config.timeRequest,function(error,response,body){
 
         $ = cheerio.load(body);
         var totalPaginacaoReviews = $('#SetaComentariosDireita').attr('paginatotal');

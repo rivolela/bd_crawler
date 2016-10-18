@@ -82,23 +82,17 @@ module.exports = function(){
 	         		'Content-Type': 'text/html',
 	      		},
 	      		timeout: 10000,
-  				//followRedirect: true,
-  				//maxRedirects: 10,
+  				followRedirect: true,
+  				maxRedirects: 10,
   				gzip: true,
-  				//forever:true,
+  				forever:true
   				//proxy:'http://unlo.it/bed508b65a6409a'
 	  		},function(error,response,body){
 
 	  	 		if(error) {
-
-	     		   console.log(error);
-
-	     		   if (error.message.code === 'ETIMEDOUT'){
-	     		   	console.log('response:', response);
+	     		   	console.log(error);
+      		   		console.log('response:', response);
 	     		   	console.log('body:', body);
-	     		   	getHtmlGzip(searchUrl,config.timeRequest,next);
-	     		   };
-
 	      		   //return next(error);
 	      		} else {
 	        		console.log("request status code >> ",response.statusCode);
