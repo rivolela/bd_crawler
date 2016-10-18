@@ -22,14 +22,21 @@ function start(next){
 
 		console.log("callback get offers Zanox from BD: >>",arrayProducts.length);	
 
-		ricardoController.setDataProducts(currentItem,arrayProducts,function(arrayProducts){
+		ricardoController.setProductIdArrayProducts(currentItem,arrayProducts,function(arrayProducts){
 			  
-			console.log("callback setDataProducts > ",arrayProducts.length);
-				
-			ricardoController.crawlerByProduct(currentItem,arrayProducts,function(contReview){
+			console.log("callback setProductIdArrayProducts > ",arrayProducts.length);
 
-				console.log("callback crawlerByProduct >> ",contReview);
-				return next();
+			ricardoController.setTotalPaginationArrayProducts(currentItem,arrayProducts,function(arrayProducts){
+
+				console.log("callback setTotalPaginationArrayProducts > ",arrayProducts.length);
+
+				ricardoController.crawlerByProduct(currentItem,arrayProducts,function(contReview){
+
+					console.log("callback crawlerByProduct >> ",contReview);
+					
+					return next();
+				});
+
 			});
 		});
 	});

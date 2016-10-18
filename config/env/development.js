@@ -3,7 +3,7 @@ module.exports = {
 	db:'mongodb://127.0.0.1:27017/bd_dev',
 	sessionSecret:'developmentSessionSecret',
 	connectid:'43EEF0445509C7205827',
-	timeRequest:2000,
+	timeRequest:3000,
 	// Crawler Options 
 	// programs ids
 	// 12011 : Walmart BR"
@@ -14,7 +14,7 @@ module.exports = {
 	// schedule offers jobs
 	zanox_schedule:'28 18 * * *',
 	//schedule reviews job
-	ricardo_eletro_schedule:'7 17 * * *',
+	ricardo_eletro_schedule:'22 13 * * *',
 	walmart_schedule:'35 11 * * *',
 	lojas_colombo_schedule:'16 21 * * *',
 };

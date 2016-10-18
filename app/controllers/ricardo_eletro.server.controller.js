@@ -9,87 +9,175 @@ var iconv = require('iconv-lite');
 var reviewController = require('./review.server.controller.js');
 var contReview = 0;
 
-var getProductContext = function(body,next){
+
+var getProductId = function(urlToCrawler,next){
   
   try{
+    var call = new requestUtile();
 
-    $ = cheerio.load(body);
-
-    var productid = $('.produto-descricao-texto-descricao').children('.veja-tambem-content').children('.comentarios-avaliacao').attr('produtoid');
-    var totalPaginacaoReviews = $('#SetaComentariosDireita').attr('paginatotal');
-
-    if(totalPaginacaoReviews === undefined){
-      totalPaginacaoReviews = 0;
-    }
-
-    console.log("productid",productid);
-    console.log("totalPaginacaoReviews",totalPaginacaoReviews);
-
-    return next(productid,totalPaginacaoReviews);
+    call.getHtmlGzip(urlToCrawler,config.timeRequest,function(error,response,body){
+        $ = cheerio.load(body);
+        var productid = $('.comentarios-avaliacao').attr('produtoid');
+        if(productid === undefined){
+          productid = 0;
+        }
+        return next(productid);
+    });
   }catch(e){
-    console.log('An error has occurred >> getProductContext >> '+ e.message);
+    console.log('An error has occurred >> getProductId >> '+ e.message);
   }
 };
 
 
-var setDataProducts = function(currentItem,arrayProductsRicardo,next){
+var getTotalPagination = function(dataProductId,next){
 
   try{
-      if(currentItem < arrayProductsRicardo.length){
 
-      var urlToCrawler = arrayProductsRicardo[currentItem].url;
-      console.log("item >> ",currentItem);
-      console.log("urlToCrawler >> ",urlToCrawler);
+    var call = new requestUtile();
+    var urlToCrawler = 'http://www.ricardoeletro.com.br/Produto/Comentarios/'+ dataProductId + '/' + 0;
 
-      getBodyProductPage(urlToCrawler,function(body){
-         
-        getProductContext(body,function(productid,totalPaginacaoReviews){
+    call.getHtmlGzip(urlToCrawler,config.timeRequest,function(error,response,body){
 
-            arrayProductsRicardo[currentItem].dataProductId = productid;
-            arrayProductsRicardo[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
-            console.log("Product ean >> ",arrayProductsRicardo[currentItem].ean);
-            console.log("adding attribute dataProductId >> ",arrayProductsRicardo[currentItem].dataProductId);
-            console.log("adding attribute totalPaginacaoReviews >> ", arrayProductsRicardo[currentItem].totalPaginacaoReviews);
-            console.log('\n');
-            setDataProducts(currentItem+1,arrayProductsRicardo,next);
-        });
+        $ = cheerio.load(body);
+        var totalPaginacaoReviews = $('#SetaComentariosDireita').attr('paginatotal');
+        
+        if(totalPaginacaoReviews === undefined){
+          totalPaginacaoReviews = 0;
+        }
 
+        return next(totalPaginacaoReviews);
+    });
+  }catch(e){
+    console.log('An error has occurred >> getTotalPagination >> '+ e.message);
+  }
+}
+
+
+
+var setProductIdArrayProducts = function(currentItem,arrayProductsRicardo,next){
+
+  try{
+
+    if(currentItem < arrayProductsRicardo.length){
+
+        var urlToCrawler = arrayProductsRicardo[currentItem].url;
+
+        getProductId(urlToCrawler,function(dataProductId){
+          
+          arrayProductsRicardo[currentItem].dataProductId = dataProductId;
+
+          console.log("offer >> ",currentItem);
+          console.log("Product ean >> ",arrayProductsRicardo[currentItem].ean);
+          console.log("offer url >> ",urlToCrawler);
+          console.log("set ProductId to offer >> ",arrayProductsRicardo[currentItem].dataProductId);
+          console.log('\n');
+
+          setProductIdArrayProducts(currentItem+1,arrayProductsRicardo,next);
       });
-
     }else{
       return next(arrayProductsRicardo);
     }
   }catch(e){
-    console.log('An error has occurred >> setDataProducts >> '+ e.message);
+    console.log('An error has occurred >> setProductIdArrayProducts >> '+ e.message);
   }
  
 };
 
 
-var getBodyProductPage = function(urlToCrawler,next){
+var setTotalPaginationArrayProducts = function(currentItem,arrayProductsRicardo,next){
 
   try{
-    if(process.env.NODE_ENV != 'test'){
-      var call = new phantomUtile();
-      call.getHtml(urlToCrawler,config.timeRequest,function(body){
-        console.log("get body html by phantomjs");
-        return next(body);
-      });
+
+    if(currentItem < arrayProductsRicardo.length){
+
+          var dataProductId = arrayProductsRicardo[currentItem].dataProductId;
+
+          getTotalPagination(dataProductId,function(totalPaginacaoReviews){
+
+            arrayProductsRicardo[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
+
+            console.log("offer >> ",currentItem);
+            console.log("Product ean >> ",arrayProductsRicardo[currentItem].ean);
+            console.log("offer url >> ",arrayProductsRicardo[currentItem].url);
+            console.log("set totalPaginacaoReviews to offer>> ", arrayProductsRicardo[currentItem].totalPaginacaoReviews);
+            console.log('\n');
+
+            setTotalPaginationArrayProducts(currentItem+1,arrayProductsRicardo,next);
+
+         });
+
     }else{
-      // this conditional exists because phantomjs doesnt work wtih mocha ( test environment )
-      // the url crawler was saved by casperjs ( see test task inside gruntfile), into the public folder
-      // therefore, to env test, the product page used always will be the same, the file saved by casperjs test
-      var call2 = new requestUtile();
-      var timeRequest = 0;
-      call2.getHtml(urlToCrawler,timeRequest,function(error,response,body){
-        console.log("get body html by request");
-        return next(body);
-      });
+      return next(arrayProductsRicardo);
     }
   }catch(e){
-    console.log('An error has occurred >> getBodyProductPage >> '+ e.message);
+    console.log('An error has occurred >> setTotalPaginationArrayProducts >> '+ e.message);
   }
+ 
 };
+
+
+
+// var setDataProducts = function(currentItem,arrayProductsRicardo,next){
+
+//   try{
+
+//     if(currentItem < arrayProductsRicardo.length){
+
+//         var urlToCrawler = arrayProductsRicardo[currentItem].url;
+//         console.log("offer >> ",currentItem);
+//         console.log("urlToCrawler >> ",urlToCrawler);
+
+//         getProductId(urlToCrawler,function(dataProductId){
+         
+//           arrayProductsRicardo[currentItem].dataProductId = dataProductId;
+
+//           getTotalPagination(dataProductId,function(totalPaginacaoReviews){
+
+//             arrayProductsRicardo[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
+
+//             console.log("Product ean >> ",arrayProductsRicardo[currentItem].ean);
+//             console.log("adding attribute dataProductId >> ",arrayProductsRicardo[currentItem].dataProductId);
+//             console.log("adding attribute totalPaginacaoReviews >> ", arrayProductsRicardo[currentItem].totalPaginacaoReviews);
+//             console.log('\n');
+//             setDataProducts(currentItem+1,arrayProductsRicardo,next);
+
+//          });
+
+//       });
+//     }else{
+//       return next(arrayProductsRicardo);
+//     }
+//   }catch(e){
+//     console.log('An error has occurred >> setDataProducts >> '+ e.message);
+//   }
+ 
+// };
+
+
+// var getBodyProductPage = function(urlToCrawler,next){
+
+//   try{
+//     // if(process.env.NODE_ENV != 'test'){
+//     //   var call = new phantomUtile();
+//     //   call.getHtml(urlToCrawler,config.timeRequest,function(body){
+//     //     console.log("get body html by phantomjs");
+//     //     return next(body);
+//     //   });
+//     // }else{
+//       // this conditional exists because phantomjs doesnt work wtih mocha ( test environment )
+//       // the url crawler was saved by casperjs ( see test task inside gruntfile), into the public folder
+//       // therefore, to env test, the product page used always will be the same, the file saved by casperjs test
+//       var call2 = new requestUtile();
+//       var timeRequest = 0;
+//       call2.getHtmlGzip(urlToCrawler,config.timeRequest,function(error,response,body){
+//         console.log("get body html by request");
+//         return next(body);
+//       });
+//     //}
+//   }catch(e){
+//     console.log('An error has occurred >> getBodyProductPage >> '+ e.message);
+//   }
+// };
 
 
 var crawlerByProduct = function(currentItem,arrayProductsRicardo,next){
@@ -258,7 +346,10 @@ var getReviewsFromHtml = function(body,product,next){
 };
 
 
-exports.getProductContext = getProductContext;
-exports.setDataProducts = setDataProducts;
+exports.getProductId = getProductId;
+// exports.setDataProducts = setDataProducts;
 exports.getReviewsFromHtml = getReviewsFromHtml;
 exports.crawlerByProduct = crawlerByProduct;
+exports.getTotalPagination = getTotalPagination;
+exports.setProductIdArrayProducts = setProductIdArrayProducts;
+exports.setTotalPaginationArrayProducts = setTotalPaginationArrayProducts;

@@ -10,38 +10,55 @@ var requestUtile = require('../../../utile/requests.server.utile.js');
 
 describe('Ricardo Eletro BR unit tests:',function(done){
 
-	var Context = {};
-	var call = new requestUtile();
 
-	
+	describe('Testing getProductId function >>',function(done){
 
-	describe('Testing getContext function >>',function(done){
+		var Context = {};
 
 		before(function(done){
 			var url = host + uri;
 			console.log(url);
-			var timeRequest = 0;
-
-			call.getHtml(html,timeRequest,function(error,response,body){
-				Context.body = body;
-				console.log(body);
-				done();
-			});
+			Context.url = url
+			done();
 		});
 
 
 		it('Should return productid = 85169 from product page html', function(done) {
-			this.timeout(1000);
-			reController.getProductContext(Context.body,function(productid,totalPaginacaoReviews){
+			this.timeout(4000);
+			reController.getProductId(Context.url,function(productid){
 				productid.should.be.equal('85169');
-				totalPaginacaoReviews.should.be.above(20);
 				done();
 			});
 		});
 	});
 
 
-	describe('Testing setDataProducts function >>',function(done){
+	describe('Testing getTotalPagination function >> ',function(done){
+
+		it('Should return totalPaginacaoReviews = 2', function(done) {
+			this.timeout(4000);
+			var productid = 257082;
+			reController.getTotalPagination(productid,function(totalPaginacaoReviews){
+				totalPaginacaoReviews.should.be.equal('2');
+				done();
+			});
+		});
+
+
+		it('Should return totalPaginacaoReviews = 0', function(done) {
+			this.timeout(4000);
+			var productid = 999999;
+			reController.getTotalPagination(productid,function(totalPaginacaoReviews){
+				totalPaginacaoReviews.should.be.equal(0);
+				done();
+			});
+		});
+	});
+
+
+	describe('Testing setProductIdArrayProducts function >>',function(done){
+
+		var Context = {};
 
 		before(function(){
 			var timeRequest = 1000;
@@ -72,19 +89,61 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 		});
 
 
-		it('Should add info to array products: productid==85169 and totalPaginacaoReviews > 1', function(done) {
-			this.timeout(2000);
-			reController.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
-				console.log("arrayProducts",arrayProducts);
+		it('Should add info to array products: productid==85169', function(done) {
+			this.timeout(20000);
+			reController.setProductIdArrayProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
 				arrayProducts[1].dataProductId.should.be.equal('85169');
-				arrayProducts[1].totalPaginacaoReviews.should.be.above(20);
 				done();
 			});
 		});
 	});
 
+
+	describe('Testing setTotalPaginationArrayProducts function >>',function(done){
+
+		var Context = {};
+
+		before(function(){
+			var timeRequest = 1000;
+			Context.currentItem = 0;
+
+			var product1 = new Object ({
+				name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
+	  			ean:7896584063448,
+	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
+	  			dataProductId: 85169,
+	  			url:html,
+	  			advertiser:"Ricardo Eletro BR",
+			});
+
+			var product2 = new Object ({
+				name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
+	  			ean:7896584063448,
+	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
+	  			dataProductId: 85169,
+	  			url:html,
+	  			advertiser:"Ricardo Eletro BR",
+			});
+
+			var arrayProducts = [];
+			arrayProducts.push(product1);
+			arrayProducts.push(product2);
+			Context.arrayProducts = arrayProducts;
+		});
+
+
+		it('Should add info to array products: totalPaginacaoReviews > 1', function(done) {
+			this.timeout(20000);
+			reController.setTotalPaginationArrayProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
+				arrayProducts[1].totalPaginacaoReviews.should.be.above(20);
+				done();
+			});
+		});
+	});
 	
 	describe('Testing getReviewsFromHtml function >>',function(done){
+
+		var Context = {};
 
 		before(function(done){
 			var timeRequest = 1000;
@@ -101,6 +160,8 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 
 			Context.product = product;
 
+			call = new requestUtile();
+			
 			call.getHtml('http://localhost:3000/ricardo_eletro_review.html',timeRequest,function(error,response,body){
 				Context.body = body;
 				done();
