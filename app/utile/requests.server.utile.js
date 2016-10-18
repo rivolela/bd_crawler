@@ -81,11 +81,12 @@ module.exports = function(){
 	        		'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko)  Chrome/41.0.2228.0 Safari/537.36",
 	         		'Content-Type': 'text/html',
 	      		},
-	      		timeout: 0,
-  				followRedirect: true,
-  				maxRedirects: 10,
+	      		timeout: 10000,
+  				//followRedirect: true,
+  				//maxRedirects: 10,
   				gzip: true,
-  				forever:true
+  				//forever:true,
+  				//proxy:'http://unlo.it/bed508b65a6409a'
 	  		},function(error,response,body){
 
 	  	 		if(error) {
