@@ -84,7 +84,8 @@ module.exports = function(){
 	      		timeout: 10000,
   				followRedirect: true,
   				maxRedirects: 10,
-  				gzip: true
+  				gzip: true,
+  				forever:true
 	  		},function(error,response,body){
 
 	  	 		if(error) {
