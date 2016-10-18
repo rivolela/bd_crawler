@@ -81,7 +81,7 @@ module.exports = function(){
 	        		'User-Agent': 'request',
 	         		'Content-Type': 'text/html',
 	      		},
-	      		timeout: 30000,
+	      		//timeout: 5000,
   				followRedirect: true,
   				maxRedirects: 10,
   				gzip: true
