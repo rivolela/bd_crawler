@@ -15,7 +15,7 @@ var getProductId = function(urlToCrawler,next){
   try{
     var call = new requestUtile();
 
-    call.getHtml(urlToCrawler,config.timeRequest,function(error,response,body){
+    call.getHtmlGzip(urlToCrawler,config.timeRequest,function(error,response,body){
         $ = cheerio.load(body);
         var productid = $('.comentarios-avaliacao').attr('produtoid');
         if(productid === undefined){
@@ -36,7 +36,7 @@ var getTotalPagination = function(dataProductId,next){
     var call = new requestUtile();
     var urlToCrawler = 'http://www.ricardoeletro.com.br/Produto/Comentarios/'+ dataProductId + '/' + 0;
 
-    call.getHtml(urlToCrawler,config.timeRequest,function(error,response,body){
+    call.getHtmlGzip(urlToCrawler,config.timeRequest,function(error,response,body){
 
         $ = cheerio.load(body);
         var totalPaginacaoReviews = $('#SetaComentariosDireita').attr('paginatotal');
@@ -60,7 +60,7 @@ var setProductIdArrayProducts = function(currentItem,arrayProductsRicardo,next){
 
     if(currentItem < arrayProductsRicardo.length){
 
-        var urlToCrawler = arrayProductsRicardo[currentItem].url;
+        var urlToCrawler = config.ricardo_eletro_url + arrayProductsRicardo[currentItem].urlOffer;
 
         getProductId(urlToCrawler,function(dataProductId){
           

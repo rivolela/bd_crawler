@@ -39,7 +39,7 @@ var setDataProducts = function(currentItem,arrayProducts,next){
 	try{
 		if(currentItem < arrayProducts.length){
 
-		    var urlToCrawler = arrayProducts[currentItem].url;
+		    var urlToCrawler = config.lojas_colombo + arrayProducts[currentItem].urlOffer;
 		    console.log("offer >> ",currentItem);
 		    console.log("urlToCrawler >> ",urlToCrawler);
 

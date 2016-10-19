@@ -15,9 +15,13 @@ module.exports = {
 	zanox_schedule:'0 10 * * *',
 
 	// schedule reviews jobs
-	ricardo_eletro_schedule:'50 19 * * *',
 	walmart_schedule:'0 14 * * *',
-	lojas_colombo_schedule:'22 20 * * *',
+	ricardo_eletro_schedule:'45 13 * * *',
+	lojas_colombo_schedule:'30 14 * * *',
+
+	// urls crawler
+	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
+	lojas_colombo: 'https://www.colombo.com.br'
 };
 
 

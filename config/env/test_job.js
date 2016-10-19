@@ -11,10 +11,16 @@ module.exports = {
 	// 16588 : Lojas Colombo BR
 	programs:'12011,13212,16588',
 	query:'geladeira',
+
 	// schedule offers jobs
 	zanox_schedule:'55 11 * * *',
+
 	//schedule reviews jobs
 	ricardo_eletro_schedule:'34 11 * * *',
 	walmart_schedule:'35 11 * * *',
-	lojas_colombo_schedule:'59 11 * * *'
+	lojas_colombo_schedule:'59 11 * * *',
+
+	,// urls crawler
+	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
+	lojas_colombo: 'https://www.colombo.com.br'
 };

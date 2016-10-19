@@ -5,7 +5,7 @@ var host = "http://www.ricardoeletro.com.br";
 var phantomUtile = require('../../../utile/phantomjs.server.utile.js');
 var uri = "/Produto/Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-380-Litros-Inox-DW42X/256-270-274-85169";
 var config = require('../../../../config/config.js');
-var html = 'http://localhost:3000/ricardo_eletro.html';
+var url_offer = 'ricardo_eletro.html';
 var requestUtile = require('../../../utile/requests.server.utile.js');
 
 describe('Ricardo Eletro BR unit tests:',function(done){
@@ -69,7 +69,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 	  			ean:7896584063448,
 	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
 	  			merchantProductId: 435595,
-	  			url:html,
+	  			urlOffer:url_offer,
 	  			advertiser:"Ricardo Eletro BR",
 			});
 
@@ -78,7 +78,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 	  			ean:7896584063448,
 	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
 	  			merchantProductId: 435595,
-	  			url:html,
+	  			urlOffer:url_offer,
 	  			advertiser:"Ricardo Eletro BR",
 			});
 
@@ -112,7 +112,6 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 	  			ean:7896584063448,
 	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
 	  			dataProductId: 85169,
-	  			url:html,
 	  			advertiser:"Ricardo Eletro BR",
 			});
 
@@ -121,7 +120,6 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 	  			ean:7896584063448,
 	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
 	  			dataProductId: 85169,
-	  			url:html,
 	  			advertiser:"Ricardo Eletro BR",
 			});
 

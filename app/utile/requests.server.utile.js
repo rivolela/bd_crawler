@@ -47,18 +47,15 @@ module.exports = function(){
 	        		'User-Agent': 'request',
 	         		'Content-Type': 'text/html',
 	      		},
-	      		timeout: 10000,
-  				followRedirect: true,
-  				maxRedirects: 10,
+	      		timeout: 10000
+  				//followRedirect: true,
+  				//maxRedirects: 10,
 	  		},function(error,response,body){
 	  	 		if(error) {
 	     		   console.log(error);
-
-	     		   if (error.message.code === 'ETIMEDOUT'){
-	     		   	getHtml(searchUrl,config.timeRequest,next);
-	     		   };
 	      		   //return next(error);
 	      		} else {
+	      			//console.log(body);
 	        		console.log("request status code >> ",response.statusCode);
 	        		//var bodyWithCorrectEncoding = iconv.decode(body, 'UTF-8');
 	        		return next(error,response,body);
@@ -91,8 +88,6 @@ module.exports = function(){
 
 	  	 		if(error) {
 	     		   	console.log(error);
-      		   		console.log('response:', response);
-	     		   	console.log('body:', body);
 	      		   //return next(error);
 	      		} else {
 	        		console.log("request status code >> ",response.statusCode);
