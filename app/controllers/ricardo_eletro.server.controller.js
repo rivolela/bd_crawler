@@ -186,7 +186,7 @@ var crawlerByProduct = function(currentItem,arrayProductsRicardo,next){
       // for each product
       if(currentItem < arrayProductsRicardo.length){
 
-        if(arrayProductsRicardo[currentItem].totalPaginacaoReviews > 0){
+        if((arrayProductsRicardo[currentItem].totalPaginacaoReviews > 0) && (arrayProductsWalmart[currentItem].ean != 'undefined')){
           
           var currentPaginationReview = 0;
           
@@ -195,6 +195,7 @@ var crawlerByProduct = function(currentItem,arrayProductsRicardo,next){
             crawlerByProduct(currentItem + 1,arrayProductsRicardo,next);
           });
         }else{
+          console.log("offer without ean or with total reviews < 0");
           crawlerByProduct(currentItem + 1,arrayProductsRicardo,next);
         }
 

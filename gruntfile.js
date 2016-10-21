@@ -36,7 +36,7 @@ module.exports = function(grunt){
 		},
 		mochaTest:{
 			//src:'app/tests/mocha/utile/requests.server.utile.tests.js',
-			//src:'app/tests/mocha/controllers/lojas_colombo.server.controller.tests.js',
+			//src:'app/tests/mocha/controllers/zanox.server.controller.tests.js',
 			src:'app/tests/mocha/**/*.js',
 			options:{
 				reporter:'spec'
@@ -62,6 +62,9 @@ module.exports = function(grunt){
 		// 	}
 		// },
 		jshint:{
+			options:{
+				esversion:6
+			},
 			all:{
 				src:['server.js',
 					'config/**/*.js',

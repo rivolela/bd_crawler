@@ -12,16 +12,17 @@ module.exports = {
 	query:'geladeira',
 
 	// schedule offers jobs
-	zanox_schedule:'0 10 * * *',
+	zanox_schedule:'30 14 * * *',
 
 	// schedule reviews jobs
-	walmart_schedule:'0 14 * * *',
-	ricardo_eletro_schedule:'45 13 * * *',
-	lojas_colombo_schedule:'30 14 * * *',
+	walmart_schedule:'30 15 * * *',
+	ricardo_eletro_schedule:'30 16 * * *',
+	lojas_colombo_schedule:'30 17 * * *',
 
 	// urls crawler
 	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
-	lojas_colombo: 'https://www.colombo.com.br'
+	lojas_colombo: 'https://www.colombo.com.br',
+	walmart_url: 'https://www.walmart.com.br/item/'
 };
 
 

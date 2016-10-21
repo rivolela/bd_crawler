@@ -97,9 +97,9 @@ var crawlerByProduct = function(currentItem,arrayProducts,next){
 
   try{
     // for each product
-    if(currentItem < arrayProducts.length){
+    if(currentItem < arrayProducts.length) {
 
-      if(arrayProducts[currentItem].totalPaginacaoReviews > 0){
+      if((arrayProducts[currentItem].totalPaginacaoReviews > 0) && (arrayProducts[currentItem].ean != 'undefined')){
       
         var currentPaginationReview = 1;
       
@@ -108,6 +108,7 @@ var crawlerByProduct = function(currentItem,arrayProducts,next){
           crawlerByProduct(currentItem + 1,arrayProducts,next);
         });
       }else{
+        console.log("offer without ean or with total reviews < 0");
         crawlerByProduct(currentItem + 1,arrayProducts,next);
       }
 

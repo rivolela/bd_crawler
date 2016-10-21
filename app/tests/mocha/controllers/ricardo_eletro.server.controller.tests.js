@@ -18,7 +18,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 		before(function(done){
 			var url = host + uri;
 			console.log(url);
-			Context.url = url
+			Context.url = url;
 			done();
 		});
 

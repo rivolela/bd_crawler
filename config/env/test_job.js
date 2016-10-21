@@ -20,7 +20,8 @@ module.exports = {
 	walmart_schedule:'35 11 * * *',
 	lojas_colombo_schedule:'59 11 * * *',
 
-	,// urls crawler
+	// urls crawler
 	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
-	lojas_colombo: 'https://www.colombo.com.br'
+	lojas_colombo: 'https://www.colombo.com.br',
+	walmart_url: 'https://www.walmart.com.br/item/'
 };

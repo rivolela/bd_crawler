@@ -55,7 +55,8 @@ describe('Walmart Advertiser Server Tests:',function(done){
 	  			ean:77777777777777,
 	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
 	  			merchantProductId: 1109777,
-	  			url:"http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[1109777/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]",
+	  			url:"https://www.walmart.com.br/item/35172/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox&zanpid=2224545894140288000&utm_term=httpwwwskimlinkscom",
+	  			urlOffer:'3166186/sk',
 	  			advertiser:"walmart",
 	  			totalReviewsPage :4,
           		totalPaginacaoReviews: 1
@@ -66,7 +67,8 @@ describe('Walmart Advertiser Server Tests:',function(done){
 	  			ean:88888888888888,
 	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
 	  			merchantProductId: 1109777,
-	  			url:"http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[35172/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]",
+	  			url:"https://www.walmart.com.br/item/35172/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox&zanpid=2224545894140288000&utm_term=httpwwwskimlinkscom",
+	  			urlOffer:'3166186/sk',
 	  			advertiser:"walmart",
 	  			totalReviewsPage :8,
           		totalPaginacaoReviews: 1
@@ -144,9 +146,9 @@ describe('Walmart Advertiser Server Tests:',function(done){
 		it('Should add info to array products: productid,totalReviewsPage and totalPaginacaoReviews', function(done) {
 			this.timeout(5000);
 			walmart.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProductsWalmart){
-				arrayProductsWalmart[1].dataProductId.should.be.equal('2033536');
-				arrayProductsWalmart[1].totalPaginacaoReviews.should.be.above(40);
-				arrayProductsWalmart[1].totalReviewsPage.should.be.above(100);
+				arrayProductsWalmart[1].dataProductId.should.be.equal('4621073');
+				arrayProductsWalmart[1].totalPaginacaoReviews.should.be.equal(0);
+				arrayProductsWalmart[1].totalReviewsPage.should.be.equal('0');
 				done();
 			});
 		});

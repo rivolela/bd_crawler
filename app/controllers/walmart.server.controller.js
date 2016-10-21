@@ -1,7 +1,7 @@
 var cheerio = require('cheerio');
 var requestUtile = require('../utile/requests.server.utile.js');
 var timeRequest = 4000;
-
+var config = require('../../config/config.js');
 var reviewController = require('../controllers/review.server.controller.js');
 var Offer = require('../controllers/offer.server.controller.js');
 var call = new requestUtile();
@@ -36,7 +36,7 @@ var setDataProducts = function(currentItem,arrayProductsWalmart,next){
 
   if(currentItem < arrayProductsWalmart.length){
 
-    var urlToCrawler = arrayProductsWalmart[currentItem].url;
+    var urlToCrawler = config.walmart_url + arrayProductsWalmart[currentItem].urlOffer;
     console.log("item >> ",currentItem);
     console.log("urlToCrawler >> ",urlToCrawler);
     //console.log('\n');
@@ -46,6 +46,7 @@ var setDataProducts = function(currentItem,arrayProductsWalmart,next){
         console.log("error:",error);
       }else{
         getProductContext(body,function(productid,totalReviewsPage,totalPaginacaoReviews){
+
           arrayProductsWalmart[currentItem].dataProductId = productid;
           arrayProductsWalmart[currentItem].totalReviewsPage = totalReviewsPage;
           arrayProductsWalmart[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
@@ -54,7 +55,9 @@ var setDataProducts = function(currentItem,arrayProductsWalmart,next){
           console.log("adding attribute totalReviewsPage >> ",arrayProductsWalmart[currentItem].totalReviewsPage);
           console.log("adding attribute totalPaginacaoReviews >> ", arrayProductsWalmart[currentItem].totalPaginacaoReviews);
           console.log('\n');
+
           setDataProducts(currentItem+1,arrayProductsWalmart,next);
+
         });
       }
     });
@@ -70,7 +73,7 @@ var crawlerByProduct = function(currentItem,arrayProductsWalmart,next){
   // for each product
   if(currentItem < arrayProductsWalmart.length){
 
-    if(arrayProductsWalmart[currentItem].totalReviewsPage > 0){
+    if((arrayProductsWalmart[currentItem].totalReviewsPage > 0) && (arrayProductsWalmart[currentItem].ean != 'undefined')){
       
       var currentPaginationReview = 0;
       
@@ -79,6 +82,7 @@ var crawlerByProduct = function(currentItem,arrayProductsWalmart,next){
         crawlerByProduct(currentItem + 1,arrayProductsWalmart,next);
       });
     }else{
+      console.log("offer without ean or with total reviews < 0");
       crawlerByProduct(currentItem + 1,arrayProductsWalmart,next);
     }
 

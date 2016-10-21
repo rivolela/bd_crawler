@@ -57,7 +57,7 @@ describe('Zanox Unit Tests:',function(done){
 
 	describe('Testing pagination >>',function(){
 		it('Should return array Pagination == 10',function(done){
-			this.timeout(2000);
+			this.timeout(4000);
 			var totalPagination = 10;
 			var paginationArray = [];
 			zanox.getPagination(currentPage,totalPagination,paginationArray,function(paginationArray){

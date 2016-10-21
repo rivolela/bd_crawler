@@ -22,7 +22,8 @@ module.exports = {
 
 	// urls crawler
 	ricardo_eletro_url: 'http://localhost:3000/',
-	lojas_colombo: 'http://localhost:3000/'
+	lojas_colombo: 'http://localhost:3000/',
+	walmart_url: 'https://www.walmart.com.br/item/'
 };
 
 // var task = cron.schedule('* * * * *', function() {

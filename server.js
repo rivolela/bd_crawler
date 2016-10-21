@@ -3,8 +3,10 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 var mongoose = require('./config/mongoose'),
  	express = require('./config/express'),
  	cron = require('node-cron'),
+ 	// job to get offer
  	zanoxJob = require('./app/jobs/zanox.server.job.js'),
- 	//walmartJob = require('./app/jobs/walmart.server.job.js'),
+ 	// jobs to get reviews
+ 	walmartJob = require('./app/jobs/walmart.server.job.js'),
  	ricardoJob = require('./app/jobs/ricardo_eletro.server.job.js'),
  	colomboJob = require('./app/jobs/lojas_colombo.server.job.js');
  	async = require('async');
@@ -32,7 +34,7 @@ app.listen(server_port,function() {
 zanoxJob.starJob();
 
 // jobs to get reviews
-// walmartJob.starJob();
+walmartJob.starJob();
 ricardoJob.starJob();
 colomboJob.starJob();
 
