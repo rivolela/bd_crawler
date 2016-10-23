@@ -8,6 +8,7 @@ var json_without_reviews = 'https://www.colombo.com.br/avaliacao-pagina?codProd=
 var json_with_reviews = 'https://www.colombo.com.br/avaliacao-pagina?codProd=212979&pagina=1&ordemAvaliacao=1';
 var lcController = require('../../../controllers/lojas_colombo.server.controller.js');
 
+
 describe('Lojas Colombo BR unit tests:',function(done){
 
 		describe('Testing getContext function >>',function(done){

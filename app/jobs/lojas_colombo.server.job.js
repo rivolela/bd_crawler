@@ -37,6 +37,7 @@ function start(next){
 			lcController.crawlerByProduct(currentItem,arrayProducts,function(contReview){
 
 				console.log("callback crawlerByProduct >> ",contReview);
+				console.log("total reviews crawled >> ",contReview);
 				return next();
 			});
 		});
