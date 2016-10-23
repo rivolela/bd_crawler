@@ -62,6 +62,8 @@ var setProductIdArrayProducts = function(currentItem,arrayProductsRicardo,next){
 
         var urlToCrawler = config.ricardo_eletro_url + arrayProductsRicardo[currentItem].urlOffer;
 
+        console.log("urlToCrawler",urlToCrawler);
+
         getProductId(urlToCrawler,function(dataProductId){
           
           arrayProductsRicardo[currentItem].dataProductId = dataProductId;
