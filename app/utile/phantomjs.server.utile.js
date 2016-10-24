@@ -42,8 +42,12 @@ module.exports = function(){
     			// loadImages: false,
     			// // passing CLI-style options does also work
    				//  "--remote-debugger-port": 8888
-   				"--proxy=8.8.8.8": 53,
-   				"--proxy-type":"socks5"
+   				//"--proxy":'8.8.8.8: 53,
+   				//"--proxy-type":"socks5"
+   				'--proxy':'8.8.8.8:53',
+    			'--proxy-type':'http'
+   				//proxy: "8.8.8.8:53",
+   				//proxyType:"socks5"
 			})			
 		    .then(function (phantom) {
 		        // phantom.openPage(url) loads a page with the given url
