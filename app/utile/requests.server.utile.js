@@ -4,6 +4,7 @@ var timeRequestHtml;
 var iconv = require('iconv-lite');
 var http = require("http");
 var config = require('../../config/config.js');
+var Agent = require('socks5-http-client/lib/Agent');
 
 module.exports = function(){
 
@@ -71,6 +72,7 @@ module.exports = function(){
 
     	setTimeout(timeControlCrawler,timeRequestHtml,function(){
     		request({
+
 	    		url: searchUrl, //URL to hit
 	      		//qs: {from: 'blog example', time: +new Date()}, //Query string data
 	      		method: 'GET', //Specify the method
@@ -83,7 +85,11 @@ module.exports = function(){
   				maxRedirects: 10,
   				gzip: true,
   				forever:true
-  				//proxy:'http://unlo.it/bed508b65a6409a'
+  				// agentClass: Agent,
+    		// 	agentOptions: {
+      //   			socksHost: '8.8.8.8', // Defaults to 'localhost'.
+      //   			socksPort: 53 // Defaults to 1080.
+    		// 	}
 	  		},function(error,response,body){
 
 	  	 		if(error) {

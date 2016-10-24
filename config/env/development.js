@@ -12,15 +12,15 @@ module.exports = {
 	// 13212 : Ricardo Eletro BR
 	// 16588 : Lojas Colombo BR
 	// 12781 : Ponto Frio
-	programs:'12781',
-	query:'frigobar',
+	programs:'13212',
+	query:'geladeira',
 
 	// schedule offers jobs
-	zanox_schedule:'53 15 * * *',
+	zanox_schedule:'41 13 * * *',
 
 	//schedule reviews job
 	walmart_schedule:'46 12 * * *',
-	ricardo_eletro_schedule:'3 13 * * *',
+	ricardo_eletro_schedule:'19 15 * * *',
 	lojas_colombo_schedule:'12 13 * * *',
 
 	// urls crawler

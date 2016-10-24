@@ -13,9 +13,9 @@ var contReview = 0;
 var getProductId = function(urlToCrawler,next){
   
   try{
-    var call = new requestUtile();
+    var call = new phantomUtile();
 
-    call.getHtmlGzip(urlToCrawler,config.timeRequest,function(error,response,body){
+    call.getHtml(urlToCrawler,config.timeRequest,function(body){
         $ = cheerio.load(body);
         var productid = $('.comentarios-avaliacao').attr('produtoid');
         if(productid === undefined){

@@ -1,0 +1,2 @@
+Server runnning on port 3000
+Data Base succeeded connected in env >>  development

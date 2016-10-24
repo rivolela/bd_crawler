@@ -37,10 +37,13 @@ module.exports = function(){
 		setTimeout(timeControlCrawler,timeRequest,function(){
 
 			phridge.spawn({
+				//proxy: '8.8.8.8:53'
     			// proxyAuth: "john:1234",
     			// loadImages: false,
     			// // passing CLI-style options does also work
    				//  "--remote-debugger-port": 8888
+   				"--proxy=8.8.8.8": 53,
+   				"--proxy-type":"socks5"
 			})			
 		    .then(function (phantom) {
 		        // phantom.openPage(url) loads a page with the given url
@@ -52,7 +55,7 @@ module.exports = function(){
        				 Referer: searchUrl
     			};
 		        page.settings = {
-        			userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5)",
+        			userAgent: "request",
         			resourceTimeout: 5000
     			};
 		        return page.run(function (resolve) {
@@ -72,7 +75,7 @@ module.exports = function(){
 		    })
 		    .then(function (html) {
 		         // inside node again
-		    	//console.log("Result PhantomJS >> " + html);
+		    	console.log("Result PhantomJS >> " + html);
 		    	resultPhantom = html;
 		    	closePhantomjsProcess();
 		    	return next(resultPhantom);
