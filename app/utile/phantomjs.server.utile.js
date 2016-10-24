@@ -45,7 +45,7 @@ module.exports = function(){
    				//"--proxy":'8.8.8.8: 53,
    				//"--proxy-type":"socks5"
    				'--proxy':'8.8.8.8:53',
-    			'--proxy-type':'http'
+    			'--proxy-type':'socks5'
    				//proxy: "8.8.8.8:53",
    				//proxyType:"socks5"
 			})			
