@@ -48,7 +48,7 @@ module.exports = function(){
 	        		'User-Agent': 'request',
 	         		'Content-Type': 'text/html',
 	      		},
-	      		timeout: 10000
+	      		//timeout: 10000
   				//followRedirect: true,
   				//maxRedirects: 10,
 	  		},function(error,response,body){

@@ -29,12 +29,12 @@ const dns = require('dns');
 var start = function(){
 
 
-dns.lookup('www.ricardoeletro.com.br', (err, addresses, family) => {
+dns.resolve('www.ricardoeletro.com.br', (err, addresses) => {
   console.log('addresses:', addresses);
 
   var call = new requestUtile();
 
-    call.getHtml('http://'+ addresses,1000,function(error,response,body){
+    call.getHtml('http://'+ addresses[0],1000,function(error,response,body){
        console.log(response.status);
        console.log(response.body);
         // $ = cheerio.load(body);
