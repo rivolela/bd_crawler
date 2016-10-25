@@ -44,8 +44,8 @@ module.exports = function(){
    				//  "--remote-debugger-port": 8888
    				//"--proxy":'8.8.8.8: 53,
    				//"--proxy-type":"socks5"
-   				'--proxy':'8.8.8.8:53',
-    			'--proxy-type':'socks5'
+   				//'--proxy':'8.8.8.8',
+    			//'--proxy-type':'socks5'
    				//proxy: "8.8.8.8:53",
    				//proxyType:"socks5"
 			})			

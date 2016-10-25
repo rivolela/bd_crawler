@@ -20,7 +20,7 @@ module.exports = {
 
 	//schedule reviews job
 	walmart_schedule:'46 12 * * *',
-	ricardo_eletro_schedule:'0 16 * * *',
+	ricardo_eletro_schedule:'45 13 * * *',
 	lojas_colombo_schedule:'12 13 * * *',
 
 	// urls crawler
