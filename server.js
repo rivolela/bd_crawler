@@ -42,48 +42,6 @@ colomboJob.starJob();
 var dns = require('native-dns');
 var server = dns.createServer();
 
-server.on('request', function (request, response) {
-  //console.log(request)
-  response.answer.push(dns.A({
-    name: request.question[0].name,
-    address: '127.0.0.1',
-    ttl: 600,
-  }));
-  response.answer.push(dns.A({
-    name: request.question[0].name,
-    address: '127.0.0.2',
-    ttl: 600,
-  }));
-  response.additional.push(dns.A({
-    name: 'www.ricardoeletro.com.br',
-    address: '189.125.79.178',
-    ttl: 299,
-  }));
-  response.additional.push(dns.A({
-    name: 'www.ricardoeletro.com.br',
-    address: '189.125.79.60',
-    ttl: 299,
-  }));
-  response.additional.push(dns.A({
-    name: 'www.ricardoeletro.com.br',
-    address: '189.125.79.56',
-    ttl: 299,
-  }));
-  response.additional.push(dns.A({
-    name: 'www.ricardoeletro.com.br',
-    address: '189.125.79.54',
-    ttl: 299,
-  }));
-  response.send();
-});
-
-server.on('error', function (err, buff, req, res) {
-  console.log(err.stack);
-});
-
-server.serve(15353);
-
-
 
 module.exports = app;
 

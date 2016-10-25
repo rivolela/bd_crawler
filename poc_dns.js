@@ -23,83 +23,69 @@
 //     });
 //   });
 // });
+var requestUtile = require('./app/utile/requests.server.utile.js');
 
+
+var start = function(){
 
 
 var dns = require('native-dns');
-var server = dns.createServer();
+var util = require('util');
 
-server.on('request', function (request, response) {
-  //console.log(request)
-  response.answer.push(dns.A({
-    name: request.question[0].name,
-    address: '127.0.0.1',
-    ttl: 600,
-  }));
-  response.answer.push(dns.A({
-    name: request.question[0].name,
-    address: '127.0.0.2',
-    ttl: 600,
-  }));
-  response.additional.push(dns.A({
-    name: 'hostA.example.org',
-    address: '127.0.0.3',
-    ttl: 600,
-  }));
-  response.send();
+var question = dns.Question({
+  name: 'www.ricardoeletro.com.br',
+  type: 'A',
 });
 
-server.on('error', function (err, buff, req, res) {
-  console.log(err.stack);
+var start = Date.now();
+
+var req = dns.Request({
+  question: question,
+  server: { address: '8.8.8.8', port: 53, type: 'udp' },
+  timeout: 1000,
 });
 
-server.serve(15353);
+req.on('timeout', function () {
+  console.log('Timeout in making request');
+});
+
+req.on('message', function (err, answer) {
+  answer.answer.forEach(function (a) {
+  	//console.log(a);
+    //console.log(a.address);
+    call(a);
+  });
+});
+
+req.on('end', function () {
+  var delta = (Date.now()) - start;
+  console.log('Finished processing request: ' + delta.toString() + 'ms');
+});
+
+req.send()
+
+}
 
 
+var call = function(a){
 
+	console.log(a);
+    console.log(a.address);
 
+	var call = new requestUtile();
 
+    call.getHtml('http://'+ a.address,1000,function(error,response,body){
+       console.log(response.status);
+        // $ = cheerio.load(body);
+        // var productid = $('.comentarios-avaliacao').attr('produtoid');
+        // if(productid === undefined){
+        //   productid = 0;
+        // }
+    });
+	
+}
 
-
-
-
-
-
-
-
-// var dns = require('native-dns');
-// var util = require('util');
-
-// var question = dns.Question({
-//   name: 'www.ricardoeletro.com.br',
-//   type: 'A',
-// });
-
-// var start = Date.now();
-
-// var req = dns.Request({
-//   question: question,
-//   server: { address: '8.8.8.8', port: 53, type: 'udp' },
-//   timeout: 1000,
-// });
-
-// req.on('timeout', function () {
-//   console.log('Timeout in making request');
-// });
-
-// req.on('message', function (err, answer) {
-//   answer.answer.forEach(function (a) {
-//   	console.log(a);
-//     console.log(a.address);
-//   });
-// });
-
-// req.on('end', function () {
-//   var delta = (Date.now()) - start;
-//   console.log('Finished processing request: ' + delta.toString() + 'ms');
-// });
-
-// req.send()
+exports.start = start;
 
 // var dns = require('node-dns');
 // var request;
