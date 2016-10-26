@@ -188,7 +188,7 @@ var crawlerByProduct = function(currentItem,arrayProductsRicardo,next){
       // for each product
       if(currentItem < arrayProductsRicardo.length){
 
-        if((arrayProductsRicardo[currentItem].totalPaginacaoReviews > 0) && (arrayProductsWalmart[currentItem].ean != 'undefined')){
+        if((arrayProductsRicardo[currentItem].totalPaginacaoReviews > 0) && (arrayProductsRicardo[currentItem].ean != 'undefined')){
           
           var currentPaginationReview = 0;
           

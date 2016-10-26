@@ -18,12 +18,12 @@ module.exports = {
 
 
 	// schedule offers jobs
-	zanox_schedule:'30 14 * * *',
+	zanox_schedule:'0 10 * * *',
 
 	// schedule reviews jobs
-	walmart_schedule:'30 15 * * *',
-	ricardo_eletro_schedule:'25 16 * * *',
-	lojas_colombo_schedule:'30 17 * * *',
+	walmart_schedule:'0 15 * * *',
+	ricardo_eletro_schedule:'40 16 * * *',
+	lojas_colombo_schedule:'0 17 * * *',
 
 	// urls crawler
 	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
