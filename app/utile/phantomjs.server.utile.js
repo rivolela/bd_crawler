@@ -4,6 +4,7 @@ var searchUrl = "http://www.ricardoeletro.com.br/Produto/Refrigerador-Geladeira-
 var timeRequestHtml;
 var reviews = 'http://www.ricardoeletro.com.br/Produto/Comentarios/5211/1';
 var resultPhantom;
+var config = require('../../config/config.js');
 var phantom = require("phantom");
 
 module.exports = function(){
