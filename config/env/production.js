@@ -22,8 +22,8 @@ module.exports = {
 
 	// schedule reviews jobs
 	walmart_schedule:'0 15 * * *',
-	ricardo_eletro_schedule:'40 16 * * *',
-	lojas_colombo_schedule:'0 17 * * *',
+	ricardo_eletro_schedule:'1 17 * * *',
+	lojas_colombo_schedule:'0 18 * * *',
 
 	// urls crawler
 	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
