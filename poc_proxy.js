@@ -1,18 +1,52 @@
-const dns = require('dns');
-var requestUtile = require('./app/utile/requests.server.utile.js');
+const http = require('http');
+const net = require('net');
+const url = require('url');
 
-dns.lookup('www.ricardoeletro.com.br', (err, addresses, family) => {
-  console.log('addresses:', addresses);
+// Create an HTTP tunneling proxy
+var proxy = http.createServer( (req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('okay');
+});
+proxy.on('connect', (req, cltSocket, head) => {
+  // connect to an origin server
+  var srvUrl = url.parse(`http://${req.url}`);
+  var srvSocket = net.connect(srvUrl.port, srvUrl.hostname, () => {
+    cltSocket.write('HTTP/1.1 200 Connection Established\r\n' +
+                    'Proxy-agent: Node.js-Proxy\r\n' +
+                    '\r\n');
+    srvSocket.write(head);
+    srvSocket.pipe(cltSocket);
+    cltSocket.pipe(srvSocket);
+  });
+});
 
-  var call = new requestUtile();
+// now that proxy is running
+proxy.listen(80, '185.037.037.037', () => {
 
-    call.getHtml('http://'+ addresses,1000,function(error,response,body){
-       console.log(response.status);
-       console.log(response.body);
-        // $ = cheerio.load(body);
-        // var productid = $('.comentarios-avaliacao').attr('produtoid');
-        // if(productid === undefined){
-        //   productid = 0;
-        // }
+  // make a request to a tunneling proxy
+  var options = {
+    port: 1337,
+    hostname: '127.0.0.1',
+    method: 'CONNECT',
+    path: 'www.google.com:80'
+  };
+
+  var req = http.request(options);
+  req.end();
+
+  req.on('connect', (res, socket, head) => {
+    console.log('got connected!');
+
+    // make a request over an HTTP tunnel
+    socket.write('GET / HTTP/1.1\r\n' +
+                 'Host: www.google.com:80\r\n' +
+                 'Connection: close\r\n' +
+                 '\r\n');
+    socket.on('data', (chunk) => {
+      console.log(chunk.toString());
     });
+    socket.on('end', () => {
+      proxy.close();
+    });
+  });
 });

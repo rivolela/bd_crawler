@@ -39,9 +39,6 @@ ricardoJob.starJob();
 colomboJob.starJob();
 
 
-var dns = require('native-dns');
-var server = dns.createServer();
-
 
 module.exports = app;
 

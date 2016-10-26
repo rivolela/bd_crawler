@@ -5,6 +5,8 @@ var config = require('./config'),
  	bodyParser = require('body-parser'),
  	cookieSession = require('cookie-session'),
 	methodOverride = require('method-override');
+	proxy = require('express-http-proxy');
+
 
 module.exports = function () {
 	
@@ -29,6 +31,14 @@ module.exports = function () {
 		name: 'session',
 		secret:config.sessionSecret
 	}));
+
+	// app.use('/proxy', proxy('http://rivolela:Rovel@1976@proxy-br1.vpnsecure.me:8080', {
+ //  		forwardPath: function(req, res) {
+ //  			console.log(require('url').parse(req.url).path);
+ //    		return require('url').parse(req.url).path;
+ // 		}
+	// }));
+
 
 	// example : how to use cookie informations
 	// app.use(function (req, res, next) {

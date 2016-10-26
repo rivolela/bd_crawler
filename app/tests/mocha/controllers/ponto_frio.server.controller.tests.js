@@ -40,4 +40,4 @@ describe('Ponto Frio BR unit tests:',function(done){
 
 	});
 
-}
+});

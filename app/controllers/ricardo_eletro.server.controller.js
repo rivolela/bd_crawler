@@ -50,7 +50,7 @@ var getTotalPagination = function(dataProductId,next){
   }catch(e){
     console.log('An error has occurred >> getTotalPagination >> '+ e.message);
   }
-}
+};
 
 
 
