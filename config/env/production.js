@@ -3,7 +3,7 @@ module.exports = {
 	db:'mongodb://bdeciding:rovel1954@ds035776.mlab.com:35776/heroku_5lt8spw4',
 	sessionSecret:'productSessionSecret',
 	connectid:'43EEF0445509C7205827',
-	timeRequest:4000,
+	timeRequest:6000,
 	// programs ids
 	// 12011 : Walmart BR"
 	// 13212 : Ricardo Eletro BR
@@ -22,7 +22,7 @@ module.exports = {
 
 	// schedule reviews jobs
 	walmart_schedule:'0 15 * * *',
-	ricardo_eletro_schedule:'1 17 * * *',
+	ricardo_eletro_schedule:'15 17 * * *',
 	lojas_colombo_schedule:'0 18 * * *',
 
 	// urls crawler

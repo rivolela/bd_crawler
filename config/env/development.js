@@ -4,7 +4,7 @@ module.exports = {
 	db:'mongodb://127.0.0.1:27017/bd_dev',
 	sessionSecret:'developmentSessionSecret',
 	connectid:'43EEF0445509C7205827',
-	timeRequest:6000,
+	timeRequest:4000,
 
 	// Crawler Options 
 	// programs ids
@@ -25,7 +25,7 @@ module.exports = {
 
 	//schedule reviews job
 	walmart_schedule:'46 12 * * *',
-	ricardo_eletro_schedule:'45 17 * * *',
+	ricardo_eletro_schedule:'7 18 * * *',
 	lojas_colombo_schedule:'12 13 * * *',
 
 	// urls crawler

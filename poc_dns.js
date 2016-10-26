@@ -1,6 +1,4 @@
-//var start = function(){
-
-  console.log("aa");
+var start = function(){
   var request = require('request');
 
   var url = 'http://www.ricardoeletro.com.br/Produto/Refrigerador-Geladeira-Cycle-Defrost-Duas-Portas-Inox-475L-DC51X-Electrolux/256-270-274-406808/';
@@ -14,7 +12,7 @@
   });
 
 	
-//}
+}
 
-//exports.start = start;
+exports.start = start;
 
