@@ -37,8 +37,8 @@ module.exports = function(){
 		setTimeout(timeControlCrawler,timeRequest,function(){
 
 			phridge.spawn({
-				//proxy: '8.8.8.8:53'
-    			// proxyAuth: "john:1234",
+				proxy: config.proxyUrl,
+    			proxyAuth: config.proxyAuth
     			// loadImages: false,
     			// // passing CLI-style options does also work
    				//  "--remote-debugger-port": 8888

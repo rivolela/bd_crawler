@@ -12,6 +12,12 @@ module.exports = {
 	programs:'12011,13212,16588',
 	query:'fogao',
 
+	// proxy vpn secure
+	// proxy vpn secure
+	proxyAuth:'rivolela:Rovel@1976',
+	proxyUrl:'proxy-br1.vpnsecure.me:8080',
+	proxy:'http://rivolela:Rovel@1976@proxy-br1.vpnsecure.me:8080',
+
 	// schedule jobs
 	zanox_schedule:'2 14 * * *',
 
@@ -21,7 +27,7 @@ module.exports = {
 	lojas_colombo_schedule:'53 10 * * *',
 
 	// urls crawler
-	ricardo_eletro_url: 'http://localhost:3000/',
+	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
 	lojas_colombo: 'http://localhost:3000/',
 	walmart_url: 'https://www.walmart.com.br/item/'
 };

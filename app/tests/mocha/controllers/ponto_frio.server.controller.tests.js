@@ -27,16 +27,16 @@ describe('Ponto Frio BR unit tests:',function(done){
 		});
 
 
-		it('Should return productid = 212979 from product page html', function(done) {
+		// it('Should return productid = 212979 from product page html', function(done) {
 
-			this.timeout(10000);
+		// 	this.timeout(10000);
 			
-			lcController.getProductContext(Context.body,function(productid,totalPaginacaoReviews){
-				productid.should.be.equal('212979');
-				totalPaginacaoReviews.should.be.above(1);
-				done();
-			});
-		});
+		// 	lcController.getProductContext(Context.body,function(productid,totalPaginacaoReviews){
+		// 		productid.should.be.equal('212979');
+		// 		totalPaginacaoReviews.should.be.above(1);
+		// 		done();
+		// 	});
+		// });
 
 	});
 

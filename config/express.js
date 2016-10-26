@@ -32,6 +32,7 @@ module.exports = function () {
 		secret:config.sessionSecret
 	}));
 
+	// example proxy
 	// app.use('/proxy', proxy('http://rivolela:Rovel@1976@proxy-br1.vpnsecure.me:8080', {
  //  		forwardPath: function(req, res) {
  //  			console.log(require('url').parse(req.url).path);

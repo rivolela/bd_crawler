@@ -11,12 +11,18 @@ module.exports = {
 	programs:'12011,13212,16588',
 	query:'geladeira',
 
+	// proxy vpn secure
+	proxyAuth:'rivolela:Rovel@1976',
+	proxyUrl:'proxy-br1.vpnsecure.me:8080',
+	proxy:'http://rivolela:Rovel@1976@proxy-br1.vpnsecure.me:8080',
+
+
 	// schedule offers jobs
 	zanox_schedule:'30 14 * * *',
 
 	// schedule reviews jobs
 	walmart_schedule:'30 15 * * *',
-	ricardo_eletro_schedule:'35 16 * * *',
+	ricardo_eletro_schedule:'25 16 * * *',
 	lojas_colombo_schedule:'30 17 * * *',
 
 	// urls crawler

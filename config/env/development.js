@@ -15,6 +15,11 @@ module.exports = {
 	programs:'13212',
 	query:'geladeira',
 
+	// proxy vpn secure
+	proxyAuth:'rivolela:Rovel@1976',
+	proxyUrl:'proxy-br1.vpnsecure.me:8080',
+	proxy:'http://rivolela:Rovel@1976@proxy-br1.vpnsecure.me:8080',
+
 	// schedule offers jobs
 	zanox_schedule:'41 13 * * *',
 

@@ -5,7 +5,7 @@ var host = "http://www.ricardoeletro.com.br";
 var phantomUtile = require('../../../utile/phantomjs.server.utile.js');
 var uri = "/Produto/Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-380-Litros-Inox-DW42X/256-270-274-85169";
 var config = require('../../../../config/config.js');
-var url_offer = 'ricardo_eletro.html';
+var url_offer = 'Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-380-Litros-Inox-DW42X/256-270-274-85169';
 var requestUtile = require('../../../utile/requests.server.utile.js');
 
 describe('Ricardo Eletro BR unit tests:',function(done){
@@ -90,7 +90,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 
 
 		it('Should add info to array products: productid==85169', function(done) {
-			this.timeout(20000);
+			this.timeout(40000);
 			reController.setProductIdArrayProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
 				arrayProducts[1].dataProductId.should.be.equal('85169');
 				done();
