@@ -54,30 +54,31 @@ var getTotalPagination = function(dataProductId,next){
 
 
 
-var setProductIdArrayProducts = function(currentItem,arrayProductsRicardo,next){
+var setProductIdArrayProducts = function(currentItem,arrayProducts,next){
 
   try{
 
-    if(currentItem < arrayProductsRicardo.length){
+    if(currentItem < arrayProducts.length){
 
-        var urlToCrawler = config.ricardo_eletro_url + arrayProductsRicardo[currentItem].urlOffer;
+        var urlToCrawler = config.ricardo_eletro_url + arrayProducts[currentItem].urlOffer;
 
         console.log("urlToCrawler",urlToCrawler);
 
         getProductId(urlToCrawler,function(dataProductId){
           
-          arrayProductsRicardo[currentItem].dataProductId = dataProductId;
+          arrayProducts[currentItem].dataProductId = dataProductId;
 
           console.log("offer >> ",currentItem);
-          console.log("Product ean >> ",arrayProductsRicardo[currentItem].ean);
+          console.log("Product ean >> ",arrayProducts[currentItem].ean);
+          console.log("advertiser >> ", arrayProducts[currentItem].advertiser);
           console.log("offer url >> ",urlToCrawler);
-          console.log("set ProductId to offer >> ",arrayProductsRicardo[currentItem].dataProductId);
+          console.log("set ProductId to offer >> ",arrayProducts[currentItem].dataProductId);
           console.log('\n');
 
-          setProductIdArrayProducts(currentItem+1,arrayProductsRicardo,next);
+          setProductIdArrayProducts(currentItem+1,arrayProducts,next);
       });
     }else{
-      return next(arrayProductsRicardo);
+      return next(arrayProducts);
     }
   }catch(e){
     console.log('An error has occurred >> setProductIdArrayProducts >> '+ e.message);
@@ -86,30 +87,30 @@ var setProductIdArrayProducts = function(currentItem,arrayProductsRicardo,next){
 };
 
 
-var setTotalPaginationArrayProducts = function(currentItem,arrayProductsRicardo,next){
+var setTotalPaginationArrayProducts = function(currentItem,arrayProducts,next){
 
   try{
 
-    if(currentItem < arrayProductsRicardo.length){
+    if(currentItem < arrayProducts.length){
 
-          var dataProductId = arrayProductsRicardo[currentItem].dataProductId;
+          var dataProductId = arrayProducts[currentItem].dataProductId;
 
           getTotalPagination(dataProductId,function(totalPaginacaoReviews){
 
-            arrayProductsRicardo[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
+            arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
 
             console.log("offer >> ",currentItem);
-            console.log("Product ean >> ",arrayProductsRicardo[currentItem].ean);
-            console.log("offer url >> ",arrayProductsRicardo[currentItem].url);
-            console.log("set totalPaginacaoReviews to offer>> ", arrayProductsRicardo[currentItem].totalPaginacaoReviews);
+            console.log("Product ean >> ",arrayProducts[currentItem].ean);
+            console.log("offer url >> ",arrayProducts[currentItem].url);
+            console.log("set totalPaginacaoReviews to offer>> ", arrayProducts[currentItem].totalPaginacaoReviews);
             console.log('\n');
 
-            setTotalPaginationArrayProducts(currentItem+1,arrayProductsRicardo,next);
+            setTotalPaginationArrayProducts(currentItem+1,arrayProducts,next);
 
          });
 
     }else{
-      return next(arrayProductsRicardo);
+      return next(arrayProducts);
     }
   }catch(e){
     console.log('An error has occurred >> setTotalPaginationArrayProducts >> '+ e.message);

@@ -41,6 +41,7 @@ module.exports = function(){
 
     	setTimeout(timeControlCrawler,timeRequestHtml,function(){
     		request({
+    			proxy: config.proxy, 
 	    		url: searchUrl, //URL to hit
 	      		//qs: {from: 'blog example', time: +new Date()}, //Query string data
 	      		method: 'GET', //Specify the method

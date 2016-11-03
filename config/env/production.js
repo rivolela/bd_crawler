@@ -8,7 +8,8 @@ module.exports = {
 	// 12011 : Walmart BR"
 	// 13212 : Ricardo Eletro BR
 	// 16588 : Lojas Colombo BR
-	programs:'12011,13212,16588',
+	// 12781 : Ponto Frio
+	programs:'12011,13212,16588,12781',
 	query:'geladeira',
 
 	// proxy vpn secure
@@ -24,11 +25,13 @@ module.exports = {
 	walmart_schedule:'0 15 * * *',
 	ricardo_eletro_schedule:'15 21 * * *',
 	lojas_colombo_schedule:'0 18 * * *',
+	ponto_frio_schedule:'0 10 * * *',
 
 	// urls crawler
 	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
 	lojas_colombo: 'https://www.colombo.com.br',
-	walmart_url: 'https://www.walmart.com.br/item/'
+	walmart_url: 'https://www.walmart.com.br/item/',
+	ponto_frio_url: 'http://www.pontofrio.com.br/'
 };
 
 

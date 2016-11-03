@@ -32,11 +32,11 @@ var getProductContext = function(body,next){
 };
  
 
-var setDataProducts = function(currentItem,arrayProductsWalmart,next){
+var setDataProducts = function(currentItem,arrayProducts,next){
 
-  if(currentItem < arrayProductsWalmart.length){
+  if(currentItem < arrayProducts.length){
 
-    var urlToCrawler = config.walmart_url + arrayProductsWalmart[currentItem].urlOffer;
+    var urlToCrawler = config.walmart_url + arrayProducts[currentItem].urlOffer;
     console.log("item >> ",currentItem);
     console.log("urlToCrawler >> ",urlToCrawler);
     //console.log('\n');
@@ -47,60 +47,61 @@ var setDataProducts = function(currentItem,arrayProductsWalmart,next){
       }else{
         getProductContext(body,function(productid,totalReviewsPage,totalPaginacaoReviews){
 
-          arrayProductsWalmart[currentItem].dataProductId = productid;
-          arrayProductsWalmart[currentItem].totalReviewsPage = totalReviewsPage;
-          arrayProductsWalmart[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
-          console.log("Product ean >> ",arrayProductsWalmart[currentItem].ean);
-          console.log("adding attribute dataProductId >> ",arrayProductsWalmart[currentItem].dataProductId);
-          console.log("adding attribute totalReviewsPage >> ",arrayProductsWalmart[currentItem].totalReviewsPage);
-          console.log("adding attribute totalPaginacaoReviews >> ", arrayProductsWalmart[currentItem].totalPaginacaoReviews);
+          arrayProducts[currentItem].dataProductId = productid;
+          arrayProducts[currentItem].totalReviewsPage = totalReviewsPage;
+          arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
+          console.log("Product ean >> ",arrayProducts[currentItem].ean);
+          console.log("advertiser >> ", arrayProducts[currentItem].advertiser);
+          console.log("adding attribute dataProductId >> ",arrayProducts[currentItem].dataProductId);
+          console.log("adding attribute totalReviewsPage >> ",arrayProducts[currentItem].totalReviewsPage);
+          console.log("adding attribute totalPaginacaoReviews >> ", arrayProducts[currentItem].totalPaginacaoReviews);
           console.log('\n');
 
-          setDataProducts(currentItem+1,arrayProductsWalmart,next);
+          setDataProducts(currentItem+1,arrayProducts,next);
 
         });
       }
     });
 
   }else{
-    return next(arrayProductsWalmart);
+    return next(arrayProducts);
   }
 };
 
 
-var crawlerByProduct = function(currentItem,arrayProductsWalmart,next){
+var crawlerByProduct = function(currentItem,arrayProducts,next){
 
   // for each product
-  if(currentItem < arrayProductsWalmart.length){
+  if(currentItem < arrayProducts.length){
 
-    if((arrayProductsWalmart[currentItem].totalReviewsPage > 0) && (arrayProductsWalmart[currentItem].ean != 'undefined')){
+    if((arrayProducts[currentItem].totalReviewsPage > 0) && (arrayProducts[currentItem].ean != 'undefined')){
       
       var currentPaginationReview = 0;
       
-      crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsWalmart,function(arrayProductsWalmart){
+      crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProducts,function(arrayProducts){
         console.log('callback saveReviewsByPagination');
-        crawlerByProduct(currentItem + 1,arrayProductsWalmart,next);
+        crawlerByProduct(currentItem + 1,arrayProducts,next);
       });
     }else{
       console.log("offer without ean or with total reviews < 0");
-      crawlerByProduct(currentItem + 1,arrayProductsWalmart,next);
+      crawlerByProduct(currentItem + 1,arrayProducts,next);
     }
 
   }else{
-    return next(arrayProductsWalmart);
+    return next(arrayProducts);
   }
 };
 
 
-var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arrayProductsWalmart,next){
+var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arrayProducts,next){
   
-  var productReview = arrayProductsWalmart[currentItem];
+  var productReview = arrayProducts[currentItem];
 
   try{
       // for each review pagination
-    if(currentPaginationReview < arrayProductsWalmart[currentItem].totalPaginacaoReviews){
+    if(currentPaginationReview < arrayProducts[currentItem].totalPaginacaoReviews){
 
-      var dataProductId = arrayProductsWalmart[currentItem].dataProductId;
+      var dataProductId = arrayProducts[currentItem].dataProductId;
       var urlToCrawler = 'https://www.walmart.com.br/xhr/reviews/'+ dataProductId + '/?pageNumber=' + currentPaginationReview;
       console.log("urlToCrawler >> ",urlToCrawler);
       var call = new requestUtile();
@@ -115,7 +116,7 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
             var currentItemArray = 0;
             
             reviewController.saveArrayReviews(currentItemArray,reviews,function(arrayReviews){
-              crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProductsWalmart,next);
+              crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProducts,next);
             });
 
           });
@@ -123,7 +124,7 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
       });
 
     }else{
-      return next(arrayProductsWalmart);
+      return next(arrayProducts);
     }
 
   }catch(e){

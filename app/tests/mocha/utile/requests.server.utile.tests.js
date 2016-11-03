@@ -27,8 +27,8 @@ describe('Requests Utile Server Tests:',function(){
 		var call = new RequestsUtile();
 		var timeRequest = 0;
 		//this.timeout(3000);
-		call.getHtml(urlHtml,timeRequest,function(error,response,body){	
-			console.log("body >>",body);
+		call.getHtml(urlHtml2,timeRequest,function(error,response,body){	
+			//console.log("body >>",body);
 	  		console.log('\n');
 	  		console.log("error >>",error);
 	  		console.log('\n');

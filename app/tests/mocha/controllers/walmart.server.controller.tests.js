@@ -144,7 +144,7 @@ describe('Walmart Advertiser Server Tests:',function(done){
 			
 
 		it('Should add info to array products: productid,totalReviewsPage and totalPaginacaoReviews', function(done) {
-			this.timeout(5000);
+			this.timeout(10000);
 			walmart.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProductsWalmart){
 				arrayProductsWalmart[1].dataProductId.should.be.equal('4621073');
 				arrayProductsWalmart[1].totalPaginacaoReviews.should.be.equal(0);
@@ -163,24 +163,14 @@ describe('Walmart Advertiser Server Tests:',function(done){
 										});
 		});
 
-
-		// it('Should saveReviewsToPickout without error', function(done) {
-		// 	walmart.saveReviewsToPickoout(Context.currentItem,Context.arrayProducts,function(arrayProductsWalmart){
-		// 		// console.log(Error);
-		// 		// should.not.exist(Error);
-		// 		done();
-		// 	});
-		// });
+	});
 
 
-
-		after(function(){
-			reviewController.deleteAllReviews(function(){
-				console.log("bd clean");
-				//mongoose.connection.close();
-			});
+	after(function(){
+		reviewController.deleteAllReviews(function(){
+			console.log("bd clean");
+			//mongoose.connection.close();
 		});
-
 	});
 
 });

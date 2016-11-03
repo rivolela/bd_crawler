@@ -2,11 +2,12 @@ var should = require('should');
 var requestUtile = require('../../../utile/requests.server.utile.js');
 var phantomUtile = require('../../../utile/phantomjs.server.utile.js');
 var config = require('../../../../config/config.js');
-var html = 'http://localhost:3000/lojas_colombo.html';
-var url_offer  = 'lojas_colombo.html';
+var html = 'https://www.colombo.com.br/produto/Eletrodomesticos/Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-310-Litros-DF36A?#produto-avalicoes-title';
+var url_offer  = '/produto/Eletrodomesticos/Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-310-Litros-DF36A?#produto-avalicoes-title';
 var json_without_reviews = 'https://www.colombo.com.br/avaliacao-pagina?codProd=773808&pagina=1&ordemAvaliacao=1';
 var json_with_reviews = 'https://www.colombo.com.br/avaliacao-pagina?codProd=212979&pagina=1&ordemAvaliacao=1';
 var lcController = require('../../../controllers/lojas_colombo.server.controller.js');
+var reviewController = require('../../../controllers/review.server.controller.js');
 
 
 describe('Lojas Colombo BR unit tests:',function(done){
@@ -142,7 +143,6 @@ describe('Lojas Colombo BR unit tests:',function(done){
 													done();
 											   });
 			});
-			
 		});
 
 
@@ -161,7 +161,6 @@ describe('Lojas Colombo BR unit tests:',function(done){
 										done();
 									});
 			});
-			
 		});
 
 
@@ -217,7 +216,13 @@ describe('Lojas Colombo BR unit tests:',function(done){
 													done();
 										  		});
 			});
+		});
 
+
+		after(function(){
+			reviewController.deleteAllReviews(function(){
+				console.log("bd clean");
+			});
 		});
 
 });	

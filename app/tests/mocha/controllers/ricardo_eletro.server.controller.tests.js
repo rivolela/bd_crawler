@@ -7,6 +7,8 @@ var uri = "/Produto/Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-380-Li
 var config = require('../../../../config/config.js');
 var url_offer = 'Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-380-Litros-Inox-DW42X/256-270-274-85169';
 var requestUtile = require('../../../utile/requests.server.utile.js');
+var reviewController = require('../../../controllers/review.server.controller.js');
+
 
 describe('Ricardo Eletro BR unit tests:',function(done){
 
@@ -139,6 +141,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 		});
 	});
 	
+	
 	describe('Testing getReviewsFromHtml function >>',function(done){
 
 		var Context = {};
@@ -160,7 +163,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 
 			call = new requestUtile();
 			
-			call.getHtml('http://localhost:3000/ricardo_eletro_review.html',timeRequest,function(error,response,body){
+			call.getHtml('http://www.ricardoeletro.com.br/Produto/Comentarios/5211/1',timeRequest,function(error,response,body){
 				Context.body = body;
 				done();
 			});
@@ -175,8 +178,15 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 												done();
 											});
 		});
-
 	});
+
+
+	after(function(){
+		reviewController.deleteAllReviews(function(){
+			console.log("bd clean");
+		});
+	});
+
 
 });
 

@@ -8,6 +8,7 @@ var Review = mongoose.model( 'Review', ReviewSchema);
 var config = require('../../config/config.js');
 var contReview = 0;
 
+
 var getProductContext = function(body,next){
   
   try{
@@ -50,6 +51,7 @@ var setDataProducts = function(currentItem,arrayProducts,next){
 		          arrayProducts[currentItem].dataProductId = productid;
 		          arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
 		          console.log("Product ean >> ",arrayProducts[currentItem].ean);
+              console.log("advertiser >> ", arrayProducts[currentItem].advertiser);
 		          console.log("adding attribute dataProductId >> ",arrayProducts[currentItem].dataProductId);
 		          console.log("adding attribute totalPaginacaoReviews >> ", arrayProducts[currentItem].totalPaginacaoReviews);
 		          console.log('\n');

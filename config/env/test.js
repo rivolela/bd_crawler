@@ -9,7 +9,8 @@ module.exports = {
 	// 12011 : Walmart BR"
 	// 13212 : Ricardo Eletro BR
 	// 16588 : Lojas Colombo BR
-	programs:'12011,13212,16588',
+	// 12781 : Ponto Frio
+	programs:'12011,13212,16588,12781',
 	query:'fogao',
 
 	// proxy vpn secure
@@ -25,11 +26,13 @@ module.exports = {
 	walmart_schedule:'53 11 * * *',
 	ricardo_eletro_schedule:'35 16 * * *',	
 	lojas_colombo_schedule:'53 10 * * *',
+	ponto_frio_schedule:'0 20 * * *',
 
 	// urls crawler
 	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
-	lojas_colombo: 'http://localhost:3000/',
-	walmart_url: 'https://www.walmart.com.br/item/'
+	lojas_colombo: 'https://www.colombo.com.br',
+	walmart_url: 'https://www.walmart.com.br/item/',
+	ponto_frio_url: 'http://www.pontofrio.com.br/'
 };
 
 // var task = cron.schedule('* * * * *', function() {
