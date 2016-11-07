@@ -188,7 +188,7 @@ var getReviewsFromJson = function(data,productReview,next){
       var newdate = new Date(year,month,day);
       var dateReview = newdate.getTime();
         
-      review.date = newdate;
+      review.date = dateReview;
       review.title = review.title.replace(new RegExp('\r?\n','g'), ' ');
       review.description = review.description.replace(new RegExp('\r?\n','g'), ' ');
       review.location = review.location.replace(new RegExp('\r?\n','g'), ' ');
