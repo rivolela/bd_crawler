@@ -37,7 +37,7 @@ module.exports = function(grunt){
 		mochaTest:{
 			//src:'app/tests/mocha/utile/requests.server.utile.tests.js',
 			//src:'app/tests/mocha/controllers/walmart.server.controller.tests.js',
-			src:'app/tests/mocha/**/*.js',
+			bd_offersrc:'app/tests/mocha/**/*.js',
 			options:{
 				reporter:'spec'
 			}
