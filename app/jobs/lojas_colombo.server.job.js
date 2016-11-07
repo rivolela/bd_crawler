@@ -1,6 +1,6 @@
 var config = require('../../config/config.js'),
  	lcController = require('../controllers/lojas_colombo.server.controller.js'),
- 	offerController = require('../controllers/offer.server.controller.js'),
+ 	offerController = require('../controllers/offer.crawler.server.controller.js'),
  	cron = require('node-cron');
 
 

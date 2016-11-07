@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-var OfferSchema = require('../models/offer.server.model');
-var Offer = mongoose.model( 'Offer', OfferSchema);
+var Offer_CrawlerSchema = require('../models/offer.crawler.server.model');
+var Offer = mongoose.model( 'Offer_Crawler', Offer_CrawlerSchema);
 
 var flatten = require('flat'),
 	requestsUtile = require('../utile/requests.server.utile.js'),

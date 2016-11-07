@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var OfferSchema = new Schema({
+var Offer_CrawlerSchema = new Schema({
 	name: {
     type:String,
     trim: true,
@@ -22,7 +22,7 @@ var OfferSchema = new Schema({
 });
 
 // middleware to handle attributes before to save
-OfferSchema.pre('save',function(next){
+Offer_CrawlerSchema.pre('save',function(next){
   
   // split merchant url offer thal will be used in crawler
   var url_01 = this.url.split('[[');
@@ -36,7 +36,7 @@ OfferSchema.pre('save',function(next){
 });
 
 
-module.exports = mongoose.model('Offer', OfferSchema);
+module.exports = mongoose.model('Offer_Crawler', Offer_CrawlerSchema);
 
 
 //mongoose.model('Offer',OfferSchema);

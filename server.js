@@ -5,9 +5,6 @@ var mongoose = require('./config/mongoose'),
  	cron = require('node-cron'),
  	async = require('async'),
 
- 	// job to get offer
- 	zanoxJob = require('./app/jobs/zanox.server.job.js'),
-
  	// jobs to get reviews
  	walmartJob = require('./app/jobs/walmart.server.job.js'),
  	ricardoJob = require('./app/jobs/ricardo_eletro.server.job.js'),
@@ -34,8 +31,6 @@ app.listen(server_port,function() {
 });
 
 
-// job to get offer
-zanoxJob.starJob();
 
 // jobs to get reviews
 walmartJob.starJob();

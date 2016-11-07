@@ -50,7 +50,6 @@ module.exports = function () {
  //  		res.end(req.session.views + ' views');
 	// });
  
-	require('../app/routes/zanox.server.routes.js')(app);
 	require('../app/routes/walmart.server.routes.js')(app);
 
 	return app;

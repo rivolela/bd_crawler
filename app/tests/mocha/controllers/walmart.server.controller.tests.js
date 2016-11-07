@@ -22,7 +22,11 @@ describe('Walmart Advertiser Server Tests:',function(done){
 	var call = new requestUtile();
 
 	describe('Testing requests to Walmart >>',function(done){
+
 		it('Should return 200 to call walmart product page html', function(done) {
+			
+			this.timeout(4000);
+
 			supertest
 	    	.get(uri)
 	    	//.set("Accept", "*/*")

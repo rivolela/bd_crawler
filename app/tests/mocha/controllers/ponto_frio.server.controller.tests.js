@@ -18,7 +18,7 @@ describe('Ponto Frio BR unit tests:',function(done){
 
 		before(function(done){
 
-			this.timeout(10000);
+			this.timeout(20000);
 
 			call.getHtml(html,config.timeRequest,function(error,response,body){
 				Context.body = body;

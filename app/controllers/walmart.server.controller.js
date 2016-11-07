@@ -3,7 +3,7 @@ var requestUtile = require('../utile/requests.server.utile.js');
 var timeRequest = 4000;
 var config = require('../../config/config.js');
 var reviewController = require('../controllers/review.server.controller.js');
-var Offer = require('../controllers/offer.server.controller.js');
+var Offer = require('../controllers/offer.crawler.server.controller.js');
 var call = new requestUtile();
 
 

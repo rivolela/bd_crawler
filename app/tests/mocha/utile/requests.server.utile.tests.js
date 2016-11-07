@@ -13,6 +13,9 @@ var urlHtml2 = "http://www.ricardoeletro.com.br/Produto/Refrigerador-Geladeira-E
 describe('Requests Utile Server Tests:',function(){
 
 	it('Should return status code 200 from getJson',function(done){
+
+		this.timeout(4000);
+
 		var call = new RequestsUtile();
 		var timeRequest = 0;
 
@@ -24,9 +27,12 @@ describe('Requests Utile Server Tests:',function(){
 
 
 	it('Should return status code 200 from getHtml',function(done){
+
+		this.timeout(4000);
+
 		var call = new RequestsUtile();
 		var timeRequest = 0;
-		//this.timeout(3000);
+
 		call.getHtml(urlHtml2,timeRequest,function(error,response,body){	
 			//console.log("body >>",body);
 	  		console.log('\n');
