@@ -82,7 +82,8 @@ var findOneAndUpdate = function(query,object,next){
                 date:object.date,
                 advertiser:object.advertiser,
                 manufacturer:object.manufacturer,
-                rating:object.rating
+                rating:object.rating,
+                category:object.category
                 };
 
 
