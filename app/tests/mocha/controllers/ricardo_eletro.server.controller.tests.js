@@ -26,7 +26,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 
 
 		it('Should return productid = 85169 from product page html', function(done) {
-			this.timeout(4000);
+			this.timeout(10000);
 			reController.getProductId(Context.url,function(productid){
 				productid.should.be.equal('85169');
 				done();
@@ -92,7 +92,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 
 
 		it('Should add info to array products: productid==85169', function(done) {
-			this.timeout(40000);
+			this.timeout(10000);
 			reController.setProductIdArrayProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
 				arrayProducts[1].dataProductId.should.be.equal('85169');
 				done();
@@ -147,6 +147,9 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 		var Context = {};
 
 		before(function(done){
+
+			this.timeout(50000);
+			
 			var timeRequest = 1000;
 			Context.currentItem = 0;
 
@@ -161,9 +164,9 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 
 			Context.product = product;
 
-			call = new requestUtile();
+			call = new phantomUtile();
 			
-			call.getHtml('http://www.ricardoeletro.com.br/Produto/Comentarios/5211/1',timeRequest,function(error,response,body){
+			call.getHtml('http://www.ricardoeletro.com.br/Produto/Comentarios/5211/1',timeRequest,function(body){
 				Context.body = body;
 				done();
 			});
@@ -171,6 +174,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 
 
 		it('Should return arrayReviews with 4 reviews', function(done) {
+			this.timeout(50000);
 			reController.getReviewsFromHtml(Context.body,
 											Context.product,
 											function(arrayReviews){

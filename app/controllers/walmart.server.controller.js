@@ -1,6 +1,6 @@
 var cheerio = require('cheerio');
 var requestUtile = require('../utile/requests.server.utile.js');
-var timeRequest = 4000;
+// var timeRequest = 4000;
 var config = require('../../config/config.js');
 var reviewController = require('../controllers/review.server.controller.js');
 var Offer = require('../controllers/offer.crawler.server.controller.js');
@@ -41,9 +41,10 @@ var setDataProducts = function(currentItem,arrayProducts,next){
     console.log("urlToCrawler >> ",urlToCrawler);
     //console.log('\n');
   
-    call.getHtml(urlToCrawler,timeRequest,function(error,response,body){
+    call.getHtml(urlToCrawler,config.timeRequest,function(error,response,body){
       if(error){
-        console.log("error:",error);
+        console.log("error setDataProducts:",error);
+        setDataProducts(currentItem+1,arrayProducts,next);
       }else{
         getProductContext(body,function(productid,totalReviewsPage,totalPaginacaoReviews){
 
@@ -106,19 +107,20 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
       console.log("urlToCrawler >> ",urlToCrawler);
       var call = new requestUtile();
  
-      call.getHtml(urlToCrawler,timeRequest,function(error,response,body){
-        console.log("callback getHtml >> body >> ",body);
+      call.getHtml(urlToCrawler,config.timeRequest,function(error,response,body){
+        
         if(error){
-          console.log("error:",error);
+          console.log("error crawlerByReviewPagination:",error);
+          crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProducts,next);
         }else{
-          getReviewsFromHtml(body,productReview,function(reviews){
-            
-            var currentItemArray = 0;
-            
+
+          console.log("callback getHtml >> body >> ",body);
+
+          getReviewsFromHtml(body,productReview,function(reviews){          
+            var currentItemArray = 0;     
             reviewController.saveArrayReviews(currentItemArray,reviews,function(arrayReviews){
               crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProducts,next);
             });
-
           });
         }
       });

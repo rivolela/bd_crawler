@@ -80,14 +80,17 @@ module.exports = function(){
 		    })
 		    .then(function (html) {
 		         // inside node again
-		    	console.log("Result PhantomJS >> " + html);
+		    	//console.log("Result PhantomJS >> " + html);
 		    	resultPhantom = html;
-		    	closePhantomjsProcess();
+		 		phridge.disposeAll();
+		 		console.log("All processes created by phridge.spawn() have been terminated");
 		    	return next(resultPhantom);
 		    	//closePhantomjsProcess()
 			})
 			.catch(function (err) {
-		        console.error(err.stack);
+				phridge.disposeAll();
+		        console.error("error phantom >> ",err.stack);
+		        return next(err);
 		    });
 		 //    .then(function(){
 			// 	closePhantomjsProcess()

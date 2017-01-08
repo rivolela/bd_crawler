@@ -24,7 +24,7 @@ module.exports = function(){
 	    		},
 	  		},function(error,response,body){
   				if(error) {
-    				console.log("error",error);
+    				console.log("error getJson >>",error);
     				console.log("response",response);
  				}else{
     				var data = JSON.parse(body);
@@ -49,20 +49,22 @@ module.exports = function(){
 	        		'User-Agent': 'request',
 	         		'Content-Type': 'text/html',
 	      		},
-	      		//timeout: 10000
+	      		timeout: 10000,
   				//followRedirect: true,
-  				//maxRedirects: 10,
+  				maxRedirects: 10
 	  		},function(error,response,body){
 	  	 		if(error) {
-	     		   console.log(error);
-	      		   //return next(error);
+	     		   console.log("error get html >> ",error);
 	      		} else {
 	      			//console.log(body);
 	        		console.log("request status code >> ",response.statusCode);
 	        		//var bodyWithCorrectEncoding = iconv.decode(body, 'UTF-8');
 	        		return next(error,response,body);
 	      		}
-	  		});
+	  		}).on('error', function(e){
+    			console.log("error getHtml >>",e);
+    			return next(e);
+  			}).end();
     	});
 	}
 
@@ -103,7 +105,7 @@ module.exports = function(){
 
 
   	function timeControlCrawler(next){
-    	console.log("calling to crawler every >> ",timeRequestHtml," miliseconds");
+    	console.log("requesting crawler each >> ",timeRequestHtml," miliseconds");
     	next();
   	}
 

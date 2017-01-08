@@ -188,7 +188,7 @@ describe('Ponto Frio BR unit tests:',function(done){
 			pfController.getReviewsFromHtml(Context.data,
 									  		Context.product,
 									  		function(arrayReviews){
-									  			arrayReviews.should.containDeep([{author: 'ander'}]);
+									  			arrayReviews.should.containDeep([{author: 'Augusto'}]);
 												done();
 									  		});
 		});

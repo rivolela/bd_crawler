@@ -18,13 +18,14 @@ var getProductContext = function(body,next){
     $ = cheerio.load(body);
 
     var totalReviewsPage = $('#pr-review-count').text();
+    var totalPaginacaoReviews;
 
     if((totalReviewsPage === undefined) || (totalReviewsPage === '')) {
-      totalPaginacaoReviews = 0;
+       totalPaginacaoReviews = 0;
     }else{
       var totalReviewsPageSplit = totalReviewsPage.match(/\d+/g);
       // Math.ceil() rounds a number up to the nearest integer:
-      var totalPaginacaoReviews = Number(Math.ceil(totalReviewsPageSplit[0] / 10));
+       totalPaginacaoReviews = Number(Math.ceil(totalReviewsPageSplit[0] / 10));
     }
 
     return next(totalPaginacaoReviews);
@@ -52,8 +53,10 @@ var setDataProducts = function(currentItem,arrayProducts,next){
 		    console.log("urlToCrawler >> ",urlToCrawler);
 
 		    getBodyProductPage(urlToCrawler,function(body){
+          console.log("body",body);
+          if(body !== null){
 		       
-		      getProductContext(body,function(totalPaginacaoReviews){
+		        getProductContext(body,function(totalPaginacaoReviews){
 
 		          arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
 		          console.log("Product ean >> ",arrayProducts[currentItem].ean);
@@ -61,7 +64,10 @@ var setDataProducts = function(currentItem,arrayProducts,next){
 		          console.log("adding attribute totalPaginacaoReviews >> ", arrayProducts[currentItem].totalPaginacaoReviews);
 		          console.log('\n');
 		          setDataProducts(currentItem+1,arrayProducts,next);
-		      });
+		        });
+          }else{
+            setDataProducts(currentItem+1,arrayProducts,next);
+          }
 
 		    });
         
@@ -151,11 +157,12 @@ var getBodyProductPage = function(urlToCrawler,next){
   try{
   	var call = new requestUtile();
   	call.getHtml(urlToCrawler,config.timeRequest,function(error,response,body){
-    	console.log("get body html by request");
+    	console.log("callback getBodyProductPage");
     	return next(body);
   	});
   }catch(e){
     console.log('An error has occurred >> ponto_frio.server.controller >> getBodyProductPage >> '+ e.message);
+    return next(null);
   }
 };
 

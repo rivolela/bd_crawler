@@ -16,19 +16,34 @@ var getProductContext = function(body,next){
     $ = cheerio.load(body);
 
     var productid = $('.codigo-produto').text();
-    var productid_split = productid.match(/\d+|\D+/g);
-    var productid_split_final = productid_split[1];
-	  var paginacao = 1;
+    var productid_split_final;
+    var totalPaginacaoReviews;
 
-    getJson(productid_split_final,paginacao,function(data){
+    if((productid === undefined) || (productid === '')) {
 
-     	//console.log(data);
-    	var totalPaginacaoReviews = data.paginacao.totalpaginas;
-    	console.log("totalPaginacaoReviews >> ",totalPaginacaoReviews);
-    	console.log("productid >> ",productid_split_final);
+      productid_split_final = 0;
+      totalPaginacaoReviews = 0;
 
-    	return next(productid_split_final,totalPaginacaoReviews);
-    });
+      return next(productid_split_final,totalPaginacaoReviews);
+
+    }else{
+
+      var productid_split = productid.match(/\d+|\D+/g);
+      productid_split_final = productid_split[1];
+      var paginacao = 1;
+
+      getJson(productid_split_final,paginacao,function(data){
+
+        //console.log(data);
+        totalPaginacaoReviews = data.paginacao.totalpaginas;
+        console.log("totalPaginacaoReviews >> ",totalPaginacaoReviews);
+        console.log("productid >> ",productid_split_final);
+
+        return next(productid_split_final,totalPaginacaoReviews);
+      });
+      
+    }
+    
   }catch(e){
     console.log('An error has occurred >> getProductContext >> '+ e.message);
   }

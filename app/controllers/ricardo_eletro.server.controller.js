@@ -262,6 +262,7 @@ var getReviewsFromHtml = function(body,product,next){
     var reviews = [];
     
     $ = cheerio.load(body);
+    console.log(body);
 
     $('.linha-comentario').each(function(i, elem) {
         
@@ -344,6 +345,7 @@ var getReviewsFromHtml = function(body,product,next){
     return next(reviews);
 
   }catch(error){
+    console.log(error);
     console.log('An error has occurred >> ricardo_eletro.server.controller >>  getReviewsFromHtml : '+ error.message);
     throw error ;
   }
