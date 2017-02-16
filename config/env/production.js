@@ -11,10 +11,10 @@ module.exports = {
 	proxy:'http://rivolela:Rovel@1976@proxy-br1.vpnsecure.me:8080',
 
 	// schedule reviews jobs
-	walmart_schedule:'0 12 * * *',
-	ricardo_eletro_schedule:'0 13 * * *',
-	lojas_colombo_schedule:'0 14 * * *',
-	ponto_frio_schedule:'0 15 * * *',
+	walmart_schedule:'0 17 * * *',
+	ricardo_eletro_schedule:'0 18 * * *',
+	lojas_colombo_schedule:'0 19 * * *',
+	ponto_frio_schedule:'0 20 * * *',
 
 	// urls crawler
 	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
