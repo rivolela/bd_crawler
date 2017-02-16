@@ -8,6 +8,7 @@ var Review = mongoose.model( 'Review', ReviewSchema);
 var iconv = require('iconv-lite');
 var reviewController = require('./review.server.controller.js');
 var contReview = 0;
+var callPhantom = new phantomUtile();
 
 
 var getProductId = function(urlToCrawler,next){
@@ -97,16 +98,23 @@ var setTotalPaginationArrayProducts = function(currentItem,arrayProducts,next){
 
           getTotalPagination(dataProductId,function(totalPaginacaoReviews){
 
-            arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
+            if((totalPaginacaoReviews > 0) && (arrayProducts[currentItem].ean !== undefined)){
 
-            console.log("offer >> ",currentItem);
-            console.log("Product ean >> ",arrayProducts[currentItem].ean);
-            console.log("offer url >> ",arrayProducts[currentItem].url);
-            console.log("set totalPaginacaoReviews to offer>> ", arrayProducts[currentItem].totalPaginacaoReviews);
-            console.log('\n');
+              arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
 
-            setTotalPaginationArrayProducts(currentItem+1,arrayProducts,next);
+              console.log("offer >> ",currentItem);
+              console.log("Product ean >> ",arrayProducts[currentItem].ean);
+              console.log("offer url >> ",arrayProducts[currentItem].url);
+              console.log("set totalPaginacaoReviews to offer>> ", arrayProducts[currentItem].totalPaginacaoReviews);
+              console.log('\n');
 
+              setTotalPaginationArrayProducts(currentItem+1,arrayProducts,next);
+            
+            }else{
+              console.log("offer without ean or with total reviews < 0");
+              console.log('\n');
+              setTotalPaginationArrayProducts(currentItem+1,arrayProducts,next);
+            }
          });
 
     }else{
@@ -119,89 +127,19 @@ var setTotalPaginationArrayProducts = function(currentItem,arrayProducts,next){
 };
 
 
-
-// var setDataProducts = function(currentItem,arrayProductsRicardo,next){
-
-//   try{
-
-//     if(currentItem < arrayProductsRicardo.length){
-
-//         var urlToCrawler = arrayProductsRicardo[currentItem].url;
-//         console.log("offer >> ",currentItem);
-//         console.log("urlToCrawler >> ",urlToCrawler);
-
-//         getProductId(urlToCrawler,function(dataProductId){
-         
-//           arrayProductsRicardo[currentItem].dataProductId = dataProductId;
-
-//           getTotalPagination(dataProductId,function(totalPaginacaoReviews){
-
-//             arrayProductsRicardo[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
-
-//             console.log("Product ean >> ",arrayProductsRicardo[currentItem].ean);
-//             console.log("adding attribute dataProductId >> ",arrayProductsRicardo[currentItem].dataProductId);
-//             console.log("adding attribute totalPaginacaoReviews >> ", arrayProductsRicardo[currentItem].totalPaginacaoReviews);
-//             console.log('\n');
-//             setDataProducts(currentItem+1,arrayProductsRicardo,next);
-
-//          });
-
-//       });
-//     }else{
-//       return next(arrayProductsRicardo);
-//     }
-//   }catch(e){
-//     console.log('An error has occurred >> setDataProducts >> '+ e.message);
-//   }
- 
-// };
-
-
-// var getBodyProductPage = function(urlToCrawler,next){
-
-//   try{
-//     // if(process.env.NODE_ENV != 'test'){
-//     //   var call = new phantomUtile();
-//     //   call.getHtml(urlToCrawler,config.timeRequest,function(body){
-//     //     console.log("get body html by phantomjs");
-//     //     return next(body);
-//     //   });
-//     // }else{
-//       // this conditional exists because phantomjs doesnt work wtih mocha ( test environment )
-//       // the url crawler was saved by casperjs ( see test task inside gruntfile), into the public folder
-//       // therefore, to env test, the product page used always will be the same, the file saved by casperjs test
-//       var call2 = new requestUtile();
-//       var timeRequest = 0;
-//       call2.getHtmlGzip(urlToCrawler,config.timeRequest,function(error,response,body){
-//         console.log("get body html by request");
-//         return next(body);
-//       });
-//     //}
-//   }catch(e){
-//     console.log('An error has occurred >> getBodyProductPage >> '+ e.message);
-//   }
-// };
-
-
 var crawlerByProduct = function(currentItem,arrayProductsRicardo,next){
 
     try{
       // for each product
       if(currentItem < arrayProductsRicardo.length){
 
-        if((arrayProductsRicardo[currentItem].totalPaginacaoReviews > 0) && (arrayProductsRicardo[currentItem].ean != 'undefined')){
-          
           var currentPaginationReview = 0;
           
           crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsRicardo,function(contReview){
             console.log('total of reviews saved at the moment >> ',contReview);
             crawlerByProduct(currentItem + 1,arrayProductsRicardo,next);
           });
-        }else{
-          console.log("offer without ean or with total reviews < 0");
-          crawlerByProduct(currentItem + 1,arrayProductsRicardo,next);
-        }
-
+       
       }else{
         return next(contReview);
       }
@@ -222,16 +160,7 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
       var dataProductId = arrayProductsRicardo[currentItem].dataProductId;
       var urlToCrawler = 'http://www.ricardoeletro.com.br/Produto/Comentarios/'+ dataProductId + '/' + currentPaginationReview;
 
-      // this conditional exists because phantomjs doesnt work wtih mocha ( test environment )
-      // the url crawler was saved by casperjs ( see test task inside gruntfile), into the public folder
-      // therefore, to env test, the product page used always will be the same, the file saved by casperjs test
-      if(process.env.NODE_ENV == 'production' || process.env.NODE_ENV == 'development' ){
-        var call = new phantomUtile();
-      }else{
-         var call = new requestUtile();// jshint ignore:line
-      }
-
-      call.getHtml(urlToCrawler,config.timeRequest,function(body){ // jshint ignore:line
+      callPhantom.getHtml(urlToCrawler,config.timeRequest,function(body){ // jshint ignore:line
 
         getReviewsFromHtml(body,productReview,function(reviews){
           

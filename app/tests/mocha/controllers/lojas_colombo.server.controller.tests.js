@@ -2,44 +2,45 @@ var should = require('should');
 var requestUtile = require('../../../utile/requests.server.utile.js');
 var phantomUtile = require('../../../utile/phantomjs.server.utile.js');
 var config = require('../../../../config/config.js');
-var html = 'https://www.colombo.com.br/produto/Eletrodomesticos/Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-310-Litros-DF36A?#produto-avalicoes-title';
-var url_offer  = '/produto/Eletrodomesticos/Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-310-Litros-DF36A?#produto-avalicoes-title';
+var html = 'https://www.colombo.com.br/produto/Eletrodomesticos/Refrigerador-Geladeira-Electrolux-Cycle-Defrost-2-Portas-260-Litros-DC35A';
+var url_offer  = '/produto/Eletrodomesticos/Refrigerador-Geladeira-Electrolux-Cycle-Defrost-2-Portas-260-Litros-DC35A';
 var json_without_reviews = 'https://www.colombo.com.br/avaliacao-pagina?codProd=773808&pagina=1&ordemAvaliacao=1';
 var json_with_reviews = 'https://www.colombo.com.br/avaliacao-pagina?codProd=212979&pagina=1&ordemAvaliacao=1';
 var lcController = require('../../../controllers/lojas_colombo.server.controller.js');
 var reviewController = require('../../../controllers/review.server.controller.js');
+var callPhantom = new phantomUtile();
+
 
 
 describe('Lojas Colombo BR unit tests:',function(done){
 
-		describe('Testing getContext function >>',function(done){
+		// describe('Testing getContext function >>',function(done){
 
-			var Context = {};
-			var call = new requestUtile();
+		// 	var Context = {};
+		// 	// var call = new requestUtile();
 
-			before(function(done){
+		// 	before(function(done){
 
-				this.timeout(10000);
+		// 		this.timeout(50000);
 
-				call.getHtml(html,config.timeRequest,function(error,response,body){
-					Context.body = body;
-					//console.log(body);
-					done();
-				});
-			});
+		// 		callPhantom.getHtml(html,config.timeRequest,function(body){
+		// 			Context.body = body;
+		// 			done();
+		// 		});
+		// 	});
 
 
-			it('Should return productid = 212979 from product page html', function(done) {
+		// 	it('Should return productid = 226890 from product page html', function(done) {
 
-				this.timeout(10000);
+		// 		this.timeout(10000);
 				
-				lcController.getProductContext(Context.body,function(productid,totalPaginacaoReviews){
-					productid.should.be.equal('212979');
-					totalPaginacaoReviews.should.be.above(1);
-					done();
-				});
-			});
-		});
+		// 		lcController.getProductContext(Context.body,function(productid,totalPaginacaoReviews){
+		// 			productid.should.be.equal('226890');
+		// 			totalPaginacaoReviews.should.be.above(1);
+		// 			done();
+		// 		});
+		// 	});
+		// });
 
 
 		describe('Testing setDataProducts function >>',function(done){
@@ -47,6 +48,8 @@ describe('Lojas Colombo BR unit tests:',function(done){
 			var Context = {};
 
 			before(function(){
+
+				this.timeout(10000);
 
 				var timeRequest = 1000;
 				Context.currentItem = 0;
@@ -77,11 +80,11 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 
 			it('Should add info to array products: productid==212979 and totalPaginacaoReviews > 1', function(done) {
-				this.timeout(20000);
+				this.timeout(100000);
 				lcController.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
 					//console.log("arrayProducts",arrayProducts);
-					arrayProducts[1].dataProductId.should.be.equal('212979');
-					arrayProducts[1].totalPaginacaoReviews.should.be.above(1);
+					arrayProducts[1].dataProductId.should.be.equal('226890');
+					arrayProducts[1].totalPaginacaoReviews.should.be.equal(2);
 					done();
 				});
 			});
@@ -93,6 +96,8 @@ describe('Lojas Colombo BR unit tests:',function(done){
 			var Context = {};
 
 			before(function(){
+
+				this.timeout(10000);
 
 				var product1 = new Object ({
 					name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',

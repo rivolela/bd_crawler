@@ -17,9 +17,53 @@ var uri = "/item/1230534/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=x
 // Code here will be linted with JSHint.
 /* jshint ignore:start */
 describe('Walmart Advertiser Server Tests:',function(done){
-	
+
 	var Context = {};
 	var call = new requestUtile();
+	var timeRequest = 1000;
+
+	before(function(done){
+
+			this.timeout(10000);
+
+			var product1 = new Object ({
+				name:'Fogao de Embutir 5 Bocas Brastemp Clean BYS5TAR Inox com Timer',
+	  			ean:77777777777777,
+	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
+	  			merchantProductId: 1109777,
+	  			url:"https://www.walmart.com.br/item/35172/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox&zanpid=2224545894140288000&utm_term=httpwwwskimlinkscom",
+	  			urlOffer:'35172/sk',
+	  			advertiser:"walmart",
+	  			totalReviewsPage :4,
+          		totalPaginacaoReviews: 1
+			});
+
+			var product2 = new Object ({
+				name:'Freezer/Refrigerador Vertical Brastemp Flex 228 Litros Frost Free BVR28HR Inox',
+	  			ean:88888888888888,
+	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
+	  			merchantProductId: 1109777,
+	  			url:"https://www.walmart.com.br/item/35172/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox&zanpid=2224545894140288000&utm_term=httpwwwskimlinkscom",
+	  			urlOffer:'35172/sk',
+	  			advertiser:"walmart",
+	  			totalReviewsPage :8,
+          		totalPaginacaoReviews: 1
+			});
+
+			var arrayProducts = [];
+			arrayProducts.push(product1);
+			arrayProducts.push(product2);
+
+			Context.currentItem = 0; 
+			Context.arrayProducts = arrayProducts;
+			Context.currentPaginationReview = 0;
+
+			call.getHtml(Context.arrayProducts[1].url,timeRequest,function(error,response,body){
+				Context.body = body;
+				done();
+			});
+	});
+
 
 	describe('Testing requests to Walmart >>',function(done){
 
@@ -40,52 +84,6 @@ describe('Walmart Advertiser Server Tests:',function(done){
 	describe('Testing Crawler to Walmart >>',function(done){
 		
 		before(function(){
-
-			// mongoose.connect(config.db, function(error) {
-   //          	if (error) {
-   //          		console.error('Error while connecting:\n%\n', error);
-   //          	}else{
-   //          		console.log('connected');
-   //          	}
-   //         	});
-
-			var timeRequest = 0;
-			walmart.setTimeRequest(timeRequest,function(){
-				console.log("set new value for request ( Walmart Test )",timeRequest);
-			});
-
-			var product1 = new Object ({
-				name:'Fogao de Embutir 5 Bocas Brastemp Clean BYS5TAR Inox com Timer',
-	  			ean:77777777777777,
-	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-	  			merchantProductId: 1109777,
-	  			url:"https://www.walmart.com.br/item/35172/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox&zanpid=2224545894140288000&utm_term=httpwwwskimlinkscom",
-	  			urlOffer:'3166186/sk',
-	  			advertiser:"walmart",
-	  			totalReviewsPage :4,
-          		totalPaginacaoReviews: 1
-			});
-
-			var product2 = new Object ({
-				name:'Freezer/Refrigerador Vertical Brastemp Flex 228 Litros Frost Free BVR28HR Inox',
-	  			ean:88888888888888,
-	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-	  			merchantProductId: 1109777,
-	  			url:"https://www.walmart.com.br/item/35172/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox&zanpid=2224545894140288000&utm_term=httpwwwskimlinkscom",
-	  			urlOffer:'3166186/sk',
-	  			advertiser:"walmart",
-	  			totalReviewsPage :8,
-          		totalPaginacaoReviews: 1
-			});
-
-			var arrayProducts = [];
-			arrayProducts.push(product1);
-			arrayProducts.push(product2);
-
-			Context.currentItem = 0; 
-			Context.arrayProducts = arrayProducts;
-			Context.currentPaginationReview = 0;
-
 
 			var review = new Review ({
 				title: "Indicação 100% para Walmart ",
@@ -137,22 +135,30 @@ describe('Walmart Advertiser Server Tests:',function(done){
 			arrayReviews.push(review2);
 			arrayReviews.push(review3);
 
-			arrayProducts[0].reviews = arrayReviews;
-			arrayProducts[1].reviews = arrayReviews;
+			Context.arrayProducts[0].reviews = arrayReviews;
+			Context.arrayProducts[1].reviews = arrayReviews;
 
-			call.getHtml(Context.arrayProducts[1].url,timeRequest,function(error,response,body){
-				Context.body = body;
-				//done();
-			});
 		});
-			
+		
+
+		it('Should get productid == 2033536 ,totalReviewsPage == 182 and totalPaginacaoReviews == 46', function(done) {
+			this.timeout(5000);
+			walmart.getProductContext(Context.body,function(productid,totalReviewsPage,totalPaginacaoReviews){
+				productid.should.be.equal('2033536');
+				totalReviewsPage.should.be.equal('182');
+				totalPaginacaoReviews.should.be.equal(46);
+				done();
+			});
+		});	
+
 
 		it('Should add info to array products: productid,totalReviewsPage and totalPaginacaoReviews', function(done) {
-			this.timeout(10000);
-			walmart.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProductsWalmart){
-				arrayProductsWalmart[1].dataProductId.should.be.equal('4621073');
-				arrayProductsWalmart[1].totalPaginacaoReviews.should.be.equal(0);
-				arrayProductsWalmart[1].totalReviewsPage.should.be.equal('0');
+			this.timeout(20000);
+			walmart.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProductReview){
+				console.log("arrayProductsWalmart",arrayProductReview);
+				arrayProductReview[1].dataProductId.should.be.equal('2033536');
+				arrayProductReview[1].totalPaginacaoReviews.should.be.equal(46);
+				arrayProductReview[1].totalReviewsPage.should.be.equal('182');
 				done();
 			});
 		});
@@ -173,7 +179,6 @@ describe('Walmart Advertiser Server Tests:',function(done){
 	after(function(){
 		reviewController.deleteAllReviews(function(){
 			console.log("bd clean");
-			//mongoose.connection.close();
 		});
 	});
 

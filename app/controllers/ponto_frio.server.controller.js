@@ -7,8 +7,7 @@ var ReviewSchema = require('../models/review.server.model');
 var Review = mongoose.model( 'Review', ReviewSchema);
 var config = require('../../config/config.js');
 var contReview = 0;
-
-
+var call = new requestUtile();
 
 
 var getProductContext = function(body,next){
@@ -37,68 +36,72 @@ var getProductContext = function(body,next){
 
 
 var setDataProducts = function(currentItem,arrayProducts,next){
-	
-	try{
-		if(currentItem < arrayProducts.length){
 
-			var departament = "Eletrodomesticos/";
+    try{
 
-		    var urlToCrawler = 	config.ponto_frio_url + 
-		    					departament + 
-		    					arrayProducts[currentItem].category + "/" +
-		    					arrayProducts[currentItem].name + 
-		    					arrayProducts[currentItem].urlOffer + ".html";
+      if(currentItem < arrayProducts.length){
 
-		    console.log("offer >> ",currentItem);
-		    console.log("urlToCrawler >> ",urlToCrawler);
+        var nameOffer = arrayProducts[currentItem].name;
+        var idOffer = arrayProducts[currentItem].merchantProductId;
 
-		    getBodyProductPage(urlToCrawler,function(body){
-          console.log("body",body);
-          if(body !== null){
-		       
-		        getProductContext(body,function(totalPaginacaoReviews){
+        var urlToCrawler =  config.ponto_frio_url + nameOffer + '-' + idOffer + ".html";
+        // remove double quotes
+        var result_urlToCrawler = urlToCrawler.replace(/\”/g, "");
+                  
+        console.log("offer >> ",currentItem);
+        console.log("urlToCrawler >> ",result_urlToCrawler);
 
-		          arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
-		          console.log("Product ean >> ",arrayProducts[currentItem].ean);
-		          console.log("advertiser >> ", arrayProducts[currentItem].advertiser);
-		          console.log("adding attribute totalPaginacaoReviews >> ", arrayProducts[currentItem].totalPaginacaoReviews);
-		          console.log('\n');
-		          setDataProducts(currentItem+1,arrayProducts,next);
-		        });
+        call.getHtml(result_urlToCrawler,config.timeRequest,function(error,response,body){
+          if(error){
+              console.log("error setDataProducts:",error);
+              setDataProducts(currentItem+1,arrayProducts,next);
           }else{
-            setDataProducts(currentItem+1,arrayProducts,next);
-          }
+          
+            getProductContext(body,function(totalPaginacaoReviews){
 
-		    });
-        
-		 }else{
-		 	return next(arrayProducts);
-		 }
-	}catch(e){
-		console.log('An error has occurred >> ponto_frio.server.controller >> setDataProducts >> '+ e.message);
-	}
+              if((totalPaginacaoReviews > 0) && (arrayProducts[currentItem].ean !== undefined)){
+
+                arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
+                console.log("Product ean >> ",arrayProducts[currentItem].ean);
+                console.log("advertiser >> ", arrayProducts[currentItem].advertiser);
+                console.log("adding attribute totalPaginacaoReviews >> ", arrayProducts[currentItem].totalPaginacaoReviews);
+                console.log('\n');
+
+                setDataProducts(currentItem+1,arrayProducts,next);
+
+              }else{
+                console.log("offer without ean or with total reviews < 0");
+                console.log('\n');
+                setDataProducts(currentItem+1,arrayProducts,next);
+              }
+
+            });
+          }
+        });
+
+      }else{
+        return next(arrayProducts);
+      }
+
+    }catch(e){
+      console.log('An error has occurred >> ponto_frio.server.controller >> setDataProducts >>'+ e.message);
+    }
 };
 
 
-var crawlerByProduct = function(currentItem,arrayProducts,next){
+var crawlerByProduct = function(currentItem,arrayProductsReview,next){
 
 	try{
 	    // for each product
-	    if(currentItem < arrayProducts.length) {
-
-	      if((arrayProducts[currentItem].totalPaginacaoReviews > 0) && (arrayProducts[currentItem].ean != 'undefined')){
+	    if(currentItem < arrayProductsReview.length) {
 	      
-	        var currentPaginationReview = 1;
+	       var currentPaginationReview = 1;
 	      
-	        crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProducts,function(contReview){
-	          console.log('total of reviews saved at the moment >> ',contReview);
-	          crawlerByProduct(currentItem + 1,arrayProducts,next);
-	        });
-
-	      }else{
-	        console.log("offer without ean or with total reviews < 0");
-	        crawlerByProduct(currentItem + 1,arrayProducts,next);
-	      }
+	       crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsReview,function(contReview){
+	           console.log('total of reviews saved at the moment >> ',contReview);
+             console.log('\n');
+	           crawlerByProduct(currentItem + 1,arrayProductsReview,next);
+	       });
 
 	    }else{
 	      return next(contReview);
@@ -109,38 +112,41 @@ var crawlerByProduct = function(currentItem,arrayProducts,next){
 };
 
 
-var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arrayProducts,next){
+var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arrayProductsReview,next){
   
-  var productReview = arrayProducts[currentItem];
+  var productReview = arrayProductsReview[currentItem];
 
   try{
       // for each review pagination
     if(currentPaginationReview <= 1){
 
-      //var dataProductId = arrayProducts[currentItem].dataProductId;
+	    var urlToCrawler = 	config.ponto_frio_url +
+	    					          productReview.name + '-' +
+	    					          productReview.merchantProductId + ".html";
 
-      	var departament = "Eletrodomesticos/";
+      // remove double quotes
+      var result_urlToCrawler = urlToCrawler.replace(/\”/g, "");
 
-	    var urlToCrawler = 	config.ponto_frio_url + 
-	    					departament + 
-	    					productReview.category + "/" +
-	    					productReview.name + 
-	    					productReview.urlOffer + ".html";
+      console.log("urlToCrawler",result_urlToCrawler);
 
-      getBodyProductPage(urlToCrawler,function(data){
+      call.getHtml(result_urlToCrawler,config.timeRequest,function(error,response,body){
 
-        getReviewsFromHtml(data,productReview,function(reviews){
+         if(error){
+              console.log("error crawlerByReviewPagination:",error);
+              crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProductsReview,next);
+          }else{
+
+            getReviewsFromHtml(body,productReview,function(reviews){
         
-          var currentItemArray = 0;
+              var currentItemArray = 0;
             
-          reviewController.saveArrayReviews(currentItemArray,reviews,function(arrayReviews){
-            contReview = contReview + arrayReviews.length;
-            crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProducts,next);
-          });
-
-        });
-
-     });
+              reviewController.saveArrayReviews(currentItemArray,reviews,function(arrayReviews){
+                contReview = contReview + arrayReviews.length;
+                crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProductsReview,next);
+                });
+              });
+          }
+      });
 
     }else{
       return next(contReview);
@@ -148,21 +154,6 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
 
   }catch(e){
     console.log('An error has occurred >> ponto_frio.server.controller >> getReviewsByPagination '+ e.message);
-  }
-};
-
-
-var getBodyProductPage = function(urlToCrawler,next){
-
-  try{
-  	var call = new requestUtile();
-  	call.getHtml(urlToCrawler,config.timeRequest,function(error,response,body){
-    	console.log("callback getBodyProductPage");
-    	return next(body);
-  	});
-  }catch(e){
-    console.log('An error has occurred >> ponto_frio.server.controller >> getBodyProductPage >> '+ e.message);
-    return next(null);
   }
 };
 

@@ -7,13 +7,13 @@ var ReviewSchema = require('../models/review.server.model');
 var Review = mongoose.model( 'Review', ReviewSchema);
 var config = require('../../config/config.js');
 var contReview = 0;
-
+var callPhantom = new phantomUtile();
 
 var getProductContext = function(body,next){
   
   try{
 
-    $ = cheerio.load(body);
+    var $ = cheerio.load(body);
 
     var productid = $('.codigo-produto').text();
     var productid_split_final;
@@ -53,82 +53,64 @@ var getProductContext = function(body,next){
 var setDataProducts = function(currentItem,arrayProducts,next){
 	
 	try{
+
 		if(currentItem < arrayProducts.length){
 
 		    var urlToCrawler = config.lojas_colombo + arrayProducts[currentItem].urlOffer;
 		    console.log("offer >> ",currentItem);
 		    console.log("urlToCrawler >> ",urlToCrawler);
 
-		    getBodyProductPage(urlToCrawler,function(body){
-		       
-		      getProductContext(body,function(productid,totalPaginacaoReviews){
+        callPhantom.getHtml(urlToCrawler,config.timeRequest,function(body){
 
-		          arrayProducts[currentItem].dataProductId = productid;
-		          arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
-		          console.log("Product ean >> ",arrayProducts[currentItem].ean);
-              console.log("advertiser >> ", arrayProducts[currentItem].advertiser);
-		          console.log("adding attribute dataProductId >> ",arrayProducts[currentItem].dataProductId);
-		          console.log("adding attribute totalPaginacaoReviews >> ", arrayProducts[currentItem].totalPaginacaoReviews);
-		          console.log('\n');
-		          setDataProducts(currentItem+1,arrayProducts,next);
-		      });
+          // if(error){
+          //     console.log("error setDataProducts:",error);
+          //     setDataProducts(currentItem+1,arrayProducts,next);
+          // }else{
 
-		    });
-        
-		 }else{
-		 	return next(arrayProducts);
-		 }
+            getProductContext(body,function(productid,totalPaginacaoReviews){
+
+               if((totalPaginacaoReviews > 0) && (arrayProducts[currentItem].ean !== undefined)){
+                  arrayProducts[currentItem].dataProductId = productid;
+                  arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
+                  console.log("Product ean >> ",arrayProducts[currentItem].ean);
+                  console.log("advertiser >> ", arrayProducts[currentItem].advertiser);
+                  console.log("adding attribute dataProductId >> ",arrayProducts[currentItem].dataProductId);
+                  console.log("adding attribute totalPaginacaoReviews >> ", arrayProducts[currentItem].totalPaginacaoReviews);
+                  console.log('\n');
+
+                  setDataProducts(currentItem+1,arrayProducts,next);
+               }else{
+                console.log("offer without ean or with total reviews < 0");
+                console.log('\n');
+                setDataProducts(currentItem+1,arrayProducts,next);
+               }
+            });
+          // }
+      });
+
+ 		}else{
+		  return next(arrayProducts);
+		}
 	}catch(e){
 		console.log('An error has occurred >> setDataProducts >> '+ e.message);
 	}
 };
 
 
-var getBodyProductPage = function(urlToCrawler,next){
 
-  try{
-    if(process.env.NODE_ENV != 'test'){
-      var call = new phantomUtile();
-      call.getHtml(urlToCrawler,config.timeRequest,function(body){
-        console.log("get body html by phantomjs");
-        return next(body);
-      });
-    }else{
-      // this conditional exists because phantomjs doesnt work wtih mocha ( test environment )
-      // the url crawler was saved by casperjs ( see test task inside gruntfile), into the public folder
-      // therefore, to env test, the product page used always will be the same, the file saved by casperjs test
-      var call2 = new requestUtile();
-      var timeRequest = 0;
-      call2.getHtml(urlToCrawler,timeRequest,function(error,response,body){
-        console.log("get body html by request");
-        return next(body);
-      });
-    }
-  }catch(e){
-    console.log('An error has occurred >> getBodyProductPage >> '+ e.message);
-  }
-};
-
-
-var crawlerByProduct = function(currentItem,arrayProducts,next){
+var crawlerByProduct = function(currentItem,arrayProductsReview,next){
 
   try{
     // for each product
-    if(currentItem < arrayProducts.length) {
+    if(currentItem < arrayProductsReview.length) {
 
-      if((arrayProducts[currentItem].totalPaginacaoReviews > 0) && (arrayProducts[currentItem].ean != 'undefined')){
+      var currentPaginationReview = 1;
       
-        var currentPaginationReview = 1;
-      
-        crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProducts,function(contReview){
-          console.log('total of reviews saved at the moment >> ',contReview);
-          crawlerByProduct(currentItem + 1,arrayProducts,next);
-        });
-      }else{
-        console.log("offer without ean or with total reviews < 0");
-        crawlerByProduct(currentItem + 1,arrayProducts,next);
-      }
-
+      crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsReview,function(contReview){
+        console.log('total of reviews saved at the moment >> ',contReview);
+        crawlerByProduct(currentItem + 1,arrayProductsReview,next);
+      });
+  
     }else{
       return next(contReview);
     }
@@ -138,15 +120,15 @@ var crawlerByProduct = function(currentItem,arrayProducts,next){
 };
 
 
-var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arrayProducts,next){
+var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arrayProductsReview,next){
   
-  var productReview = arrayProducts[currentItem];
+  var productReview = arrayProductsReview[currentItem];
 
   try{
       // for each review pagination
-    if(currentPaginationReview <= arrayProducts[currentItem].totalPaginacaoReviews){
+    if(currentPaginationReview <= arrayProductsReview[currentItem].totalPaginacaoReviews){
 
-      var dataProductId = arrayProducts[currentItem].dataProductId;
+      var dataProductId = arrayProductsReview[currentItem].dataProductId;
 
       getJson(dataProductId,currentPaginationReview,function(data){
 
@@ -156,7 +138,7 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
             
           reviewController.saveArrayReviews(currentItemArray,reviews,function(arrayReviews){
             contReview = contReview + arrayReviews.length;
-            crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProducts,next);
+            crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProductsReview,next);
           });
 
         });

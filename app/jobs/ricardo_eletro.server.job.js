@@ -1,14 +1,18 @@
 var config = require('../../config/config.js'),
  	ricardoController = require('../controllers/ricardo_eletro.server.controller.js'),
  	offerController = require('../controllers/offer.crawler.server.controller.js'),
+ 	DateUtile = require('../utile/date.server.utile.js'),
  	cron = require('node-cron');
 
 
 var taskRicardo = cron.schedule(config.ricardo_eletro_schedule, function(err){
-  console.log('starting Ricardo Eletro BR job ...');
-  start(function(){
-  	console.log("Ricardo Eletro BR job finished !");
-  });
+	var time_start = new Date();	
+	var dateUtile = new DateUtile();
+  	start(function(){
+  		dateUtile.getJobTime(time_start,function(){
+  			console.log("Ricardo Eletro BR job finished !");
+  		});
+    });
 },false);
 
 
@@ -24,15 +28,19 @@ function start(next){
 
 		ricardoController.setProductIdArrayProducts(currentItem,arrayProducts,function(arrayProducts){
 			  
-			console.log("callback setProductIdArrayProducts > ",arrayProducts.length);
+			console.log("callback setProductIdArrayProducts > ");
 
-			ricardoController.setTotalPaginationArrayProducts(currentItem,arrayProducts,function(arrayProducts){
+			ricardoController.setTotalPaginationArrayProducts(currentItem,arrayProducts,function(arrayProductsReview){
 
-				console.log("callback setTotalPaginationArrayProducts > ",arrayProducts.length);
+				console.log("callback setTotalPaginationArrayProducts >>");
 
-				ricardoController.crawlerByProduct(currentItem,arrayProducts,function(contReview){
+				console.log("total arrayProductsReview >> ",arrayProductsReview.length);
 
-					console.log("callback crawlerByProduct >> ",contReview);
+				ricardoController.crawlerByProduct(currentItem,arrayProductsReview,function(contReview){
+
+					console.log("callback crawlerByProduct >> ");
+
+					console.log("total reviews crawled >> ",contReview);
 					
 					return next();
 				});
@@ -41,6 +49,7 @@ function start(next){
 		});
 	});
 }
+
 
 var starJob = function(next){
 	return (taskRicardo.start());

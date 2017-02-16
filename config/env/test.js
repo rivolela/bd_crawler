@@ -3,7 +3,7 @@ module.exports = {
 	db:'mongodb://127.0.0.1:27017/bd_test',
 	sessionSecret:'testSessionSecret',
 	connectid:'43EEF0445509C7205827',
-	timeRequest:3000,
+	timeRequest:1000,
 	productPageTest:'http://localhost:3000/ricardo_eletro.html',
 
 

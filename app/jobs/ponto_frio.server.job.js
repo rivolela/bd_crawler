@@ -1,6 +1,7 @@
 var config = require('../../config/config.js'),
  	pfController = require('../controllers/ponto_frio.server.controller.js'),
  	offerController = require('../controllers/offer.crawler.server.controller.js'),
+ 	DateUtile = require('../utile/date.server.utile.js'),
  	cron = require('node-cron');
 
 
@@ -12,9 +13,12 @@ var config = require('../../config/config.js'),
 
 
 var taskPontoFrio = cron.schedule(config.ponto_frio_schedule, function(err){
-  console.log('starting Ponto Frio BR job ...');
-  start(function(){
-  	console.log("Ponto Frio BR job finished !");
+  	var time_start = new Date();	
+	var dateUtile = new DateUtile();
+  	start(function(){
+   		dateUtile.getJobTime(time_start,function(){
+  			console.log("Ponto Frio BR job finished !");
+  		});
   });
 },false);
 
@@ -30,9 +34,11 @@ function start(next){
 		console.log("callback get offers Zanox from BD: >>",arrayProducts.length);
 		console.log("\n");		
 
-		pfController.setDataProducts(currentItem,arrayProducts,function(arrayProducts){
+		pfController.setDataProducts(currentItem,arrayProducts,function(arrayProductsReview){
 			  
-			console.log("callback setDataProducts > ",arrayProducts.length);
+			console.log("callback setDataProducts >>");
+
+			console.log("total arrayProductsReview >> ",arrayProductsReview.length);
 				
 			pfController.crawlerByProduct(currentItem,arrayProducts,function(contReview){
 

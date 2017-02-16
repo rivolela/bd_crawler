@@ -2,7 +2,7 @@ var should = require('should');
 var requestUtile = require('../../../utile/requests.server.utile.js');
 var phantomUtile = require('../../../utile/phantomjs.server.utile.js');
 var config = require('../../../../config/config.js');
-var html = 'http://www.pontofrio.com.br/Eletrodomesticos/2Portas/Refrigerador-Consul-Cycle-Defrost-Duplex-CRD36-com-Super-Freezer-334-L-Branco/3384187.html';
+var html ='http://www.pontofrio.com.br/iPhone SE Apple com 16GB, Tela 4”, iOS 9, Sensor de Impressão Digital, Câmera iSight 12MP, Wi-Fi, 3G/4G, GPS, MP3, Bluetooth e NFC - Prateado-7990218.html';
 var url_offer  = '/2345967';
 var pfController = require('../../../controllers/ponto_frio.server.controller.js');
 var reviewController = require('../../../controllers/review.server.controller.js');
@@ -19,8 +19,9 @@ describe('Ponto Frio BR unit tests:',function(done){
 		before(function(done){
 
 			this.timeout(20000);
-
-			call.getHtml(html,config.timeRequest,function(error,response,body){
+			// remove double quotes
+			var result_html = html.replace(/\”/g, "");
+			call.getHtml(result_html,config.timeRequest,function(error,response,body){
 				Context.body = body;
 				done();
 			});
@@ -32,7 +33,7 @@ describe('Ponto Frio BR unit tests:',function(done){
 			this.timeout(10000);
 			
 			pfController.getProductContext(Context.body,function(totalPaginacaoReviews){
-				totalPaginacaoReviews.should.be.above(10);
+				totalPaginacaoReviews.should.be.above(0);
 				done();
 			});
 		});
@@ -119,11 +120,12 @@ describe('Ponto Frio BR unit tests:',function(done){
 
 
 		it('Should contReview == 10', function(done) {
-			this.timeout(10000);
+			this.timeout(20000);
 			var currentItem = 1;
 			pfController.crawlerByProduct(currentItem,
 										  Context.arrayProducts,
 								 		  function(contReview){
+								 		  	console.log("contReview >>",contReview);
 								 		  	contReview.should.be.equal(10);
 											done();
 										  });

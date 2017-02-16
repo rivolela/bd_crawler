@@ -5,11 +5,12 @@ var config = require('../../config/config.js');
 var reviewController = require('../controllers/review.server.controller.js');
 var Offer = require('../controllers/offer.crawler.server.controller.js');
 var call = new requestUtile();
-
-
 var mongoose = require('mongoose');
 var ReviewSchema = require('../models/review.server.model');
 var Review = mongoose.model( 'Review', ReviewSchema);
+var contReview = 0;
+var Offer_CrawlerSchema = require('../models/offer.crawler.server.model');
+var Offer = mongoose.model( 'Offer_Crawler', Offer_CrawlerSchema);
 
 
 var getProductContext = function(body,next){
@@ -27,7 +28,7 @@ var getProductContext = function(body,next){
     // }
     return next(productid,totalReviewsPage,totalPaginacaoReviews);
   }catch(e){
-    console.log('An error has occurred: '+ e.message);
+    console.log('An error has occurred >> getProductContext >> '+ e.message);
   }
 };
  
@@ -48,18 +49,25 @@ var setDataProducts = function(currentItem,arrayProducts,next){
       }else{
         getProductContext(body,function(productid,totalReviewsPage,totalPaginacaoReviews){
 
-          arrayProducts[currentItem].dataProductId = productid;
-          arrayProducts[currentItem].totalReviewsPage = totalReviewsPage;
-          arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
-          console.log("Product ean >> ",arrayProducts[currentItem].ean);
-          console.log("advertiser >> ", arrayProducts[currentItem].advertiser);
-          console.log("adding attribute dataProductId >> ",arrayProducts[currentItem].dataProductId);
-          console.log("adding attribute totalReviewsPage >> ",arrayProducts[currentItem].totalReviewsPage);
-          console.log("adding attribute totalPaginacaoReviews >> ", arrayProducts[currentItem].totalPaginacaoReviews);
-          console.log('\n');
+          if((totalReviewsPage > 0) && (arrayProducts[currentItem].ean !== undefined)){
 
-          setDataProducts(currentItem+1,arrayProducts,next);
+            arrayProducts[currentItem].dataProductId = productid;
+            arrayProducts[currentItem].totalReviewsPage = totalReviewsPage;
+            arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
+            console.log("Product ean >> ", arrayProducts[currentItem].ean);
+            console.log("advertiser >> ",  arrayProducts[currentItem].advertiser);
+            console.log("adding attribute dataProductId >> ",productid);
+            console.log("adding attribute totalReviewsPage >> ",totalReviewsPage);
+            console.log("adding attribute totalPaginacaoReviews >> ", totalPaginacaoReviews);
+            console.log('\n');
 
+            setDataProducts(currentItem+1,arrayProducts,next);
+
+          }else{
+            console.log("offer without ean or with total reviews < 0");
+            console.log('\n');
+            setDataProducts(currentItem+1,arrayProducts,next);
+          }
         });
       }
     });
@@ -70,39 +78,34 @@ var setDataProducts = function(currentItem,arrayProducts,next){
 };
 
 
-var crawlerByProduct = function(currentItem,arrayProducts,next){
+var crawlerByProduct = function(currentItem,arrayProductsReview,next){
 
   // for each product
-  if(currentItem < arrayProducts.length){
+  if(currentItem < arrayProductsReview.length){
 
-    if((arrayProducts[currentItem].totalReviewsPage > 0) && (arrayProducts[currentItem].ean != 'undefined')){
-      
-      var currentPaginationReview = 0;
-      
-      crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProducts,function(arrayProducts){
-        console.log('callback saveReviewsByPagination');
-        crawlerByProduct(currentItem + 1,arrayProducts,next);
-      });
-    }else{
-      console.log("offer without ean or with total reviews < 0");
-      crawlerByProduct(currentItem + 1,arrayProducts,next);
-    }
+    var currentPaginationReview = 0;
+    
+    crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsReview,function(contReview){
+      console.log('callback saveReviewsByPagination');
+      console.log('total of reviews saved at the moment >> ',contReview);
+      crawlerByProduct(currentItem + 1,arrayProductsReview,next);
+    });
 
   }else{
-    return next(arrayProducts);
+    return next(contReview);
   }
 };
 
 
-var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arrayProducts,next){
+var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arrayProductsReview,next){
   
-  var productReview = arrayProducts[currentItem];
+  var productReview = arrayProductsReview[currentItem];
 
   try{
       // for each review pagination
-    if(currentPaginationReview < arrayProducts[currentItem].totalPaginacaoReviews){
+    if(currentPaginationReview < arrayProductsReview[currentItem].totalPaginacaoReviews){
 
-      var dataProductId = arrayProducts[currentItem].dataProductId;
+      var dataProductId = arrayProductsReview[currentItem].dataProductId;
       var urlToCrawler = 'https://www.walmart.com.br/xhr/reviews/'+ dataProductId + '/?pageNumber=' + currentPaginationReview;
       console.log("urlToCrawler >> ",urlToCrawler);
       var call = new requestUtile();
@@ -111,7 +114,7 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
         
         if(error){
           console.log("error crawlerByReviewPagination:",error);
-          crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProducts,next);
+          crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProductsReview,next);
         }else{
 
           console.log("callback getHtml >> body >> ",body);
@@ -119,14 +122,15 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
           getReviewsFromHtml(body,productReview,function(reviews){          
             var currentItemArray = 0;     
             reviewController.saveArrayReviews(currentItemArray,reviews,function(arrayReviews){
-              crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProducts,next);
+              contReview = contReview + arrayReviews.length;
+              crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProductsReview,next);
             });
           });
         }
       });
 
     }else{
-      return next(arrayProducts);
+      return next(contReview);
     }
 
   }catch(e){

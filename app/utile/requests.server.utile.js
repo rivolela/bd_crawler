@@ -26,6 +26,7 @@ module.exports = function(){
   				if(error) {
     				console.log("error getJson >>",error);
     				console.log("response",response);
+    				console.log('\n');
  				}else{
     				var data = JSON.parse(body);
     				return next(data,response,error);
@@ -51,10 +52,11 @@ module.exports = function(){
 	      		},
 	      		timeout: 10000,
   				//followRedirect: true,
-  				maxRedirects: 10
+  				// maxRedirects: 10
 	  		},function(error,response,body){
 	  	 		if(error) {
 	     		   console.log("error get html >> ",error);
+	     		   console.log('\n');
 	      		} else {
 	      			//console.log(body);
 	        		console.log("request status code >> ",response.statusCode);
@@ -62,7 +64,7 @@ module.exports = function(){
 	        		return next(error,response,body);
 	      		}
 	  		}).on('error', function(e){
-    			console.log("error getHtml >>",e);
+    			// console.log("error getHtml >>",e);
     			return next(e);
   			}).end();
     	});

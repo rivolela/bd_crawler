@@ -41,7 +41,7 @@
     "grunt-casperjs-plugin": "^1.0.3",
     "grunt-concurrent": "1.0.0",
     "grunt-contrib-csslint": "2.0.0",
-    "grunt-contrib-jshint": "1.0.0",
+    "grunt-contrib-jshint": "1.1.0",
     "grunt-contrib-less": "1.4.0",
     "grunt-contrib-watch": "1.0.0",
     "grunt-env": "0.4.1",

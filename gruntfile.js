@@ -22,7 +22,7 @@ module.exports = function(grunt){
 				script:'server.js',
 				options:{
 					ext:'js,html',
-					watch:['server.js','config/**/*.js','app/**/*.js','public/**/*.html','public/css/**/*.less']
+					watch:['server.js','config/**/*.js','app/**/*.js','public/**/*.html']
 				}
 			},
 			debug:{
@@ -36,8 +36,8 @@ module.exports = function(grunt){
 		},
 		mochaTest:{
 			//src:'app/tests/mocha/utile/requests.server.utile.tests.js',
-			//src:'app/tests/mocha/controllers/ricardo_eletro.server.controller.tests.js',
-			bd_offersrc:'app/tests/mocha/**/*.js',
+			//src:'app/tests/mocha/controllers/lojas_colombo.server.controller.tests.js',
+			src:'app/tests/mocha/**/*.js',
 			options:{
 				reporter:'spec'
 			}
@@ -47,7 +47,8 @@ module.exports = function(grunt){
     			engine: 'phantomjs',
     			silent: false
     		},
-    		files:['app/tests/casperjs/**/*.js']
+    		//files:['app/tests/casperjs/**/walmart.server.controller.tests.js']
+    		// files:['app/tests/casperjs/**/*.js']
   		},
 		// karma:{
 		// 	unit:{
@@ -143,7 +144,7 @@ module.exports = function(grunt){
 	grunt.registerTask('job',['env:test_job','server','watch']);
 	
 
-	grunt.registerTask('dev',['env:dev','server','watch']);
+	// grunt.registerTask('dev',['env:dev','server','watch']);
 
 	// grunt.registerTask('lint',['jshint','csslint']);
 };

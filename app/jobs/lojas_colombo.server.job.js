@@ -1,6 +1,7 @@
 var config = require('../../config/config.js'),
  	lcController = require('../controllers/lojas_colombo.server.controller.js'),
  	offerController = require('../controllers/offer.crawler.server.controller.js'),
+ 	DateUtile = require('../utile/date.server.utile.js'),
  	cron = require('node-cron');
 
 
@@ -12,10 +13,14 @@ var config = require('../../config/config.js'),
 
 
 var taskColombo = cron.schedule(config.lojas_colombo_schedule, function(err){
-  console.log('starting Lojas Colombo BR job ...');
-  start(function(){
-  	console.log("Lojas Colombo BR job finished !");
-  });
+
+  	var time_start = new Date();	
+	var dateUtile = new DateUtile();
+  	start(function(){
+   		dateUtile.getJobTime(time_start,function(){
+  			console.log("Lojas Colombo BR job finished !");
+  		});
+  	});
 },false);
 
 
@@ -30,14 +35,18 @@ function start(next){
 		console.log("callback get offers Zanox from BD: >>",arrayProducts.length);
 		console.log("\n");		
 
-		lcController.setDataProducts(currentItem,arrayProducts,function(arrayProducts){
+		lcController.setDataProducts(currentItem,arrayProducts,function(arrayProductsReview){
 			  
-			console.log("callback setDataProducts > ",arrayProducts.length);
-				
-			lcController.crawlerByProduct(currentItem,arrayProducts,function(contReview){
+			console.log("callback setDataProducts >>");
 
-				console.log("callback crawlerByProduct >> ",contReview);
+			console.log("total arrayProductsReview >> ",arrayProductsReview.length);
+				
+			lcController.crawlerByProduct(currentItem,arrayProductsReview,function(contReview){
+
+				console.log("callback crawlerByProduct >> ");
+
 				console.log("total reviews crawled >> ",contReview);
+				
 				return next();
 			});
 		});
