@@ -23,7 +23,8 @@ module.exports = {
 	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
 	lojas_colombo: 'https://www.colombo.com.br',
 	walmart_url: 'https://www.walmart.com.br/item/',
-	ponto_frio_url: 'http://www.pontofrio.com.br/'
+	ponto_frio_url: 'http://www.pontofrio.com.br/',
+	girafa_url: 'http://www.girafa.com.br/',
 };
 
 // var task = cron.schedule('* * * * *', function() {

@@ -65,7 +65,7 @@ var findOneAndUpdate = function(query,object,next){
 
   // if query null or empty, this query should be the default
   // only create new review, if the condition below doesnt exist
-  // this rule avoids recreate review already created in db
+  // this rule avoids to recreate review already created in db
   if(Boolean(query) === false){
     query = {date:object.date,
             manufacturer:object.manufacturer,

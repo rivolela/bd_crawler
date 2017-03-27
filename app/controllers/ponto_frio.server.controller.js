@@ -46,7 +46,7 @@ var setDataProducts = function(currentItem,arrayProducts,next){
 
         var urlToCrawler =  config.ponto_frio_url + nameOffer + '-' + idOffer + ".html";
         // remove double quotes
-        var result_urlToCrawler = urlToCrawler.replace(/\”/g, "");
+        var result_urlToCrawler = urlToCrawler.replace(/\"/g, "");
                   
         console.log("offer >> ",currentItem);
         console.log("urlToCrawler >> ",result_urlToCrawler);
@@ -125,7 +125,7 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
 	    					          productReview.merchantProductId + ".html";
 
       // remove double quotes
-      var result_urlToCrawler = urlToCrawler.replace(/\”/g, "");
+      var result_urlToCrawler = urlToCrawler.replace(/\"/g, "");
 
       console.log("urlToCrawler",result_urlToCrawler);
 
