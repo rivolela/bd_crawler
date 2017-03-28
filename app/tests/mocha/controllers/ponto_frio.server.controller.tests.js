@@ -185,12 +185,12 @@ describe('Ponto Frio BR unit tests:',function(done){
 		});
 
 
-		it('Should contain the author: ander in arrayReviews', function(done) {
+		it('Should contain the author: Hilana in arrayReviews', function(done) {
 			this.timeout(10000);
 			pfController.getReviewsFromHtml(Context.data,
 									  		Context.product,
 									  		function(arrayReviews){
-									  			arrayReviews.should.containDeep([{author: 'Augusto'}]);
+									  			arrayReviews.should.containDeep([{author: 'Hilana'}]);
 												done();
 									  		});
 		});

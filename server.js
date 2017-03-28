@@ -10,6 +10,7 @@ var mongoose = require('./config/mongoose'),
  	ricardoJob = require('./app/jobs/ricardo_eletro.server.job.js'),
  	colomboJob = require('./app/jobs/lojas_colombo.server.job.js'),
  	pontoFrioJob = require('./app/jobs/ponto_frio.server.job.js');
+ 	girafaJob = require('./app/jobs/girafa.server.job.js');
  	
 
 var db = mongoose();
@@ -37,7 +38,7 @@ walmartJob.starJob();
 ricardoJob.starJob();
 colomboJob.starJob();
 pontoFrioJob.starJob();
-
+girafaJob.starJob();
 
 module.exports = app;
 

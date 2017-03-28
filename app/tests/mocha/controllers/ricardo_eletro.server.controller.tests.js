@@ -178,7 +178,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 			reController.getReviewsFromHtml(Context.body,
 											Context.product,
 											function(arrayReviews){
-												arrayReviews.length.should.be.equal(5);
+												arrayReviews.length.should.be.equal(4);
 												done();
 											});
 		});

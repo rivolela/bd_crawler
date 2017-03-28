@@ -1,4 +1,5 @@
 var config = require('../../config/config.js'),
+	Jobs = require('../../config/jobs/jobs.config.js'),
  	lcController = require('../controllers/lojas_colombo.server.controller.js'),
  	offerController = require('../controllers/offer.crawler.server.controller.js'),
  	DateUtile = require('../utile/date.server.utile.js'),
@@ -12,7 +13,7 @@ var config = require('../../config/config.js'),
 // }
 
 
-var taskColombo = cron.schedule(config.lojas_colombo_schedule, function(err){
+var taskColombo = cron.schedule(Jobs.lojas_colombo_schedule, function(err){
 
   	var time_start = new Date();	
 	var dateUtile = new DateUtile();

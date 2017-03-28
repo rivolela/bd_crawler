@@ -1,5 +1,6 @@
 var config = require('../../config/config.js'),
 	mongoose = require('mongoose'),
+	Jobs = require('../../config/jobs/jobs.config.js'),
 	walmartController = require('../controllers/walmart.server.controller.js'),
 	offerController = require('../controllers/offer.crawler.server.controller.js'),
 	reviewController = require('../controllers/review.server.controller.js'),
@@ -9,7 +10,7 @@ var config = require('../../config/config.js'),
 	DateUtile = require('../utile/date.server.utile.js'),
 	cron = require('node-cron');
 
-var taskWalmart = cron.schedule(config.walmart_schedule, function(err){
+var taskWalmart = cron.schedule(Jobs.walmart_schedule, function(err){
 	
 	var time_start = new Date();	
 	var dateUtile = new DateUtile();

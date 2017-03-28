@@ -17,7 +17,7 @@ describe('Girafa BR unit tests >> ',function(done){
 		it('Should return total reviews == 2', function(done) {
 			this.timeout(6000);
 			var url = "http://www.girafa.com.br/Telefonia/Celulares/smartphone-display-5-5-android-4-4-gb-mp-branco.htm";
-			girafaController.getTotalReviews(url,function(totalReviews){
+			girafaController.getTotalReviews(url,function(totalReviews,body){
 				totalReviews.should.be.equal('2');
 				done();
 			});
@@ -37,7 +37,6 @@ describe('Girafa BR unit tests >> ',function(done){
 	});
 
 	
-
 	describe('Testing getReviewsFromHtml function >>',function(done){
 
 		var Context = {};
@@ -78,14 +77,22 @@ describe('Girafa BR unit tests >> ',function(done){
 		});
 
 
-		it('Should return arrayReviews with 4 reviews', function(done) {
+		it('Should return arrayReviews with 5 reviews', function(done) {
 			this.timeout(50000);
 			girafaController.getReviewsFromHtml(Context.body,
 												Context.product,
 												function(arrayReviews){
 													arrayReviews.length.should.be.equal(5);
+													arrayReviews[4].rating.should.be.equal(5);
+													arrayReviews[4].ean.should.be.equal('7898501193955');
+													// arrayReviews[4].manufacturer.should.be.equal(undefined);
+													arrayReviews[4].advertiser.should.be.equal('Girafa BR');
+													arrayReviews[4].date.should.be.equal('1433188920000');
+													arrayReviews[4].author.should.be.equal('Gustavo luiz caetano');
+													arrayReviews[4].description.should.be.equal('Muito bom mesmo.');
+													arrayReviews[4].title.should.be.equal('Review de Gustavo luiz caetano');
 													done();
 												});
-		});
+			});
 	});
-})
+});

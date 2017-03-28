@@ -1,4 +1,5 @@
 var config = require('../../config/config.js'),
+	Jobs = require('../../config/jobs/jobs.config.js'),
  	pfController = require('../controllers/ponto_frio.server.controller.js'),
  	offerController = require('../controllers/offer.crawler.server.controller.js'),
  	DateUtile = require('../utile/date.server.utile.js'),
@@ -12,7 +13,7 @@ var config = require('../../config/config.js'),
 // }
 
 
-var taskPontoFrio = cron.schedule(config.ponto_frio_schedule, function(err){
+var taskPontoFrio = cron.schedule(Jobs.ponto_frio_schedule, function(err){
   	var time_start = new Date();	
 	var dateUtile = new DateUtile();
   	start(function(){

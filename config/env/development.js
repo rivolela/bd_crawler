@@ -11,32 +11,11 @@ module.exports = {
 	proxyUrl:'proxy-br1.vpnsecure.me:8080',
 	proxy:'http://rivolela:Rovel@1976@proxy-br1.vpnsecure.me:8080',
 
-	//schedule reviews job
-	walmart_schedule:'14 11 * * *',
-	ricardo_eletro_schedule:'1 11 * * *',
-	lojas_colombo_schedule:'12 10 * * *',
-	ponto_frio_schedule:'2 16 * * *',
-
 	// urls crawler
 	ricardo_eletro_url: 'http://www.ricardoeletro.com.br/Produto/',
 	lojas_colombo: 'https://www.colombo.com.br',
 	walmart_url: 'https://www.walmart.com.br/item/',
-	ponto_frio_url: 'http://www.pontofrio.com.br/'
+	ponto_frio_url: 'http://www.pontofrio.com.br/',
+	girafa_url: 'http://www.girafa.com.br/'
 };
 
-
-// var task = cron.schedule('* * * * *', function() {
-//   console.log('immediately started');
-// }, true);
-
-// task.start()
-
- // # ┌────────────── second (optional)
- // # │ ┌──────────── minute
- // # │ │ ┌────────── hour
- // # │ │ │ ┌──────── day of month
- // # │ │ │ │ ┌────── month
- // # │ │ │ │ │ ┌──── day of week
- // # │ │ │ │ │ │
- // # │ │ │ │ │ │
- // # * * * * * *

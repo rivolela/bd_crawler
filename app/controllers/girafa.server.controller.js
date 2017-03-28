@@ -8,6 +8,7 @@ var Review = mongoose.model( 'Review', ReviewSchema);
 var reviewController = require('./review.server.controller.js');
 var contReview = 0;
 var callPhantom = new phantomUtile();
+var async = require('async');
 
 
 /**
@@ -31,7 +32,7 @@ var getTotalReviews = function(urlToCrawler,next){
 		      totalReviews = 0;
 		    }
 
-		    return next(totalReviews);
+		    return next(totalReviews,body);
 		});
 	}catch(e){
 		console.log('An error has occurred >> getTotalReviews >> '+ e.message);
@@ -58,6 +59,13 @@ var parseUrlCrawler = function(urlToParser,next){
 };
 
 
+/**
+ * [getReviewsFromHtml >> crawler reviews from offer html page]
+ * @param  {html}   body      [offer html page] 
+ * @param  {json}   product   [json of offer]
+ * @param  {Function} next    [callback]
+ * @return {array}    reviews [array of reviews from offer html page]
+ */
 var getReviewsFromHtml = function(body,product,next){
 
 	try{
@@ -81,16 +89,16 @@ var getReviewsFromHtml = function(body,product,next){
     		var resultDate_01 = resultDate.split(" ");
     		// [ '01/05/2015', 'às', '21:02' ]
     		
-    		var resultDate_02 = resultDate_01[0].match(/\d+|\D+/g);
-    		// [ '01', '/', '05', '/', '2015' ]
+    		var resultDate_02 = resultDate_01[0].split("/");
+    		console.log("resultDate_02",resultDate_02);
+    		// [ '01', '05', '2015' ]
     		
-    		var year = resultDate_02[5];
-        	var month = resultDate_02[3] - 1;
-        	var day = resultDate_02[1];
-
+    		var year = Number(resultDate_02[2]);
+        	var month = Number(resultDate_02[1]);
+        	var day = Number(resultDate_02[0]);
         	var resultHour = resultDate_01[2].split(":");
-        	var hour = resultHour[0];
-        	var min = resultHour[1];
+        	var hour = Number(resultHour[0]);
+        	var min = Number(resultHour[1]);
 
         	// (year, month, day, hours, minutes, seconds, milliseconds)
         	var newdate = new Date(year,month,day,hour,min,0,0);
@@ -108,10 +116,6 @@ var getReviewsFromHtml = function(body,product,next){
 	          rating: resultRating
 	        });
 	       
-	        //review.title = review.title.replace(/['"]+/g,'');// jshint ignore:line
-	        //review.description = review.description.replace(/['"]+/g, '');
-	        //review.location = review.location.replace(new RegExp('\r?\n','g'), ' ');
-
 	        // console.log("Review from product ean >> ",product.ean);
 	        console.log("review >> ",i," >> ");
 	        console.log(review);
@@ -131,7 +135,71 @@ var getReviewsFromHtml = function(body,product,next){
 };
 
 
+/**
+ * [crawlerPage >> control do get reviews from html and save them in bd]
+ * @param  {Number}   currentItem  [item to be interacted in recursive function]
+ * @param  {Array}   arrayProducts [array of offers]
+ * @param  {Function} next         [callback]
+ * @return {Number}   contReview   [total reviews saved]
+ */
+var crawlerPage = function(currentItem,arrayProducts,next){
+  
+  try{
+  	  // for each product
+      if(currentItem < arrayProducts.length){
+
+        async.waterfall([
+          // step_01 >> get total of reviews
+          function(callback){            
+            var urlToCrawler =  config.girafa_url + arrayProducts[currentItem].urlOffer;
+            getTotalReviews(urlToCrawler,function(totalReviews,body){
+              callback(null,totalReviews,body);   
+            });
+          },
+          // step_02 >> set offer's url
+          function(totalReviews,body,callback){
+            console.log('total reviews >> ',totalReviews);
+            if(totalReviews === 0){
+              callback('offer without reviews','arg');
+            }else{
+              callback(null,body); 
+            }
+          },
+          // step_03 >> crawler reviews page
+          function(body, callback) {
+            var offer = arrayProducts[currentItem];
+            getReviewsFromHtml(body,offer,function(arrayReviews){
+              callback(null,arrayReviews);
+            });
+          },
+          // step_04 >> save reviews in bd
+          function(arrayReviews,callback){
+              var currentItemArray = 0;
+              reviewController.saveArrayReviews(currentItemArray,arrayReviews,function(reviews){
+              contReview = contReview + reviews.length;
+              callback(null,'arg');
+            });
+          }
+          ], function (err, result) {
+            if(err){
+              console.log("err >>",err);
+              crawlerPage(currentItem+1,arrayProducts,next);     
+            }else{
+              crawlerPage(currentItem+1,arrayProducts,next);
+            }
+        });
+      }else{
+      	 return next(contReview);
+      }
+  }catch(e){
+    console.log('An error has occurred >> crawlerPage '+ e.message);
+  }
+};
+
+
 exports.getTotalReviews = getTotalReviews;
 exports.parseUrlCrawler = parseUrlCrawler;
 exports.getReviewsFromHtml = getReviewsFromHtml;
+exports.crawlerPage = crawlerPage;
+
 

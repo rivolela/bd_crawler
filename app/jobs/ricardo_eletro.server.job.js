@@ -1,11 +1,12 @@
 var config = require('../../config/config.js'),
+	Jobs = require('../../config/jobs/jobs.config.js'),
  	ricardoController = require('../controllers/ricardo_eletro.server.controller.js'),
  	offerController = require('../controllers/offer.crawler.server.controller.js'),
  	DateUtile = require('../utile/date.server.utile.js'),
  	cron = require('node-cron');
 
 
-var taskRicardo = cron.schedule(config.ricardo_eletro_schedule, function(err){
+var taskRicardo = cron.schedule(Jobs.ricardo_eletro_schedule, function(err){
 	var time_start = new Date();	
 	var dateUtile = new DateUtile();
   	start(function(){

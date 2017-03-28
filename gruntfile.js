@@ -36,8 +36,8 @@ module.exports = function(grunt){
 		},
 		mochaTest:{
 			//src:'app/tests/mocha/utile/requests.server.utile.tests.js',
-			src:'app/tests/mocha/controllers/girafa.server.controller.tests.js',
-			// src:'app/tests/mocha/**/*.js',
+			// src:'app/tests/mocha/controllers/girafa.server.controller.tests.js',
+			src:'app/tests/mocha/**/*.js',
 			options:{
 				reporter:'spec'
 			}
@@ -50,18 +50,6 @@ module.exports = function(grunt){
     		//files:['app/tests/casperjs/**/walmart.server.controller.tests.js']
     		// files:['app/tests/casperjs/**/*.js']
   		},
-		// karma:{
-		// 	unit:{
-		// 		configFile:'karma.conf.js'
-		// 	}
-		// },
-		// protractor:{
-		// 	e2e:{
-		// 		options:{
-		// 			configFile:'protractor.conf.js'
-		// 		}
-		// 	}
-		// },
 		jshint:{
 			options:{
 				esversion:6
@@ -120,8 +108,6 @@ module.exports = function(grunt){
 	grunt.loadNpmTasks('grunt-env');
 	grunt.loadNpmTasks('grunt-nodemon');
 	grunt.loadNpmTasks('grunt-mocha-test');
-	//grunt.loadNpmTasks('grunt-karma');
-	grunt.loadNpmTasks('grunt-protractor-runner');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
