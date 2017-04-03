@@ -4,6 +4,7 @@ var phantomUtile = require('../utile/phantomjs.server.utile.js');
 var config = require('../../config/config.js');
 var mongoose = require('mongoose');
 var ReviewSchema = require('../models/review.server.model');
+var ZanoxMerchant = require('../../config/merchants/zanox.merchant.js');
 var Review = mongoose.model( 'Review', ReviewSchema);
 var reviewController = require('./review.server.controller.js');
 var contReview = 0;
@@ -151,7 +152,7 @@ var crawlerPage = function(currentItem,arrayProducts,next){
         async.waterfall([
           // step_01 >> get total of reviews
           function(callback){            
-            var urlToCrawler =  config.girafa_url + arrayProducts[currentItem].urlOffer;
+            var urlToCrawler = ZanoxMerchant.girafa_url + arrayProducts[currentItem].urlOffer;
             getTotalReviews(urlToCrawler,function(totalReviews,body){
               callback(null,totalReviews,body);   
             });

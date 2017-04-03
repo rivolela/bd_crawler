@@ -1,8 +1,8 @@
 var cheerio = require('cheerio');
 var requestUtile = require('../utile/requests.server.utile.js');
 var phantomUtile = require('../utile/phantomjs.server.utile.js');
-var reviewController = require('./review.server.controller.js');
 var ZanoxMerchant = require('../../config/merchants/zanox.merchant.js');
+var reviewController = require('./review.server.controller.js');
 var mongoose = require('mongoose');
 var ReviewSchema = require('../models/review.server.model');
 var Review = mongoose.model( 'Review', ReviewSchema);
@@ -31,7 +31,7 @@ var getProductContext = function(body,next){
     return next(totalPaginacaoReviews);
 
   }catch(e){
-    console.log('An error has occurred >> ponto_frio.server.controller >> getProductContext >> '+ e.message);
+    console.log('An error has occurred >> extra.controller >> getProductContext >> '+ e.message);
   }
 };
 
@@ -43,14 +43,15 @@ var setDataProducts = function(offer,next){
         var nameOffer = offer.name;
         var idOffer = offer.merchantProductId;
 
-        var urlToCrawler =  ZanoxMerchant.ponto_frio_url + nameOffer + '-' + idOffer + ".html";
+        var urlToCrawler =  ZanoxMerchant.extra_url + nameOffer + '-' + idOffer + ".html";
         // remove double quotes
         var result_urlToCrawler = urlToCrawler.replace(/\"/g, "");
+        var result_urlToCrawler_2 = result_urlToCrawler.replace(/\+/g, "");
                   
         console.log("offer >> ",offer.name);
-        console.log("urlToCrawler >> ",result_urlToCrawler);
+        console.log("urlToCrawler >> ",result_urlToCrawler_2);
 
-        call.getHtml(result_urlToCrawler,config.timeRequest,function(error,response,body){
+        call.getHtml(result_urlToCrawler_2,config.timeRequest,function(error,response,body){
           if(error){
               console.log("error setDataProducts:",error);
               return next(null);
@@ -77,7 +78,7 @@ var setDataProducts = function(offer,next){
           }
         });
     }catch(e){
-      console.log('An error has occurred >> ponto_frio.server.controller >> setDataProducts >>'+ e.message);
+      console.log('An error has occurred >> extra.server.controller >> setDataProducts >>'+ e.message);
     }
 };
 
@@ -117,7 +118,7 @@ var crawlerByProduct = function(currentItem,arrayOffers,next){
         return next(contReview);
       }
 }catch(e){
-	    console.log('An error has occurred >> ponto_frio.server.controller >> crawlerByProduct >>'+ e.message);
+	    console.log('An error has occurred >> extra.server.controller >> crawlerByProduct >>'+ e.message);
 	}
 };
 
@@ -129,16 +130,17 @@ var crawlerByReviewPagination = function(offer,currentPaginationReview,next){
       // for each review pagination
     if(currentPaginationReview <= 1){
 
-	    var urlToCrawler = 	ZanoxMerchant.ponto_frio_url +
+	    var urlToCrawler = 	ZanoxMerchant.extra_url +
 	    					          offer.name + '-' +
 	    					          offer.merchantProductId + ".html";
 
       // remove double quotes
       var result_urlToCrawler = urlToCrawler.replace(/\"/g, "");
+      var result_urlToCrawler_2 = result_urlToCrawler.replace(/\+/g, "");
 
-      console.log("urlToCrawler",result_urlToCrawler);
+      console.log("urlToCrawler",result_urlToCrawler_2);
 
-      call.getHtml(result_urlToCrawler,config.timeRequest,function(error,response,body){
+      call.getHtml(result_urlToCrawler_2,config.timeRequest,function(error,response,body){
 
          if(error){
               console.log("error crawlerByReviewPagination:",error);
@@ -162,7 +164,7 @@ var crawlerByReviewPagination = function(offer,currentPaginationReview,next){
     }
 
   }catch(e){
-    console.log('An error has occurred >> ponto_frio.server.controller >> getReviewsByPagination '+ e.message);
+    console.log('An error has occurred >> extra.server.controller >> getReviewsByPagination '+ e.message);
   }
 };
 
@@ -219,7 +221,7 @@ var getReviewsFromHtml = function(body,offer,next){
     return next(reviews);
 
   }catch(error){
-    console.log('An error has occurred >> ponto_frio.server.controller >>  getReviewsFromHtml : '+ error.message);
+    console.log('An error has occurred >> extra.server.controller >>  getReviewsFromHtml : '+ error.message);
     throw error ;
   }
 };

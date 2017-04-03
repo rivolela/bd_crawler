@@ -1,6 +1,6 @@
 var config = require('../../config/config.js'),
 	Jobs = require('../../config/jobs/jobs.config.js'),
- 	pfController = require('../controllers/ponto_frio.server.controller.js'),
+ 	cbController = require('../controllers/casas_bahia.server.controller.js'),
  	offerController = require('../controllers/offer.crawler.server.controller.js'),
  	DateUtile = require('../utile/date.server.utile.js'),
  	cron = require('node-cron');
@@ -14,12 +14,12 @@ var config = require('../../config/config.js'),
 // }
 
 
-var taskPontoFrio = cron.schedule(Jobs.ponto_frio_schedule, function(err){
+var taskCB = cron.schedule(Jobs.casas_bahia_schedule, function(err){
   	var time_start = new Date();	
 	var dateUtile = new DateUtile();
   	start(function(){
    		dateUtile.getJobTime(time_start,function(){
-  			console.log("Ponto Frio BR job finished !");
+  			console.log("Casas Bahia BR job finished !");
   		});
   });
 },false);
@@ -28,12 +28,12 @@ var taskPontoFrio = cron.schedule(Jobs.ponto_frio_schedule, function(err){
 function start(next){
 
 	var currentItem = 0;
-	console.log("initializing Ponto Frio BR job ...");	
+	console.log("initializing Casas Bahia BR job ...");	
 
 	async.waterfall([
 		// step_01 >> get offers
 		function(callback){
-			query = {advertiser:'Pontofrio BR'};
+			query = {advertiser:'Casas Bahia BR'};
 			offerController.getOffersBD(query,function(arrayOffers){
 				console.log("callback get offers Zanox from BD: >>",arrayOffers.length);	
 				callback(null,arrayOffers);
@@ -42,7 +42,7 @@ function start(next){
 		// step_02 >> crawler page
 		function(arrayOffers,callback){
 			var currentItem = 0;
-			pfController.crawlerByProduct(currentItem,arrayOffers,function(contReview){
+			cbController.crawlerByProduct(currentItem,arrayOffers,function(contReview){
 				console.log("callback crawlerByProduct >> ");
 				console.log("total reviews crawled >> ",contReview);
 				callback(null,'arg');
@@ -59,7 +59,7 @@ function start(next){
 }
 
 var starJob = function(next){
-	return (taskPontoFrio.start());
+	return (taskCB.start());
 };
 
 

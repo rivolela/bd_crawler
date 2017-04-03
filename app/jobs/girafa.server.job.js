@@ -28,6 +28,7 @@ function start(next){
 		function(callback){
 			query = {advertiser:'Girafa BR'};
 			offerController.getOffersBD(query,function(arrayOffers){
+				console.log("callback get offers Zanox from BD: >>",arrayOffers.length);	
 				callback(null,arrayOffers);
 			});		
 		},

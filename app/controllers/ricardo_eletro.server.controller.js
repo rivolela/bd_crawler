@@ -1,6 +1,7 @@
 var cheerio = require('cheerio');
 var requestUtile = require('../utile/requests.server.utile.js');
 var phantomUtile = require('../utile/phantomjs.server.utile.js');
+var ZanoxMerchant = require('../../config/merchants/zanox.merchant.js');
 var config = require('../../config/config.js');
 var mongoose = require('mongoose');
 var ReviewSchema = require('../models/review.server.model');
@@ -9,6 +10,7 @@ var iconv = require('iconv-lite');
 var reviewController = require('./review.server.controller.js');
 var contReview = 0;
 var callPhantom = new phantomUtile();
+var async = require('async');
 
 
 var getProductId = function(urlToCrawler,next){
@@ -55,32 +57,26 @@ var getTotalPagination = function(dataProductId,next){
 
 
 
-var setProductIdArrayProducts = function(currentItem,arrayProducts,next){
+var setProductIdArrayProducts = function(offer,next){
 
   try{
 
-    if(currentItem < arrayProducts.length){
+      var urlToCrawler = ZanoxMerchant.ricardo_eletro_url + offer.urlOffer;
 
-        var urlToCrawler = config.ricardo_eletro_url + arrayProducts[currentItem].urlOffer;
+      console.log("urlToCrawler",urlToCrawler);
 
-        console.log("urlToCrawler",urlToCrawler);
-
-        getProductId(urlToCrawler,function(dataProductId){
+      getProductId(urlToCrawler,function(dataProductId){
           
-          arrayProducts[currentItem].dataProductId = dataProductId;
-
-          console.log("offer >> ",currentItem);
-          console.log("Product ean >> ",arrayProducts[currentItem].ean);
-          console.log("advertiser >> ", arrayProducts[currentItem].advertiser);
+          console.log("offer >> ",offer.name);
+          console.log("Product ean >> ",offer.ean);
+          console.log("advertiser >> ", offer.advertiser);
           console.log("offer url >> ",urlToCrawler);
-          console.log("set ProductId to offer >> ",arrayProducts[currentItem].dataProductId);
+          console.log("set ProductId to offer >> ",dataProductId);
           console.log('\n');
 
-          setProductIdArrayProducts(currentItem+1,arrayProducts,next);
+          return next(dataProductId);
       });
-    }else{
-      return next(arrayProducts);
-    }
+
   }catch(e){
     console.log('An error has occurred >> setProductIdArrayProducts >> '+ e.message);
   }
@@ -88,38 +84,30 @@ var setProductIdArrayProducts = function(currentItem,arrayProducts,next){
 };
 
 
-var setTotalPaginationArrayProducts = function(currentItem,arrayProducts,next){
+var setTotalPaginationArrayProducts = function(offer,dataProductId,next){
 
   try{
 
-    if(currentItem < arrayProducts.length){
+    getTotalPagination(dataProductId,function(totalPaginacaoReviews){
 
-          var dataProductId = arrayProducts[currentItem].dataProductId;
+      if((totalPaginacaoReviews > 0) && (offer.ean !== undefined)){
 
-          getTotalPagination(dataProductId,function(totalPaginacaoReviews){
+        console.log("offer >> ",offer.name);
+        console.log("Product ean >> ",offer.ean);
+        console.log("offer url >> ",offer.url);
+        console.log("set totalPaginacaoReviews to offer>> ", totalPaginacaoReviews);
+        console.log('\n');
 
-            if((totalPaginacaoReviews > 0) && (arrayProducts[currentItem].ean !== undefined)){
+        return next(totalPaginacaoReviews);
+      
+      }else{
+        console.log("offer without ean or with total reviews < 0");
+        console.log('\n');
 
-              arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
+        return next(null);
+      }
+   });
 
-              console.log("offer >> ",currentItem);
-              console.log("Product ean >> ",arrayProducts[currentItem].ean);
-              console.log("offer url >> ",arrayProducts[currentItem].url);
-              console.log("set totalPaginacaoReviews to offer>> ", arrayProducts[currentItem].totalPaginacaoReviews);
-              console.log('\n');
-
-              setTotalPaginationArrayProducts(currentItem+1,arrayProducts,next);
-            
-            }else{
-              console.log("offer without ean or with total reviews < 0");
-              console.log('\n');
-              setTotalPaginationArrayProducts(currentItem+1,arrayProducts,next);
-            }
-         });
-
-    }else{
-      return next(arrayProducts);
-    }
   }catch(e){
     console.log('An error has occurred >> setTotalPaginationArrayProducts >> '+ e.message);
   }
@@ -127,19 +115,44 @@ var setTotalPaginationArrayProducts = function(currentItem,arrayProducts,next){
 };
 
 
-var crawlerByProduct = function(currentItem,arrayProductsRicardo,next){
+var crawlerByProduct = function(currentItem,arrayOffers,next){
 
     try{
       // for each product
-      if(currentItem < arrayProductsRicardo.length){
+      if(currentItem < arrayOffers.length){
 
-          var currentPaginationReview = 0;
-          
-          crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsRicardo,function(contReview){
-            console.log('total of reviews saved at the moment >> ',contReview);
-            crawlerByProduct(currentItem + 1,arrayProductsRicardo,next);
-          });
-       
+        async.waterfall([
+          // step_01 >> setProductIdArrayProducts
+          function(callback){
+            var offer = arrayOffers[currentItem];
+            setProductIdArrayProducts(offer,function(dataProductId){
+               callback(null,offer,dataProductId); 
+            });
+          },
+          // step_02 >> setDataProducts
+          function(offer,dataProductId,callback){
+            setTotalPaginationArrayProducts(offer,dataProductId,function(totalPaginacaoReviews){
+               callback(null,offer,dataProductId,totalPaginacaoReviews); 
+            });
+          },
+          // step_03 >> crawlerByReviewPagination
+          function(offer,dataProductId,totalPaginacaoReviews,callback){
+            // for each review pagination
+            var currentPaginationReview = 0;
+            crawlerByReviewPagination(offer,currentPaginationReview,dataProductId,totalPaginacaoReviews,function(contReview){
+              console.log('total of reviews saved at the moment >> ',contReview);
+              callback(null,'arg'); 
+            });
+          }
+          ], function (err, result) {
+            if(err){
+              console.log("err >>",err);
+              crawlerByProduct(currentItem + 1,arrayOffers,next);    
+            }else{
+              crawlerByProduct(currentItem + 1,arrayOffers,next);
+            }
+      });
+    
       }else{
         return next(contReview);
       }
@@ -149,26 +162,24 @@ var crawlerByProduct = function(currentItem,arrayProductsRicardo,next){
 };
 
 
-var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arrayProductsRicardo,next){
+var crawlerByReviewPagination = function(offer,currentPaginationReview,dataProductId,totalPaginacaoReviews,next){
   
-  var productReview = arrayProductsRicardo[currentItem];
 
   try{
       // for each review pagination
-    if(currentPaginationReview <= arrayProductsRicardo[currentItem].totalPaginacaoReviews){
+    if(currentPaginationReview <= totalPaginacaoReviews){
 
-      var dataProductId = arrayProductsRicardo[currentItem].dataProductId;
       var urlToCrawler = 'http://www.ricardoeletro.com.br/Produto/Comentarios/'+ dataProductId + '/' + currentPaginationReview;
 
       callPhantom.getHtml(urlToCrawler,config.timeRequest,function(body){ // jshint ignore:line
 
-        getReviewsFromHtml(body,productReview,function(reviews){
+        getReviewsFromHtml(body,offer,function(reviews){
           
           var currentItemArray = 0;
             
           reviewController.saveArrayReviews(currentItemArray,reviews,function(arrayReviews){
             contReview = contReview + arrayReviews.length;
-            crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProductsRicardo,next);
+            crawlerByReviewPagination(offer,currentPaginationReview + 1,dataProductId,totalPaginacaoReviews,next);
           });
 
         });

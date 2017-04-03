@@ -6,6 +6,7 @@ var html ='http://www.pontofrio.com.br/iPhone SE Apple com 16GB, Tela 4”, iOS 
 var url_offer  = '/2345967';
 var pfController = require('../../../controllers/ponto_frio.server.controller.js');
 var reviewController = require('../../../controllers/review.server.controller.js');
+var ZanoxMerchant = require('../../../../config/merchants/zanox.merchant.js');
 
 
 describe('Ponto Frio BR unit tests:',function(done){
@@ -28,12 +29,12 @@ describe('Ponto Frio BR unit tests:',function(done){
 		});
 
 
-		it('Should return totalPaginacaoReviews > 1', function(done) {
+		it('Should return totalPaginacaoReviews === 1', function(done) {
 
 			this.timeout(10000);
 			
 			pfController.getProductContext(Context.body,function(totalPaginacaoReviews){
-				totalPaginacaoReviews.should.be.above(0);
+				totalPaginacaoReviews.should.be.equal(1);
 				done();
 			});
 		});
@@ -49,35 +50,22 @@ describe('Ponto Frio BR unit tests:',function(done){
 			var timeRequest = 1000;
 			Context.currentItem = 0;
 
-			var product1 = new Object ({
-				name:'Refrigerador Consul Cycle Defrost Duplex CRD36 com Super Freezer 334 L - Branco',
+			var offer = new Object ({
+				name:'iPhone SE Apple com 16GB, Tela 4, iOS 9, Sensor de Impressão Digital, Câmera iSight 12MP, Wi-Fi, 3G/4G, GPS, MP3, Bluetooth e NFC - Prateado',
 	  			ean:7891129219410,
-	  			category:"2 Portas",
-	  			merchantProductId: 3384236,
-	  			urlOffer:'/3384236',
+	  			category:"smartphone",
+	  			merchantProductId: 7990218,
+	  			urlOffer:'/7990218',
 	  			advertiser:"Pontofrio BR",
 			});
 
-			var product2 = new Object ({
-				name:'Refrigerador Consul Cycle Defrost Duplex CRD36 com Super Freezer 334 L - Branco',
-	  			ean:7891129219410,
-	  			category:"2 Portas",
-	  			merchantProductId: 3384236,
-	  			urlOffer:'/3384236',
-	  			advertiser:"Pontofrio BR",
-			});
-
-			var arrayProducts = [];
-			arrayProducts.push(product1);
-			arrayProducts.push(product2);
-			Context.arrayProducts = arrayProducts;
+			Context.offer = offer;
 		});
 
-		it('Should add info to array products: totalPaginacaoReviews > 10', function(done) {
-			this.timeout(20000);
-			pfController.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
-				arrayProducts[0].totalPaginacaoReviews.should.be.above(10);
-				arrayProducts[1].totalPaginacaoReviews.should.be.above(10);
+		it('Should add info to array products: totalPaginacaoReviews === 1', function(done) {
+			this.timeout(30000);
+			pfController.setDataProducts(Context.offer,function(totalPaginacaoReviews){
+				totalPaginacaoReviews.should.be.equal(1);
 				done();
 			});
 		});
@@ -90,43 +78,41 @@ describe('Ponto Frio BR unit tests:',function(done){
 
 		before(function(){
 
-			var product1 = new Object ({
-				name:'Refrigerador Consul Cycle Defrost Duplex CRD36 com Super Freezer 334 L - Branco',
-  				ean:7891129219410,
-  				category:"2 Portas",
-  				merchantProductId: 3384236,
-  				urlOffer:'/3384236',
-  				totalPaginacaoReviews:12,
-  				advertiser:"Pontofrio BR",
-  				url:"http://ad.zanox.com/ppc/?27382580C63714936&ULP=[[/2345967?utm_source=zanox&utm_medium=afiliado&utm_campaign=Eletrodomesticos_Frost-Free&utm_content=2345967&cm_mmc=zanox_XML-_-ELDO-_-Comparador-_-2345967]]&zpar9=[[43EEF0445509C7205827]]"
+			this.timeout(3000);
+
+			var offer1 = new Object ({
+				name:'iPhone SE Apple com 16GB, Tela 4, iOS 9, Sensor de Impressão Digital, Câmera iSight 12MP, Wi-Fi, 3G/4G, GPS, MP3, Bluetooth e NFC - Prateado',
+	  			ean:7891129219410,
+	  			category:"smartphone",
+	  			merchantProductId: 7990218,
+	  			urlOffer:'/7990218',
+	  			advertiser:"Pontofrio BR",
 			});
 
-			var product2 = new Object ({
-				name:'Refrigerador Consul Cycle Defrost Duplex CRD36 com Super Freezer 334 L - Branco',
-  				ean:7891129219410,
-  				category:"2 Portas",
-  				merchantProductId: 3384236,
-  				urlOffer:'/3384236',
-  				totalPaginacaoReviews:12,
-  				advertiser:"Pontofrio BR",
-  				url:"http://ad.zanox.com/ppc/?27382580C63714936&ULP=[[/2345967?utm_source=zanox&utm_medium=afiliado&utm_campaign=Eletrodomesticos_Frost-Free&utm_content=2345967&cm_mmc=zanox_XML-_-ELDO-_-Comparador-_-2345967]]&zpar9=[[43EEF0445509C7205827]]"
+			var offer2 = new Object ({
+				name:'Smartphone Samsung Galaxy J7 Prime Duos Dourado com 32GB Tela 5 5 Dual Chip 4G Camera 13MP Leitor Biometrico Android 6 0 e Processador OctaCore',
+	  			ean:7891129219412,
+	  			category:"smartphone",
+	  			merchantProductId: 10476497,
+	  			urlOffer:'/10476497',
+	  			advertiser:"Pontofrio BR",
 			});
 
-			var arrayProducts = [];
-			arrayProducts.push(product1);
-			arrayProducts.push(product2);
-			Context.arrayProducts = arrayProducts;
+			var arrayOffers = [];
+			arrayOffers.push(offer1);
+			arrayOffers.push(offer2);
+			Context.arrayOffers = arrayOffers;
 		});
 
 
-		it('Should contReview == 10', function(done) {
-			this.timeout(20000);
-			var currentItem = 1;
+		it('Should contReview == 16', function(done) {
+			this.timeout(70000);
+			var currentItem = 0;
 			pfController.crawlerByProduct(currentItem,
-										  Context.arrayProducts,
+										  Context.arrayOffers,
 								 		  function(contReview){
 								 		  	console.log("contReview >>",contReview);
-								 		  	contReview.should.be.equal(10);
+								 		  	contReview.should.be.equal(16);
 											done();
 										  });
 		});
@@ -139,58 +125,66 @@ describe('Ponto Frio BR unit tests:',function(done){
 
 		before(function(done){
 			
-			this.timeout(10000);
+			this.timeout(60000);
 
 			var timeRequest = 1000;
 			Context.currentItem = 0;
 
-			var product = new Object ({
-				name:'Refrigerador Consul Cycle Defrost Duplex CRD36 com Super Freezer 334 L - Branco',
-				ean:7891129219410,
-				category:"2 Portas",
-				merchantProductId: 3384236,
-				urlOffer:'/3384236',
-				totalPaginacaoReviews:12,
-				advertiser:"Pontofrio BR",
-				url:"http://ad.zanox.com/ppc/?27382580C63714936&ULP=[[/2345967?utm_source=zanox&utm_medium=afiliado&utm_campaign=Eletrodomesticos_Frost-Free&utm_content=2345967&cm_mmc=zanox_XML-_-ELDO-_-Comparador-_-2345967]]&zpar9=[[43EEF0445509C7205827]]"
+			var offer = new Object ({
+				name:'Smartphone Samsung Galaxy J7 Prime Duos Dourado com 32GB Tela 5 5 Dual Chip 4G Camera 13MP Leitor Biometrico Android 6 0 e Processador OctaCore',
+	  			ean:7891129219412,
+	  			category:"smartphone",
+	  			merchantProductId: 10476497,
+	  			urlOffer:'/10476497',
+	  			advertiser:"Pontofrio BR",
 			});
 
-			var departament = "Eletrodomesticos/";
+			Context.offer = offer;
 
-			var urlToCrawler = 	config.ponto_frio_url + 
-    							departament + 
-    							product.category + "/" +
-    							product.name + 
-    							product.urlOffer + ".html";
+			var nameOffer = offer.name;
+        	var idOffer = offer.merchantProductId;
 
-			Context.product = product;
+        	var urlToCrawler =  ZanoxMerchant.ponto_frio_url + nameOffer + '-' + idOffer + ".html";
+        	// remove double quotes
+        	var result_urlToCrawler = urlToCrawler.replace(/\"/g, "");
+        	var result_urlToCrawler_2 = result_urlToCrawler.replace(/\+/g, "");
+        	console.log("result_urlToCrawler_2",result_urlToCrawler_2);
 
 			var call = new requestUtile();
 
-			call.getHtml(urlToCrawler,timeRequest,function(error,response,body){
+			call.getHtml(result_urlToCrawler_2,timeRequest,function(error,response,body){
 				Context.data = body;
 				done();
 			});
 		});
 
 
-		it('Should return arrayReviews equal 10 ', function(done) {
+		it('Should return arrayReviews === 10 ', function(done) {
 			this.timeout(10000);
 			pfController.getReviewsFromHtml(Context.data,
-									  		Context.product,
+									  		Context.offer,
 									  		function(arrayReviews){
 									  			arrayReviews.length.should.be.equal(10);
+									  			console.log(arrayReviews);
 												done();
 									  		});
 		});
 
 
-		it('Should contain the author: Hilana in arrayReviews', function(done) {
+		it('Should contain the data below >>', function(done) {
 			this.timeout(10000);
 			pfController.getReviewsFromHtml(Context.data,
-									  		Context.product,
+									  		Context.offer,
 									  		function(arrayReviews){
-									  			arrayReviews.should.containDeep([{author: 'Hilana'}]);
+									  			arrayReviews.should.containDeep([{author: 'Bruna'}]);
+								  				arrayReviews.should.containDeep([{location: 'São paulo'}]);
+								  				arrayReviews.should.containDeep([{date: '1490569200000'}]);
+								  				arrayReviews.should.containDeep([{category: 'smartphone'}]);
+								  				arrayReviews.should.containDeep([{advertiser: 'Pontofrio BR'}]);
+								  				arrayReviews.should.containDeep([{ean: '7891129219412'}]);
+								  				arrayReviews.should.containDeep([{rating: 5}]);
+								  				arrayReviews.should.containDeep([{description:'Superou minhas expectativas. Camera muito boa, e a bateria também. Super recomendo.'}]);
+								  				arrayReviews.should.containDeep([{title:'Adorei'}]);
 												done();
 									  		});
 		});

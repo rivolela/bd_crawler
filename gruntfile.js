@@ -36,7 +36,7 @@ module.exports = function(grunt){
 		},
 		mochaTest:{
 			//src:'app/tests/mocha/utile/requests.server.utile.tests.js',
-			// src:'app/tests/mocha/controllers/girafa.server.controller.tests.js',
+			// src:'app/tests/mocha/controllers/lojas_colombo.server.controller.tests.js',
 			src:'app/tests/mocha/**/*.js',
 			options:{
 				reporter:'spec'

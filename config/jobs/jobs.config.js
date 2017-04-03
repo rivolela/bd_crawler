@@ -1,11 +1,14 @@
 module.exports = {
 
 	//schedule reviews job
-	walmart_schedule:'0 17 * * *',
-	ricardo_eletro_schedule:'0 18 * * *',
-	lojas_colombo_schedule:'0 19 * * *',
-	ponto_frio_schedule:'0 20 * * *',
-	girafa_schedule:'0 21 * * *',
+	all_schedule:'30 17 * * *',
+	walmart_schedule:'0 20 * * *',
+	ricardo_eletro_schedule:'40 18 * * *',
+	lojas_colombo_schedule:'25 17 * * *',
+	ponto_frio_schedule:'55 17 * * *',
+	girafa_schedule:'35 22 * * *',
+	extra_schedule:'35 17 * * *',
+	casas_bahia_schedule:'21 18 * * *',
 
 };
 

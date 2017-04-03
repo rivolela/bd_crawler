@@ -66,7 +66,7 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 			var timeRequest = 1000;
 			Context.currentItem = 0;
 
-			var product1 = new Object ({
+			var offer = new Object ({
 				name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
 	  			ean:7896584063448,
 	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
@@ -75,26 +75,14 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 	  			advertiser:"Ricardo Eletro BR",
 			});
 
-			var product2 = new Object ({
-				name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
-	  			ean:7896584063448,
-	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-	  			merchantProductId: 435595,
-	  			urlOffer:url_offer,
-	  			advertiser:"Ricardo Eletro BR",
-			});
-
-			var arrayProducts = [];
-			arrayProducts.push(product1);
-			arrayProducts.push(product2);
-			Context.arrayProducts = arrayProducts;
+			Context.offer = offer;
 		});
 
 
 		it('Should add info to array products: productid==85169', function(done) {
 			this.timeout(10000);
-			reController.setProductIdArrayProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
-				arrayProducts[1].dataProductId.should.be.equal('85169');
+			reController.setProductIdArrayProducts(Context.offer,function(dataProductId){
+				dataProductId.should.be.equal('85169');
 				done();
 			});
 		});
@@ -109,33 +97,24 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 			var timeRequest = 1000;
 			Context.currentItem = 0;
 
-			var product1 = new Object ({
+			var offer = new Object ({
 				name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
 	  			ean:7896584063448,
 	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-	  			dataProductId: 85169,
+	  			merchantProductId: 435595,
+	  			urlOffer:url_offer,
 	  			advertiser:"Ricardo Eletro BR",
 			});
 
-			var product2 = new Object ({
-				name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
-	  			ean:7896584063448,
-	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-	  			dataProductId: 85169,
-	  			advertiser:"Ricardo Eletro BR",
-			});
-
-			var arrayProducts = [];
-			arrayProducts.push(product1);
-			arrayProducts.push(product2);
-			Context.arrayProducts = arrayProducts;
+			Context.offer = offer;
 		});
 
 
 		it('Should add info to array products: totalPaginacaoReviews > 1', function(done) {
 			this.timeout(20000);
-			reController.setTotalPaginationArrayProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
-				arrayProducts[1].totalPaginacaoReviews.should.be.above(20);
+			var dataProductId = '85169';
+			reController.setTotalPaginationArrayProducts(Context.offer,dataProductId,function(totalPaginacaoReviews){
+				totalPaginacaoReviews.should.be.equal('23');
 				done();
 			});
 		});
@@ -190,7 +169,6 @@ describe('Ricardo Eletro BR unit tests:',function(done){
 			console.log("bd clean");
 		});
 	});
-
 
 });
 

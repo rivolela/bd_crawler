@@ -8,7 +8,9 @@ var config = require('../../config/config.js'),
 	urlTeste = "http://ad.zanox.com/ppc/?25371034C45550273&ULP=[[1141205/sk?utm_medium=afiliados&utm_source=zanox&utm_campaign=xml_zanox&utm_term=zanox]]&zpar9=[[43EEF0445509C7205827]]",
 	cheerio = require('cheerio'),
 	DateUtile = require('../utile/date.server.utile.js'),
-	cron = require('node-cron');
+	cron = require('node-cron'),
+	async = require('async');
+
 
 var taskWalmart = cron.schedule(Jobs.walmart_schedule, function(err){
 	
@@ -27,27 +29,32 @@ function start(next){
 
 	var currentItem = 0;
 	console.log("initializing walmart job ...");
-	query = {advertiser:'Walmart BR'};
 
-	offerController.getOffersBD(query,function(arrayProductsWalmart){
-
-		console.log("callback get offers Zanox from BD: >>",arrayProductsWalmart.length);	
-
-		walmartController.setDataProducts(currentItem,arrayProductsWalmart,function(arrayProductsReview){
-			  
-			console.log("callback setDataProducts >>");
-
-			console.log("total arrayProductsReview >> ",arrayProductsReview.length);
-				
-			walmartController.crawlerByProduct(currentItem,arrayProductsReview,function(contReview){
-
+	async.waterfall([
+		// step_01 >> get offers
+		function(callback){
+			query = {advertiser:'Walmart BR'};
+			offerController.getOffersBD(query,function(arrayOffers){
+				console.log("callback get offers Zanox from BD: >>",arrayOffers.length);	
+				callback(null,arrayOffers);
+			});		
+		},
+		// step_02 >> crawler page
+		function(arrayOffers,callback){
+			var currentItem = 0;
+			walmartController.crawlerByProduct(currentItem,arrayOffers,function(contReview){
 				console.log("callback crawlerByProduct >> ");
-
 				console.log("total reviews crawled >> ",contReview);
-
-				return next();
+				callback(null,'arg');
 			});
-		});
+		},
+		],function (err, result) {
+			if(err){
+				console.log("err >>",err);
+				return next(err);
+			}else{
+				return next();
+			}
 	});
 }
 

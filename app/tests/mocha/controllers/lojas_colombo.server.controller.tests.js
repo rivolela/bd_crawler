@@ -14,33 +14,32 @@ var callPhantom = new phantomUtile();
 
 describe('Lojas Colombo BR unit tests:',function(done){
 
-		// describe('Testing getContext function >>',function(done){
+		describe('Testing getContext function >>',function(done){
 
-		// 	var Context = {};
-		// 	// var call = new requestUtile();
+			var Context = {};
 
-		// 	before(function(done){
+			before(function(done){
 
-		// 		this.timeout(50000);
+				this.timeout(50000);
 
-		// 		callPhantom.getHtml(html,config.timeRequest,function(body){
-		// 			Context.body = body;
-		// 			done();
-		// 		});
-		// 	});
+				callPhantom.getHtml(html,config.timeRequest,function(body){
+					Context.body = body;
+					done();
+				});
+			});
 
 
-		// 	it('Should return productid = 226890 from product page html', function(done) {
+			it('Should return productid = 226890 from product page html', function(done) {
 
-		// 		this.timeout(10000);
+				this.timeout(50000);
 				
-		// 		lcController.getProductContext(Context.body,function(productid,totalPaginacaoReviews){
-		// 			productid.should.be.equal('226890');
-		// 			totalPaginacaoReviews.should.be.above(1);
-		// 			done();
-		// 		});
-		// 	});
-		// });
+				lcController.getProductContext(Context.body,function(productid,totalPaginacaoReviews){
+					productid.should.be.equal('226890');
+					totalPaginacaoReviews.should.be.above(1);
+					done();
+				});
+			});
+		});
 
 
 		describe('Testing setDataProducts function >>',function(done){
@@ -49,42 +48,26 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 			before(function(){
 
-				this.timeout(10000);
+				this.timeout(50000);
 
-				var timeRequest = 1000;
-				Context.currentItem = 0;
-
-				var product1 = new Object ({
-					name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
-		  			ean:7896584063448,
-		  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-		  			merchantProductId: 435595,
-		  			urlOffer:url_offer,
+				var offer = new Object ({
+					name:'Depurador de Ar Suggar Júpiter para Fogão de 4 Bocas, 60 cm',
+		  			ean:7896518511793,
+		  			category:"Eletrodomesticos / Depurador / Para Fogão 4 Bocas",
+		  			merchantProductId: 760010,
+		  			urlOffer:'/produto/Eletrodomesticos/Depurador-de-Ar-Suggar-Jupiter-para-Fogao-de-4-Bocas-60-cm',
 		  			advertiser:"Lojas Colombo BR",
 				});
 
-				var product2 = new Object ({
-					name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
-		  			ean:7896584063448,
-		  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-		  			merchantProductId: 435595,
-		  			urlOffer:url_offer,
-		  			advertiser:"Lojas Colombo BR",
-				});
-
-				var arrayProducts = [];
-				arrayProducts.push(product1);
-				arrayProducts.push(product2);
-				Context.arrayProducts = arrayProducts;
+				Context.offer = offer;
 			});
 
 
-			it('Should add info to array products: productid==212979 and totalPaginacaoReviews > 1', function(done) {
-				this.timeout(100000);
-				lcController.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProducts){
-					//console.log("arrayProducts",arrayProducts);
-					arrayProducts[1].dataProductId.should.be.equal('226890');
-					arrayProducts[1].totalPaginacaoReviews.should.be.equal(2);
+			it('Should get >> productid==760010 and totalPaginacaoReviews === 1', function(done) {
+				this.timeout(50000);
+				lcController.setDataProducts(Context.offer,function(productid,totalPaginacaoReviews){
+					productid.should.be.equal('760010');
+					totalPaginacaoReviews.should.be.equal(1);
 					done();
 				});
 			});
@@ -97,75 +80,44 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 			before(function(){
 
-				this.timeout(10000);
+				this.timeout(50000);
 
-				var product1 = new Object ({
-					name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
-		  			ean:7896584063448,
-		  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-		  			merchantProductId: 435595,
-		  			url:json_without_reviews,
+				var Offer1 = new Object ({
+					name:'Depurador de Ar Suggar Júpiter para Fogão de 4 Bocas, 60 cm',
+		  			ean:7896518511793,
+		  			category:"Eletrodomesticos / Depurador / Para Fogão 4 Bocas",
+		  			merchantProductId: 760010,
+		  			urlOffer:'/produto/Eletrodomesticos/Depurador-de-Ar-Suggar-Jupiter-para-Fogao-de-4-Bocas-60-cm',
 		  			advertiser:"Lojas Colombo BR",
-		  			totalPaginacaoReviews:0,
-		  			dataProductId:773808
 				});
 
-				var product2 = new Object ({
-					name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
-		  			ean:7896584063448,
-		  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-		  			merchantProductId: 435595,
-		  			url:json_with_reviews,
+				var Offer2 = new Object ({
+					name:'Depurador de Ar Consul 60 cm para Fogão de 4 Bocas - CAT60GB',
+		  			ean:7891129232501,
+		  			category:"Eletrodomesticos / Depurador / Para Fogão 4 Bocas",
+		  			merchantProductId: 756136,
+		  			urlOffer:'/produto/Eletrodomesticos/Depurador-de-Ar-Consul-60-cm-para-Fogao-de-4-Bocas-CAT60GB',
 		  			advertiser:"Lojas Colombo BR",
-		  			totalPaginacaoReviews:1,
-		  			dataProductId:212979
 				});
 
-				var arrayProducts = [];
-				arrayProducts.push(product1);
-				arrayProducts.push(product2);
-				Context.arrayProducts = arrayProducts;
+				var arrayOffers = [];
+				arrayOffers.push(Offer1);
+				arrayOffers.push(Offer2);
+				Context.arrayOffers = arrayOffers;
 			});
 
 
 			it('Should contReview == 0', function(done) {
-				this.timeout(10000);
+				this.timeout(80000);
 				var currentItem = 0;
-				lcController.crawlerByProduct(currentItem,Context.arrayProducts[0],
-									 		  function(contReview){
-									 		  		contReview.should.be.equal(0);
+				lcController.crawlerByProduct(	currentItem,
+												Context.arrayOffers,
+									 		  	function(contReview){
+									 		  		contReview.should.be.equal(4);
 													done();
-											   });
+											   	});
 			});
 
-
-			it('Should contReview > 0', function(done) {
-				this.timeout(10000);
-				var currentItem = 1;
-				lcController.crawlerByProduct(currentItem,Context.arrayProducts,
-									 		  function(contReview){
-									 		  		contReview.should.be.above(0);
-													done();
-											   });
-			});
-		});
-
-
-		describe('Testing getJson function >>',function(done){
-			
-			var productid = '212979';
-			var pagination = 1;
-
-			it('Should arrayReviews to be of type json and have the attributes:ordemSelecionadaAvaliacao, avaliacoesPagina and paginacao', function(done) {
-				this.timeout(10000);
-				lcController.getJson(productid,
-									pagination,
-								 	function(arrayReviews){
-										arrayReviews.should.be.json; // jshint ignore:line
-										arrayReviews.should.have.keys('ordemSelecionadaAvaliacao','avaliacoesPagina','paginacao');
-										done();
-									});
-			});
 		});
 
 
@@ -177,47 +129,40 @@ describe('Lojas Colombo BR unit tests:',function(done){
 				
 				this.timeout(10000);
 
-				var timeRequest = 1000;
-				Context.currentItem = 0;
-
-				var product = new Object ({
-					name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
-		  			ean:7896584063448,
-		  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-		  			merchantProductId: 435595,
-		  			url:html,
-		  			manufacturer:'Electrolux',
+				var offer = new Object ({
+					name:'Depurador de Ar Consul 60 cm para Fogão de 4 Bocas - CAT60GB',
+		  			ean:7891129232501,
+		  			category:"Eletrodomesticos / Depurador / Para Fogão 4 Bocas",
+		  			merchantProductId: 756136,
+		  			urlOffer:'/produto/Eletrodomesticos/Depurador-de-Ar-Consul-60-cm-para-Fogao-de-4-Bocas-CAT60GB',
 		  			advertiser:"Lojas Colombo BR",
 				});
 
-				Context.product = product;
+				Context.offer = offer;
 
 				var call = new requestUtile();
 
-				call.getJson(json_with_reviews,timeRequest,function(data){
-					Context.data = data;
+				call.getJson(json_with_reviews,config.timeRequest,function(data){
+					Context.body = data;
 					done();
 				});
 			});
 
 
-			it('Should return arrayReviews > 9 ', function(done) {
-				this.timeout(10000);
-				lcController.getReviewsFromJson(Context.data,
-										  		Context.product,
+			it('Should contain the data below >>', function(done) {
+				this.timeout(2000);
+				lcController.getReviewsFromJson(Context.body,
+										  		Context.offer,
 										  		function(arrayReviews){
-										  			arrayReviews.length.should.be.above(9);
-													done();
-										  		});
-			});
-
-
-			it('Should contain the author:Willian Andrade Garcia in arrayReviews', function(done) {
-				this.timeout(10000);
-				lcController.getReviewsFromJson(Context.data,
-										  		Context.product,
-										  		function(arrayReviews){
-										  			arrayReviews.should.containDeep([{author: 'Thais Lessa'}]);
+										  			arrayReviews.should.containDeep([{author:'Jerri Adriano Ramos'}]);
+									  				arrayReviews.should.containDeep([{location: ''}]);
+									  				arrayReviews.should.containDeep([{date: '1357516800000'}]);
+									  				arrayReviews.should.containDeep([{category: 'Eletrodomesticos / Depurador / Para Fogão 4 Bocas'}]);
+									  				arrayReviews.should.containDeep([{advertiser: 'Lojas Colombo BR'}]);
+									  				arrayReviews.should.containDeep([{ean: '7891129232501'}]);
+									  				arrayReviews.should.containDeep([{rating: 5}]);
+									  				arrayReviews.should.containDeep([{description:'Excelente produto. Recomendo para quem precisa de espaço.'}]);
+									  				arrayReviews.should.containDeep([{title:'Avaliação'}]);
 													done();
 										  		});
 			});

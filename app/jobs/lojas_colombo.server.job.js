@@ -4,7 +4,7 @@ var config = require('../../config/config.js'),
  	offerController = require('../controllers/offer.crawler.server.controller.js'),
  	DateUtile = require('../utile/date.server.utile.js'),
  	cron = require('node-cron');
-
+ 	async = require('async');
 
 // if(process.env.NODE_ENV == 'test_job'){
 // 	start(function(){
@@ -28,29 +28,33 @@ var taskColombo = cron.schedule(Jobs.lojas_colombo_schedule, function(err){
 function start(next){
 
 	var currentItem = 0;
-	console.log("initializing Lojas Colombo BR job ...");
-	query = {advertiser:'Lojas Colombo BR'};
+	console.log("initializing Lojas Colombo BR job ...");	
 
-	offerController.getOffersBD(query,function(arrayProducts){
-
-		console.log("callback get offers Zanox from BD: >>",arrayProducts.length);
-		console.log("\n");		
-
-		lcController.setDataProducts(currentItem,arrayProducts,function(arrayProductsReview){
-			  
-			console.log("callback setDataProducts >>");
-
-			console.log("total arrayProductsReview >> ",arrayProductsReview.length);
-				
-			lcController.crawlerByProduct(currentItem,arrayProductsReview,function(contReview){
-
+	async.waterfall([
+		// step_01 >> get offers
+		function(callback){
+			query = {advertiser:'Lojas Colombo BR'};
+			offerController.getOffersBD(query,function(arrayOffers){
+				console.log("callback get offers Zanox from BD: >>",arrayOffers.length);	
+				callback(null,arrayOffers);
+			});		
+		},
+		// step_02 >> crawler page
+		function(arrayOffers,callback){
+			var currentItem = 0;
+			lcController.crawlerByProduct(currentItem,arrayOffers,function(contReview){
 				console.log("callback crawlerByProduct >> ");
-
 				console.log("total reviews crawled >> ",contReview);
-				
-				return next();
+				callback(null,'arg');
 			});
-		});
+		},
+		], function (err, result) {
+			if(err){
+				console.log("err >>",err);
+				return next(err);
+			}else{
+				return next();
+			}
 	});
 }
 

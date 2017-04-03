@@ -26,7 +26,7 @@ describe('Walmart Advertiser Server Tests:',function(done){
 
 			this.timeout(10000);
 
-			var product1 = new Object ({
+			var offer1 = new Object ({
 				name:'Fogao de Embutir 5 Bocas Brastemp Clean BYS5TAR Inox com Timer',
 	  			ean:77777777777777,
 	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
@@ -38,7 +38,7 @@ describe('Walmart Advertiser Server Tests:',function(done){
           		totalPaginacaoReviews: 1
 			});
 
-			var product2 = new Object ({
+			var offer2 = new Object ({
 				name:'Freezer/Refrigerador Vertical Brastemp Flex 228 Litros Frost Free BVR28HR Inox',
 	  			ean:88888888888888,
 	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
@@ -50,15 +50,15 @@ describe('Walmart Advertiser Server Tests:',function(done){
           		totalPaginacaoReviews: 1
 			});
 
-			var arrayProducts = [];
-			arrayProducts.push(product1);
-			arrayProducts.push(product2);
+			var arrayOffers = [];
+			arrayOffers.push(offer1);
+			arrayOffers.push(offer2);
 
 			Context.currentItem = 0; 
-			Context.arrayProducts = arrayProducts;
+			Context.arrayOffers = arrayOffers;
 			Context.currentPaginationReview = 0;
 
-			call.getHtml(Context.arrayProducts[1].url,timeRequest,function(error,response,body){
+			call.getHtml(Context.arrayOffers[1].url,timeRequest,function(error,response,body){
 				Context.body = body;
 				done();
 			});
@@ -135,9 +135,7 @@ describe('Walmart Advertiser Server Tests:',function(done){
 			arrayReviews.push(review2);
 			arrayReviews.push(review3);
 
-			Context.arrayProducts[0].reviews = arrayReviews;
-			Context.arrayProducts[1].reviews = arrayReviews;
-
+			Context.arrayOffers[0].reviews = arrayReviews;
 		});
 		
 
@@ -154,25 +152,13 @@ describe('Walmart Advertiser Server Tests:',function(done){
 
 		it('Should add info to array products: productid,totalReviewsPage and totalPaginacaoReviews', function(done) {
 			this.timeout(20000);
-			walmart.setDataProducts(Context.currentItem,Context.arrayProducts,function(arrayProductReview){
-				console.log("arrayProductsWalmart",arrayProductReview);
-				arrayProductReview[1].dataProductId.should.be.equal('2033536');
-				arrayProductReview[1].totalPaginacaoReviews.should.be.equal(46);
-				arrayProductReview[1].totalReviewsPage.should.be.equal('182');
+			walmart.setDataProducts(Context.arrayOffers[1],function(productid,totalReviewsPage,totalPaginacaoReviews){
+				productid.should.be.equal('2033536');
+				totalPaginacaoReviews.should.be.equal(46);
+				totalReviewsPage.should.be.equal('182');
 				done();
 			});
 		});
-
-
-		it('Should return arrayProductsWalmart[0], for pagination 0, with 4 reviews', function(done) {
-			walmart.getReviewsFromHtml(	Context.body,
-										Context.arrayProducts[1],
-										function(arrayReviews){
-												arrayReviews.length.should.be.equal(4);
-												done();
-										});
-		});
-
 	});
 
 

@@ -2,18 +2,21 @@ var cheerio = require('cheerio');
 var requestUtile = require('../utile/requests.server.utile.js');
 var phantomUtile = require('../utile/phantomjs.server.utile.js');
 var reviewController = require('./review.server.controller.js');
+var ZanoxMerchant = require('../../config/merchants/zanox.merchant.js');
 var mongoose = require('mongoose');
 var ReviewSchema = require('../models/review.server.model');
 var Review = mongoose.model( 'Review', ReviewSchema);
 var config = require('../../config/config.js');
 var contReview = 0;
 var callPhantom = new phantomUtile();
+var async = require('async');
+
 
 var getProductContext = function(body,next){
   
   try{
 
-    var $ = cheerio.load(body);
+    $ = cheerio.load(body);
 
     var productid = $('.codigo-produto').text();
     var productid_split_final;
@@ -50,47 +53,36 @@ var getProductContext = function(body,next){
 };
 
 
-var setDataProducts = function(currentItem,arrayProducts,next){
+var setDataProducts = function(offer,next){
 	
 	try{
 
-		if(currentItem < arrayProducts.length){
-
-		    var urlToCrawler = config.lojas_colombo + arrayProducts[currentItem].urlOffer;
-		    console.log("offer >> ",currentItem);
+		    var urlToCrawler = ZanoxMerchant.lojas_colombo + offer.urlOffer;
+		    console.log("offer >> ",offer.name);
 		    console.log("urlToCrawler >> ",urlToCrawler);
 
         callPhantom.getHtml(urlToCrawler,config.timeRequest,function(body){
 
-          // if(error){
-          //     console.log("error setDataProducts:",error);
-          //     setDataProducts(currentItem+1,arrayProducts,next);
-          // }else{
-
             getProductContext(body,function(productid,totalPaginacaoReviews){
 
-               if((totalPaginacaoReviews > 0) && (arrayProducts[currentItem].ean !== undefined)){
-                  arrayProducts[currentItem].dataProductId = productid;
-                  arrayProducts[currentItem].totalPaginacaoReviews = totalPaginacaoReviews;
-                  console.log("Product ean >> ",arrayProducts[currentItem].ean);
-                  console.log("advertiser >> ", arrayProducts[currentItem].advertiser);
-                  console.log("adding attribute dataProductId >> ",arrayProducts[currentItem].dataProductId);
-                  console.log("adding attribute totalPaginacaoReviews >> ", arrayProducts[currentItem].totalPaginacaoReviews);
+               if((totalPaginacaoReviews > 0) && (offer.ean !== undefined)){
+
+                  console.log("advertiser >> ", offer.advertiser);
+                  console.log("offer dataProductId >> ",productid);
+                  console.log("offer totalPaginacaoReviews >> ",totalPaginacaoReviews);
                   console.log('\n');
 
-                  setDataProducts(currentItem+1,arrayProducts,next);
+                  return next(productid,totalPaginacaoReviews);
                }else{
                 console.log("offer without ean or with total reviews < 0");
                 console.log('\n');
-                setDataProducts(currentItem+1,arrayProducts,next);
+                
+                return next(null);
+
                }
             });
-          // }
       });
 
- 		}else{
-		  return next(arrayProducts);
-		}
 	}catch(e){
 		console.log('An error has occurred >> setDataProducts >> '+ e.message);
 	}
@@ -98,19 +90,36 @@ var setDataProducts = function(currentItem,arrayProducts,next){
 
 
 
-var crawlerByProduct = function(currentItem,arrayProductsReview,next){
+var crawlerByProduct = function(currentItem,arrayOffers,next){
 
   try{
     // for each product
-    if(currentItem < arrayProductsReview.length) {
-
-      var currentPaginationReview = 1;
-      
-      crawlerByReviewPagination(currentItem,currentPaginationReview,arrayProductsReview,function(contReview){
-        console.log('total of reviews saved at the moment >> ',contReview);
-        crawlerByProduct(currentItem + 1,arrayProductsReview,next);
+    if(currentItem < arrayOffers.length) {
+      async.waterfall([
+        // step_01 >> setDataProducts
+        function(callback){
+          var offer = arrayOffers[currentItem];
+          setDataProducts(offer,function(productid,totalPaginacaoReviews){
+              callback(null,offer,productid,totalPaginacaoReviews); 
+          });
+        },
+        // step_02 >> crawlerByReviewPagination
+        function(offer,productid,totalPaginacaoReviews,callback){
+          // for each review pagination
+          var currentPaginationReview = 1;
+          crawlerByReviewPagination(offer,currentPaginationReview,productid,totalPaginacaoReviews,function(contReview){
+            console.log('total of reviews saved at the moment >> ',contReview);
+            callback(null,'arg'); 
+          });
+        }
+        ], function (err, result) {
+          if(err){
+            console.log("err >>",err);
+            crawlerByProduct(currentItem + 1,arrayOffers,next);    
+          }else{
+            crawlerByProduct(currentItem + 1,arrayOffers,next);
+          }
       });
-  
     }else{
       return next(contReview);
     }
@@ -120,25 +129,22 @@ var crawlerByProduct = function(currentItem,arrayProductsReview,next){
 };
 
 
-var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arrayProductsReview,next){
+var crawlerByReviewPagination = function(offer,currentPaginationReview,productid,totalPaginacaoReviews,next){
   
-  var productReview = arrayProductsReview[currentItem];
 
   try{
       // for each review pagination
-    if(currentPaginationReview <= arrayProductsReview[currentItem].totalPaginacaoReviews){
+    if(currentPaginationReview <= totalPaginacaoReviews){
 
-      var dataProductId = arrayProductsReview[currentItem].dataProductId;
+      getJson(productid,currentPaginationReview,function(data){
 
-      getJson(dataProductId,currentPaginationReview,function(data){
-
-        getReviewsFromJson(data,productReview,function(reviews){
+        getReviewsFromJson(data,offer,function(reviews){
         
           var currentItemArray = 0;
             
           reviewController.saveArrayReviews(currentItemArray,reviews,function(arrayReviews){
             contReview = contReview + arrayReviews.length;
-            crawlerByReviewPagination(currentItem,currentPaginationReview+1,arrayProductsReview,next);
+            crawlerByReviewPagination(offer,currentPaginationReview+1,productid,totalPaginacaoReviews,next);
           });
 
         });
@@ -154,7 +160,7 @@ var crawlerByReviewPagination = function(currentItem,currentPaginationReview,arr
 };
 
 
-var getReviewsFromJson = function(data,productReview,next){
+var getReviewsFromJson = function(data,offer,next){
 
 	try{
 		var reviews = [];
@@ -169,11 +175,11 @@ var getReviewsFromJson = function(data,productReview,next){
           author: value.usuario,
           location: "",
           date: value.data,
-          category: productReview.category,
-          url: productReview.url,
-          advertiser : productReview.advertiser,
-          manufacturer : productReview.manufacturer,
-          ean : productReview.ean,
+          category: offer.category,
+          url: offer.url,
+          advertiser : offer.advertiser,
+          manufacturer : offer.manufacturer,
+          ean : offer.ean,
           rating: value.nota
   		});
       
@@ -190,7 +196,7 @@ var getReviewsFromJson = function(data,productReview,next){
       review.description = review.description.replace(new RegExp('\r?\n','g'), ' ');
       review.location = review.location.replace(new RegExp('\r?\n','g'), ' ');
 
-		  console.log("Review from product ean >> ",productReview.ean);
+		  console.log("Review from product ean >> ",offer.ean);
       console.log("review >> ",i," >> ");
       console.log(review);
       console.log('\n');

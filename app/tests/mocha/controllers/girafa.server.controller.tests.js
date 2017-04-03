@@ -9,6 +9,7 @@ var url_offer = 'Refrigerador-Geladeira-Electrolux-Frost-Free-2-Portas-380-Litro
 var requestUtile = require('../../../utile/requests.server.utile.js');
 var reviewController = require('../../../controllers/review.server.controller.js');
 var girafaController = require('../../../controllers/girafa.server.controller.js');
+var ZanoxMerchant = require('../../../../config/merchants/zanox.merchant.js');
 
 
 describe('Girafa BR unit tests >> ',function(done){
@@ -43,12 +44,12 @@ describe('Girafa BR unit tests >> ',function(done){
 
 		before(function(done){
 
-			this.timeout(50000);
+			this.timeout(20000);
 			
 			var timeRequest = 1000;
 			Context.currentItem = 0;
 
-			var product = new Object ({
+			var offer = new Object ({
 				name:"Smartphone Sony Xperia Z3 Compact Desbloqueado Android 4.4 4G 4.6\" 16GB Branco",
 				ean:7898501193955,
 				category:"Telefonia",
@@ -59,10 +60,10 @@ describe('Girafa BR unit tests >> ',function(done){
 			});
 
 
-			Context.product = product;
+			Context.offer = offer;
 
-			var urlToCrawler = 	config.girafa_url + 
-    							product.urlOffer;
+			var urlToCrawler = ZanoxMerchant.girafa_url + offer.urlOffer;
+
 
     		console.log("urlToCrawler",urlToCrawler);
 
@@ -78,9 +79,9 @@ describe('Girafa BR unit tests >> ',function(done){
 
 
 		it('Should return arrayReviews with 5 reviews', function(done) {
-			this.timeout(50000);
+			this.timeout(20000);
 			girafaController.getReviewsFromHtml(Context.body,
-												Context.product,
+												Context.offer,
 												function(arrayReviews){
 													arrayReviews.length.should.be.equal(5);
 													arrayReviews[4].rating.should.be.equal(5);
