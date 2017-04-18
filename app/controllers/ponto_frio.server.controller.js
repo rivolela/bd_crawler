@@ -97,10 +97,10 @@ var crawlerByProduct = function(currentItem,arrayOffers,next){
             });
           },
           // step_02 >> crawlerByReviewPagination
-          function(offer,productid,totalPaginacaoReviews,callback){
+          function(offer,totalPaginacaoReviews,callback){
             // for each review pagination
             var currentPaginationReview = 1;
-            crawlerByReviewPagination(offer,currentPaginationReview,totalPaginacaoReviews,function(contReview){
+            crawlerByReviewPagination(offer,currentPaginationReview,function(contReview){
               console.log('total of reviews saved at the moment >> ',contReview);
               callback(null,'arg'); 
             });

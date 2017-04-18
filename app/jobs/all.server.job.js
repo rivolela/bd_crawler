@@ -41,43 +41,50 @@ function start(next){
 		// step_01 >> casasBahiaJob
 		function(callback){
 			casasBahiaJob.start(function(){
-				callback(null,'casasBahiaJob finished');	
+				console.log('casasBahiaJob finished >> ');
+				callback(null);	
 			});
 		},
 		// step_02 >> extraJob 
 		function(callback){
 			extraJob.start(function(){
-				callback(null,'extraJob finished');	
+				console.log('extraJob finished >> ');
+				callback(null);	
 			});
 		},
 		// step_03 >> girafaJob
 		function(callback){
 			girafaJob.start(function(){
-				callback(null,'girafaJob finished');	
+				console.log('girafaJob finished >> ');
+				callback(null);	
 			});
 		},
 		// step_04 >> colomboJob
 		function(callback){
 			colomboJob.start(function(){
-				callback(null,'colomboJob finished');	
+				console.log('colomboJob finished >> ');
+				callback(null);	
 			});
 		},
 		// step_05 >> pontoFrioJob
 		function(callback){
 			pontoFrioJob.start(function(){
-				callback(null,'pontoFrioJob finished');	
+				console.log('pontoFrioJob finished >> ');
+				callback(null);	
 			});
 		},
 		// step_06 >> ricardoJob
 		function(callback){
 			ricardoJob.start(function(){
-				callback(null,'ricardoJob finished');	
+				console.log('ricardoJob finished >> ');
+				callback(null);	
 			});
 		},
 		// step_07 >> ricardoJob
 		function(callback){
 			walmartJob.start(function(){
-				callback(null,'walmartJob finished');	
+				console.log('walmartJob finished >> ');
+				callback(null);	
 			});
 		},
 		],function (err, result) {
