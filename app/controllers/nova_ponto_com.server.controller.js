@@ -64,11 +64,12 @@ var getUrlCrawler = function(offer,next){
     var result_html = urlToCrawler.replace(/\"/g, "");
     // remove single quotes
     var result_html_2 = result_html.replace(/\'/g, "");
-    // var result_urlToCrawler_2 = result_urlToCrawler.replace(/\+/g, "");
+    // remove plus signal
+    var result_html_3 = result_html_2.replace(/\+/g, "");
                   
-    console.log("urlToCrawler >> ",result_html_2);
+    console.log("urlToCrawler >> ",result_html_3);
 
-    return next(result_html_2);
+    return next(result_html_3);
 
   }catch(e){
     console.log('An error has occurred >> nova_ponto_com.controller >> setUrlCrawler >>'+ e.message);
