@@ -40,6 +40,8 @@ module.exports = function(){
 
 		timeRequestHtml = timeRequest;
 
+		console.log("searchUrl",searchUrl);
+
     	setTimeout(timeControlCrawler,timeRequestHtml,function(){
     		request({
     			proxy: config.proxy, 
@@ -50,7 +52,7 @@ module.exports = function(){
 	        		'User-Agent': 'request',
 	         		'Content-Type': 'text/html',
 	      		},
-	      		timeout: 10000,
+	      		// timeout: 10000,
   				//followRedirect: true,
   				// maxRedirects: 10
 	  		},function(error,response,body){

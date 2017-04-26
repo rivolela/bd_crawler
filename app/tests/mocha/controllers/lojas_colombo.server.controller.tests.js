@@ -20,7 +20,7 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 			before(function(done){
 
-				this.timeout(50000);
+				this.timeout(90000);
 
 				callPhantom.getHtml(html,config.timeRequest,function(body){
 					Context.body = body;
@@ -31,7 +31,7 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 			it('Should return productid = 226890 from product page html', function(done) {
 
-				this.timeout(50000);
+				this.timeout(10000);
 				
 				lcController.getProductContext(Context.body,function(productid,totalPaginacaoReviews){
 					productid.should.be.equal('226890');
@@ -108,7 +108,7 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 
 			it('Should contReview == 0', function(done) {
-				this.timeout(80000);
+				this.timeout(100000);
 				var currentItem = 0;
 				lcController.crawlerByProduct(	currentItem,
 												Context.arrayOffers,

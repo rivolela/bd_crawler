@@ -1,6 +1,6 @@
 var config = require('../../config/config.js'),
 	Jobs = require('../../config/jobs/jobs.config.js'),
- 	extraController = require('../controllers/extra.server.controller.js'),
+ 	novaController = require('../controllers/nova_ponto_com.server.controller.js'),
  	offerController = require('../controllers/offer.crawler.server.controller.js'),
  	DateUtile = require('../utile/date.server.utile.js'),
  	cron = require('node-cron');
@@ -14,12 +14,12 @@ var config = require('../../config/config.js'),
 // }
 
 
-var taskExtra = cron.schedule(Jobs.extra_schedule, function(err){
+var taskNova = cron.schedule(Jobs.nova_schedule, function(err){
   	var time_start = new Date();	
 	var dateUtile = new DateUtile();
   	start(function(){
    		dateUtile.getJobTime(time_start,function(){
-  			console.log("Extra BR job finished !");
+  			console.log("Casas Bahia BR job finished !");
   		});
   });
 },false);
@@ -28,12 +28,12 @@ var taskExtra = cron.schedule(Jobs.extra_schedule, function(err){
 function start(next){
 
 	var currentItem = 0;
-	console.log("initializing Extra BR job ...");	
+	console.log("initializing Casas Bahia BR job ...");	
 
 	async.waterfall([
 		// step_01 >> get offers
 		function(callback){
-			query = {advertiser:'Extra BR'};
+			query = {$or:[{advertiser:"Casas Bahia BR"},{advertiser:"Pontofrio BR"},{advertiser:"Extra BR"}]};
 			offerController.getOffersBD(query,function(arrayOffers){
 				console.log("callback get offers Zanox from BD: >>",arrayOffers.length);	
 				callback(null,arrayOffers);
@@ -42,7 +42,7 @@ function start(next){
 		// step_02 >> crawler page
 		function(arrayOffers,callback){
 			var currentItem = 0;
-			extraController.crawlerByProduct(currentItem,arrayOffers,function(contReview){
+			novaController.crawlerByProduct(currentItem,arrayOffers,function(contReview){
 				console.log("callback crawlerByProduct >> ");
 				console.log("total reviews crawled >> ",contReview);
 				callback(null,'arg');
@@ -59,7 +59,7 @@ function start(next){
 }
 
 var starJob = function(next){
-	return (taskExtra.start());
+	return (taskNova.start());
 };
 
 

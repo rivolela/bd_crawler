@@ -2,14 +2,14 @@ var should = require('should');
 var requestUtile = require('../../../utile/requests.server.utile.js');
 var phantomUtile = require('../../../utile/phantomjs.server.utile.js');
 var config = require('../../../../config/config.js');
-var html ="http://www.extra.com.br/iPad Air 2 Apple com Tela Retina de 9,7, Wi-Fi, 3G/4G, Touch ID, Bluetooth, Câmera iSight 8MP e iOS 8 - Prateado-4305019.html";
+var html ="http://www.casasbahia.com.br/iPad Air 2 Apple com Tela Retina de 9,7'', Wi-Fi, 3G/4G, Touch ID, Bluetooth, Câmera iSight 8MP e iOS 8 - Prateado-4305019.html";
 var url_offer  = '/2345967';
 var novaController = require('../../../controllers/nova_ponto_com.server.controller.js');
 var reviewController = require('../../../controllers/review.server.controller.js');
 var ZanoxMerchant = require('../../../../config/merchants/zanox.merchant.js');
 
 
-describe('Extra BR unit tests:',function(done){
+describe('Casas Bahia BR unit tests:',function(done){
 
 
 	describe('Testing getContext function >>',function(done){
@@ -56,11 +56,11 @@ describe('Extra BR unit tests:',function(done){
 
 			var offer = new Object ({
 				name:'iPad Air 2 Apple com Tela Retina de 9,7, Wi-Fi, 3G/4G, Touch ID, Bluetooth, Câmera iSight 8MP e iOS 8 - Prateado',
-	  			ean:888462003803,
-	  			category:"Tablet iOS-iPad",
+	  			ean:9999999999,
+	  			category:"Ipad",
 	  			merchantProductId: 4305019,
 	  			urlOffer:'4305019',
-	  			advertiser:"Extra BR"
+	  			advertiser:"Casas Bahia BR"
 			});
 
 			Context.offer = offer;
@@ -82,15 +82,13 @@ describe('Extra BR unit tests:',function(done){
 
 		before(function(){
 
-			this.timeout(1000);
-
 			var offer = new Object ({
 				name:'iPad Air 2 Apple com Tela Retina de 9,7, Wi-Fi, 3G/4G, Touch ID, Bluetooth, Câmera iSight 8MP e iOS 8 - Prateado',
-	  			ean:888462003803,
-	  			category:"Tablet iOS-iPad",
+	  			ean:9999999999,
+	  			category:"Ipad",
 	  			merchantProductId: 4305019,
 	  			urlOffer:'4305019',
-	  			advertiser:"Extra BR"
+	  			advertiser:"Casas Bahia BR"
 			});
 
 			var arrayOffers = [];
@@ -100,7 +98,7 @@ describe('Extra BR unit tests:',function(done){
 
 
 		it('Should contReview == 3', function(done) {
-			this.timeout(20000);
+			this.timeout(10000);
 			var currentItem = 0;
 			novaController.crawlerByProduct(currentItem,
 										  Context.arrayOffers,
@@ -126,11 +124,11 @@ describe('Extra BR unit tests:',function(done){
 
 			var offer = new Object ({
 				name:'iPad Air 2 Apple com Tela Retina de 9,7, Wi-Fi, 3G/4G, Touch ID, Bluetooth, Câmera iSight 8MP e iOS 8 - Prateado',
-	  			ean:888462003803,
-	  			category:"Tablet iOS-iPad",
+	  			ean:9999999999,
+	  			category:"Ipad",
 	  			merchantProductId: 4305019,
 	  			urlOffer:'4305019',
-	  			advertiser:"Extra BR"
+	  			advertiser:"Casas Bahia BR"
 			});
 
 			Context.offer = offer;
@@ -138,7 +136,7 @@ describe('Extra BR unit tests:',function(done){
 			var nameOffer = offer.name;
         	var idOffer = offer.merchantProductId;
 
-			var urlToCrawler =  ZanoxMerchant.extra_url + nameOffer + '-' + idOffer + ".html";
+			var urlToCrawler =  ZanoxMerchant.casas_bahia_url + nameOffer + '-' + idOffer + ".html";
        		// remove double quotes
 			var result_html = urlToCrawler.replace(/\”/g, "");
 			// remove single quotes
@@ -157,15 +155,15 @@ describe('Extra BR unit tests:',function(done){
 			novaController.getReviewsFromHtml(Context.data,
 									  			Context.offer,
 									  			function(arrayReviews){
-									  				arrayReviews.should.containDeep([{author: 'Marcos'}]);
-									  				arrayReviews.should.containDeep([{location: 'Presidente Prudente'}]);
-									  				arrayReviews.should.containDeep([{date: '1433890800000'}]);
-									  				arrayReviews.should.containDeep([{category: 'Tablet iOS-iPad'}]);
-									  				arrayReviews.should.containDeep([{advertiser: 'Extra BR'}]);
-									  				arrayReviews.should.containDeep([{ean: '888462003803'}]);
+									  				arrayReviews.should.containDeep([{author: 'JOSÉ'}]);
+									  				arrayReviews.should.containDeep([{location: 'JOÃO PESSOA'}]);
+									  				arrayReviews.should.containDeep([{date: '1484524800000'}]);
+									  				arrayReviews.should.containDeep([{category: 'Ipad'}]);
+									  				arrayReviews.should.containDeep([{advertiser: 'Casas Bahia BR'}]);
+									  				arrayReviews.should.containDeep([{ean: '9999999999'}]);
 									  				arrayReviews.should.containDeep([{rating: 5}]);
-									  				arrayReviews.should.containDeep([{description:'Muito útil para minhas tarefas diárias, reuniões e leitura.'}]);
-									  				arrayReviews.should.containDeep([{title:'Sem duvida o melhor'}]);
+									  				arrayReviews.should.containDeep([{description:'NÃO RECEBI O PRODUTO APESAR DE JÁ TER PAGO A PRIMEIRA PARCELA.'}]);
+									  				arrayReviews.should.containDeep([{title:'NÃO RECEBI O PRODUTO'}]);
 													done();
 									  			});
 		});

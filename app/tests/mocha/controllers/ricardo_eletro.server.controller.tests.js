@@ -13,155 +13,155 @@ var reviewController = require('../../../controllers/review.server.controller.js
 describe('Ricardo Eletro BR unit tests:',function(done){
 
 
-	describe('Testing getProductId function >>',function(done){
+	// describe('Testing getProductId function >>',function(done){
 
-		var Context = {};
+	// 	var Context = {};
 
-		before(function(done){
-			var url = host + uri;
-			console.log(url);
-			Context.url = url;
-			done();
-		});
-
-
-		it('Should return productid = 85169 from product page html', function(done) {
-			this.timeout(10000);
-			reController.getProductId(Context.url,function(productid){
-				productid.should.be.equal('85169');
-				done();
-			});
-		});
-	});
+	// 	before(function(done){
+	// 		var url = host + uri;
+	// 		console.log(url);
+	// 		Context.url = url;
+	// 		done();
+	// 	});
 
 
-	describe('Testing getTotalPagination function >> ',function(done){
-
-		it('Should return totalPaginacaoReviews = 2', function(done) {
-			this.timeout(4000);
-			var productid = 257082;
-			reController.getTotalPagination(productid,function(totalPaginacaoReviews){
-				totalPaginacaoReviews.should.be.equal('2');
-				done();
-			});
-		});
+	// 	it('Should return productid = 85169 from product page html', function(done) {
+	// 		this.timeout(10000);
+	// 		reController.getProductId(Context.url,function(productid){
+	// 			productid.should.be.equal('85169');
+	// 			done();
+	// 		});
+	// 	});
+	// });
 
 
-		it('Should return totalPaginacaoReviews = 0', function(done) {
-			this.timeout(4000);
-			var productid = 999999;
-			reController.getTotalPagination(productid,function(totalPaginacaoReviews){
-				totalPaginacaoReviews.should.be.equal(0);
-				done();
-			});
-		});
-	});
+	// describe('Testing getTotalPagination function >> ',function(done){
+
+	// 	it('Should return totalPaginacaoReviews = 2', function(done) {
+	// 		this.timeout(4000);
+	// 		var productid = 257082;
+	// 		reController.getTotalPagination(productid,function(totalPaginacaoReviews){
+	// 			totalPaginacaoReviews.should.be.equal('2');
+	// 			done();
+	// 		});
+	// 	});
 
 
-	describe('Testing setProductIdArrayProducts function >>',function(done){
-
-		var Context = {};
-
-		before(function(){
-			var timeRequest = 1000;
-			Context.currentItem = 0;
-
-			var offer = new Object ({
-				name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
-	  			ean:7896584063448,
-	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-	  			merchantProductId: 435595,
-	  			urlOffer:url_offer,
-	  			advertiser:"Ricardo Eletro BR",
-			});
-
-			Context.offer = offer;
-		});
+	// 	it('Should return totalPaginacaoReviews = 0', function(done) {
+	// 		this.timeout(4000);
+	// 		var productid = 999999;
+	// 		reController.getTotalPagination(productid,function(totalPaginacaoReviews){
+	// 			totalPaginacaoReviews.should.be.equal(0);
+	// 			done();
+	// 		});
+	// 	});
+	// });
 
 
-		it('Should add info to array products: productid==85169', function(done) {
-			this.timeout(10000);
-			reController.setProductIdArrayProducts(Context.offer,function(dataProductId){
-				dataProductId.should.be.equal('85169');
-				done();
-			});
-		});
-	});
+	// describe('Testing setProductIdArrayProducts function >>',function(done){
+
+	// 	var Context = {};
+
+	// 	before(function(){
+	// 		var timeRequest = 1000;
+	// 		Context.currentItem = 0;
+
+	// 		var offer = new Object ({
+	// 			name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
+	//   			ean:7896584063448,
+	//   			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
+	//   			merchantProductId: 435595,
+	//   			urlOffer:url_offer,
+	//   			advertiser:"Ricardo Eletro BR",
+	// 		});
+
+	// 		Context.offer = offer;
+	// 	});
 
 
-	describe('Testing setTotalPaginationArrayProducts function >>',function(done){
-
-		var Context = {};
-
-		before(function(){
-			var timeRequest = 1000;
-			Context.currentItem = 0;
-
-			var offer = new Object ({
-				name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
-	  			ean:7896584063448,
-	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-	  			merchantProductId: 435595,
-	  			urlOffer:url_offer,
-	  			advertiser:"Ricardo Eletro BR",
-			});
-
-			Context.offer = offer;
-		});
+	// 	it('Should add info to array products: productid==85169', function(done) {
+	// 		this.timeout(10000);
+	// 		reController.setProductIdArrayProducts(Context.offer,function(dataProductId){
+	// 			dataProductId.should.be.equal('85169');
+	// 			done();
+	// 		});
+	// 	});
+	// });
 
 
-		it('Should add info to array products: totalPaginacaoReviews > 1', function(done) {
-			this.timeout(20000);
-			var dataProductId = '85169';
-			reController.setTotalPaginationArrayProducts(Context.offer,dataProductId,function(totalPaginacaoReviews){
-				totalPaginacaoReviews.should.be.equal('23');
-				done();
-			});
-		});
-	});
+	// describe('Testing setTotalPaginationArrayProducts function >>',function(done){
+
+	// 	var Context = {};
+
+	// 	before(function(){
+	// 		var timeRequest = 1000;
+	// 		Context.currentItem = 0;
+
+	// 		var offer = new Object ({
+	// 			name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
+	//   			ean:7896584063448,
+	//   			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
+	//   			merchantProductId: 435595,
+	//   			urlOffer:url_offer,
+	//   			advertiser:"Ricardo Eletro BR",
+	// 		});
+
+	// 		Context.offer = offer;
+	// 	});
+
+
+	// 	it('Should add info to array products: totalPaginacaoReviews > 1', function(done) {
+	// 		this.timeout(20000);
+	// 		var dataProductId = '85169';
+	// 		reController.setTotalPaginationArrayProducts(Context.offer,dataProductId,function(totalPaginacaoReviews){
+	// 			totalPaginacaoReviews.should.be.equal('23');
+	// 			done();
+	// 		});
+	// 	});
+	// });
 	
 	
-	describe('Testing getReviewsFromHtml function >>',function(done){
+	// describe('Testing getReviewsFromHtml function >>',function(done){
 
-		var Context = {};
+	// 	var Context = {};
 
-		before(function(done){
+	// 	before(function(done){
 
-			this.timeout(50000);
+	// 		this.timeout(50000);
 			
-			var timeRequest = 1000;
-			Context.currentItem = 0;
+	// 		var timeRequest = 1000;
+	// 		Context.currentItem = 0;
 
-			var product = new Object ({
-				name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
-	  			ean:7896584063448,
-	  			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
-	  			merchantProductId: 435595,
-	  			url:"http://www.ricardoeletro.com.br/Produto/Refrigerador-Geladeira-Electrolux-Infinity-Frost-Free-2-Portas-553-Litros-Inox-DF80X/256-270-274-5211/?utm_source=Zanox&prc=8803&utm_medium=CPC_Eletrodomesticos_Zanox&utm_campaign=Refrigerador&utm_content=Refrigerador_2_Portas&cda=E198-E863-BA87-DC80",
-	  			advertiser:"Ricardo Eletro BR",
-			});
+	// 		var product = new Object ({
+	// 			name:'Refrigerador | Geladeira Cycle Defrost Duas Portas Inox 475L - DC51X - Electrolux',
+	//   			ean:7896584063448,
+	//   			category:"Eletrodomésticos / Fogões / Embutir 5 Bocas",
+	//   			merchantProductId: 435595,
+	//   			url:"http://www.ricardoeletro.com.br/Produto/Refrigerador-Geladeira-Electrolux-Infinity-Frost-Free-2-Portas-553-Litros-Inox-DF80X/256-270-274-5211/?utm_source=Zanox&prc=8803&utm_medium=CPC_Eletrodomesticos_Zanox&utm_campaign=Refrigerador&utm_content=Refrigerador_2_Portas&cda=E198-E863-BA87-DC80",
+	//   			advertiser:"Ricardo Eletro BR",
+	// 		});
 
-			Context.product = product;
+	// 		Context.product = product;
 
-			call = new phantomUtile();
+	// 		call = new phantomUtile();
 			
-			call.getHtml('http://www.ricardoeletro.com.br/Produto/Comentarios/5211/1',timeRequest,function(body){
-				Context.body = body;
-				done();
-			});
-		});
+	// 		call.getHtml('http://www.ricardoeletro.com.br/Produto/Comentarios/5211/1',timeRequest,function(body){
+	// 			Context.body = body;
+	// 			done();
+	// 		});
+	// 	});
 
 
-		it('Should return arrayReviews with 4 reviews', function(done) {
-			this.timeout(50000);
-			reController.getReviewsFromHtml(Context.body,
-											Context.product,
-											function(arrayReviews){
-												arrayReviews.length.should.be.equal(4);
-												done();
-											});
-		});
-	});
+	// 	it('Should return arrayReviews with 4 reviews', function(done) {
+	// 		this.timeout(50000);
+	// 		reController.getReviewsFromHtml(Context.body,
+	// 										Context.product,
+	// 										function(arrayReviews){
+	// 											arrayReviews.length.should.be.equal(4);
+	// 											done();
+	// 										});
+	// 	});
+	// });
 
 
 	after(function(){
