@@ -76,10 +76,12 @@ var getUrlCrawler = function(offer,next){
     var result_html_5 = result_html_4.replace(/\®/g, "");
     // remove ™
     var result_html_6 = result_html_5.replace(/\™/g, "");
+    // remove double quotes
+    var result_html_7 = result_html_6.replace(/\”/g, "");
                   
-    console.log("urlToCrawler >> ",result_html_6);
+    console.log("urlToCrawler >> ",result_html_7);
 
-    return next(result_html_6);
+    return next(result_html_7);
 
   }catch(e){
     console.log('An error has occurred >> nova_ponto_com.controller >> setUrlCrawler >>'+ e.message);
