@@ -65,23 +65,28 @@ var getUrlCrawler = function(offer,next){
 
     
     // remove double quotes
-    var result_html = urlToCrawler.replace(/\"/g, "");
-    // remove single quotes
-    var result_html_2 = result_html.replace(/\'/g, "");
-    // remove plus signal
-    var result_html_3 = result_html_2.replace(/\+/g, "");
+    // var result_html = result_html.replace(/\"/g, "");
+    // // remove single quotes
+    // var result_html_2 = result_html.replace(/\'/g, "");
+    // // remove plus signal
+    // var result_html_3 = result_html_2.replace(/\+/g, "");
      // remove accents
-    var result_html_4 = result_html_3.removerAcento();
-     // remove ®
-    var result_html_5 = result_html_4.replace(/\®/g, "");
-    // remove ™
-    var result_html_6 = result_html_5.replace(/\™/g, "");
-    // remove double quotes
-    var result_html_7 = result_html_6.replace(/\”/g, "");
-                  
-    console.log("urlToCrawler >> ",result_html_7);
+    // var result_html_4 = result_html_3.removerAcento();
+    //  // remove ®
+    // var result_html_5 = result_html_4.replace(/\®/g, "");
+    // // remove ™
+    // var result_html_6 = result_html_5.replace(/\™/g, "");
+    // // remove double quotes
+    // var result_html_7 = result_html_6.replace(/\”/g, "");
 
-    return next(result_html_7);
+    // remove caracteres especiais
+    var result_html = urlToCrawler.replace(/[^\w\s]/gi, '');
+     // remove accents
+    var result_html_2 = result_html.removerAcento();
+                  
+    console.log("urlToCrawler >> ",result_html_2);
+
+    return next(result_html_2);
 
   }catch(e){
     console.log('An error has occurred >> nova_ponto_com.controller >> setUrlCrawler >>'+ e.message);
