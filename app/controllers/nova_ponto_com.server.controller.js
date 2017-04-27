@@ -90,7 +90,7 @@ var getUrlCrawler = function(offer,next){
                   
     // console.log("urlToCrawler >> ",result_html_2);
 
-    return next(clean_name_02);
+    return next(urlToCrawler);
 
   }catch(e){
     console.log('An error has occurred >> nova_ponto_com.controller >> setUrlCrawler >>'+ e.message);
