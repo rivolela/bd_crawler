@@ -1,6 +1,7 @@
 var cheerio = require('cheerio');
 var requestUtile = require('../utile/requests.server.utile.js');
 var phantomUtile = require('../utile/phantomjs.server.utile.js');
+var StringUtile = require('../utile/string.server.utile.js');
 var ZanoxMerchant = require('../../config/merchants/zanox.merchant.js');
 var reviewController = require('./review.server.controller.js');
 var mongoose = require('mongoose');
@@ -55,8 +56,11 @@ var getUrlCrawler = function(offer,next){
       case 'Extra BR':
         urlToCrawler =  ZanoxMerchant.extra_url + nameOffer + '-' + idOffer + ".html";
       break;
-      default:
+      case 'Pontofrio BR':
         urlToCrawler =  ZanoxMerchant.ponto_frio_url + nameOffer + '-' + idOffer + ".html";
+      break;
+      // default:
+      //   urlToCrawler =  ZanoxMerchant.ponto_frio_url + nameOffer + '-' + idOffer + ".html";
     }
 
     
@@ -66,10 +70,12 @@ var getUrlCrawler = function(offer,next){
     var result_html_2 = result_html.replace(/\'/g, "");
     // remove plus signal
     var result_html_3 = result_html_2.replace(/\+/g, "");
+     // remove accents
+    var result_html_4 = result_html_3.removerAcento();
                   
-    console.log("urlToCrawler >> ",result_html_3);
+    console.log("urlToCrawler >> ",result_html_4);
 
-    return next(result_html_3);
+    return next(result_html_4);
 
   }catch(e){
     console.log('An error has occurred >> nova_ponto_com.controller >> setUrlCrawler >>'+ e.message);
@@ -92,7 +98,7 @@ var setDataProducts = function(offer,next){
           function(url,callback){
             call.getHtml(url,config.timeRequest,function(error,response,body){
               if(error){
-                console.log("error setDataProducts:",error);
+                console.log("error setDataProducts >> ",error);
                 callback(null); 
               }else{
                 callback(null,body);
@@ -147,7 +153,11 @@ var crawlerByProduct = function(currentItem,arrayOffers,next){
           function(callback){
             var offer = arrayOffers[currentItem];
             setDataProducts(offer,function(totalPaginacaoReviews){
-                callback(null,offer,totalPaginacaoReviews); 
+              if(totalPaginacaoReviews === null){
+                callback(null); 
+              }else{
+                 callback(null,offer,totalPaginacaoReviews); 
+              }         
             });
           },
           // step_02 >> crawlerByReviewPagination

@@ -54,7 +54,7 @@ module.exports = function(){
 	      		},
 	      		// timeout: 10000,
   				//followRedirect: true,
-  				// maxRedirects: 10
+  				maxRedirects: 10
 	  		},function(error,response,body){
 	  	 		if(error) {
 	     		   console.log("error get html >> ",error);
