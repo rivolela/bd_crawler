@@ -114,7 +114,7 @@ var setDataProducts = function(offer,next){
             call.getHtml(url,config.timeRequest,function(error,response,body){
               if(error){
                 console.log("error setDataProducts >> ",error);
-                callback(null); 
+                callback(error,null); 
               }else{
                 callback(null,body);
               }
