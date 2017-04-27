@@ -72,10 +72,14 @@ var getUrlCrawler = function(offer,next){
     var result_html_3 = result_html_2.replace(/\+/g, "");
      // remove accents
     var result_html_4 = result_html_3.removerAcento();
+     // remove ®
+    var result_html_5 = result_html_4.replace(/\®/g, "");
+    // remove ™
+    var result_html_6 = result_html_5.replace(/\™/g, "");
                   
-    console.log("urlToCrawler >> ",result_html_4);
+    console.log("urlToCrawler >> ",result_html_6);
 
-    return next(result_html_4);
+    return next(result_html_6);
 
   }catch(e){
     console.log('An error has occurred >> nova_ponto_com.controller >> setUrlCrawler >>'+ e.message);
