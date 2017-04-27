@@ -46,18 +46,25 @@ var getUrlCrawler = function(offer,next){
 
   try{
     var nameOffer = offer.name;
+
+    // remove caracteres especiais
+    var clean_name_01 = nameOffer.replace(/[^\w\s]/gi, '');
+
+    // remove accents
+    var clean_name_02 = clean_name_01.removerAcento();
+
     var idOffer = offer.merchantProductId;
     var urlToCrawler;
 
     switch(offer.advertiser) {
       case 'Casas Bahia BR':
-        urlToCrawler =  ZanoxMerchant.casas_bahia_url + nameOffer + '-' + idOffer + ".html";
+        urlToCrawler =  ZanoxMerchant.casas_bahia_url + clean_name_02 + '-' + idOffer + ".html";
       break;
       case 'Extra BR':
-        urlToCrawler =  ZanoxMerchant.extra_url + nameOffer + '-' + idOffer + ".html";
+        urlToCrawler =  ZanoxMerchant.extra_url + clean_name_02 + '-' + idOffer + ".html";
       break;
       case 'Pontofrio BR':
-        urlToCrawler =  ZanoxMerchant.ponto_frio_url + nameOffer + '-' + idOffer + ".html";
+        urlToCrawler =  ZanoxMerchant.ponto_frio_url + clean_name_02 + '-' + idOffer + ".html";
       break;
       // default:
       //   urlToCrawler =  ZanoxMerchant.ponto_frio_url + nameOffer + '-' + idOffer + ".html";
@@ -79,14 +86,11 @@ var getUrlCrawler = function(offer,next){
     // // remove double quotes
     // var result_html_7 = result_html_6.replace(/\”/g, "");
 
-    // remove caracteres especiais
-    var result_html = urlToCrawler.replace(/[^\w\s]/gi, '');
-     // remove accents
-    var result_html_2 = result_html.removerAcento();
+  
                   
-    console.log("urlToCrawler >> ",result_html_2);
+    // console.log("urlToCrawler >> ",result_html_2);
 
-    return next(result_html_2);
+    return next(clean_name_02);
 
   }catch(e){
     console.log('An error has occurred >> nova_ponto_com.controller >> setUrlCrawler >>'+ e.message);
