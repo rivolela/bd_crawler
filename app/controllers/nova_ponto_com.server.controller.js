@@ -4,11 +4,14 @@ var phantomUtile = require('../utile/phantomjs.server.utile.js');
 var StringUtile = require('../utile/string.server.utile.js');
 var ZanoxMerchant = require('../../config/merchants/zanox.merchant.js');
 var reviewController = require('./review.server.controller.js');
+var productController = require('./product.server.controller.js');
 var mongoose = require('mongoose');
 var ReviewSchema = require('../models/review.server.model');
 var Review = mongoose.model( 'Review', ReviewSchema);
 var config = require('../../config/config.js');
 var contReview = 0;
+var contReviewsPagination;
+var request = require('request').defaults({maxRedirects:20});
 var call = new requestUtile();
 
 
@@ -70,27 +73,10 @@ var getUrlCrawler = function(offer,next){
       //   urlToCrawler =  ZanoxMerchant.ponto_frio_url + nameOffer + '-' + idOffer + ".html";
     }
 
-    
-    // remove double quotes
-    // var result_html = result_html.replace(/\"/g, "");
-    // // remove single quotes
-    // var result_html_2 = result_html.replace(/\'/g, "");
-    // // remove plus signal
-    // var result_html_3 = result_html_2.replace(/\+/g, "");
      // remove accents
-    // var result_html_4 = result_html_3.removerAcento();
-    //  // remove ®
-    // var result_html_5 = result_html_4.replace(/\®/g, "");
-    // // remove ™
-    // var result_html_6 = result_html_5.replace(/\™/g, "");
-    // // remove double quotes
-    // var result_html_7 = result_html_6.replace(/\”/g, "");
+    var result_url = urlToCrawler.removerAcento();
 
-  
-                  
-    // console.log("urlToCrawler >> ",result_html_2);
-
-    return next(urlToCrawler);
+    return next(result_url);
 
   }catch(e){
     console.log('An error has occurred >> nova_ponto_com.controller >> setUrlCrawler >>'+ e.message);
@@ -169,9 +155,9 @@ var crawlerByProduct = function(currentItem,arrayOffers,next){
             var offer = arrayOffers[currentItem];
             setDataProducts(offer,function(totalPaginacaoReviews){
               if(totalPaginacaoReviews === null){
-                callback(null); 
+                callback('error setDataProduct >> ',null); 
               }else{
-                 callback(null,offer,totalPaginacaoReviews); 
+                callback(null,offer,totalPaginacaoReviews); 
               }         
             });
           },
@@ -179,16 +165,25 @@ var crawlerByProduct = function(currentItem,arrayOffers,next){
           function(offer,totalPaginacaoReviews,callback){
             // for each review pagination
             var currentPaginationReview = 1;
-            crawlerByReviewPagination(offer,currentPaginationReview,function(contReview){
-              console.log('total of reviews saved at the moment >> ',contReview);
-              callback(null,'arg'); 
+            contReviewsPagination = 0;
+            crawlerByReviewPagination(offer,currentPaginationReview,function(){
+              // contReview = contReview + resultReviewsPagination;
+              // console.log('total of reviews saved at the moment >> ',contReview);
+              callback(null,offer); 
             });
-          }
-          ], function (err, result) {
+          },
+          // step_03 >> update product
+          function(offer,callback){
+            productController.updateProductReviews(offer,function(){
+              callback(null,'product updated'); 
+            });
+          },
+        ], function (err, result) {
             if(err){
               console.log("err >>",err);
               crawlerByProduct(currentItem + 1,arrayOffers,next);    
             }else{
+              console.log("result >>",result);
               crawlerByProduct(currentItem + 1,arrayOffers,next);
             }
         });
@@ -218,6 +213,7 @@ var crawlerByReviewPagination = function(offer,currentPaginationReview,next){
         },
         // step_02 >> get html crawler's pagination url
         function(url,callback){
+          var call = new requestUtile();
           call.getHtml(url,config.timeRequest,function(error,response,body){
               if(error){
                 console.log("error getHtml >> ",error);
@@ -233,7 +229,7 @@ var crawlerByReviewPagination = function(offer,currentPaginationReview,next){
              callback(null,reviews);
            });
         },
-        // step_03 >> get total pagination
+        // step_03 >> save reviews
         function(reviews,callback){
 
           var currentItemArray = 0;
@@ -245,7 +241,7 @@ var crawlerByReviewPagination = function(offer,currentPaginationReview,next){
         },
         ], function (err, result) {
           if(err){
-            console.log("err >>",err);
+            console.log("err crawlerByReviewPagination >>",err);
             crawlerByReviewPagination(offer,currentPaginationReview+1,next);  
           }else{
             console.log("total reviews saved at the moment >>",contReview);
@@ -254,7 +250,7 @@ var crawlerByReviewPagination = function(offer,currentPaginationReview,next){
       });
     
     }else{
-      return next(contReview);
+      return next();
     }
 
   }catch(e){

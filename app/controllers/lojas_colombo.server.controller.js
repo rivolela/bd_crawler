@@ -10,6 +10,7 @@ var config = require('../../config/config.js');
 var contReview = 0;
 var callPhantom = new phantomUtile();
 var async = require('async');
+var productController = require('./product.server.controller.js');
 
 
 var getProductContext = function(body,next){
@@ -107,11 +108,17 @@ var crawlerByProduct = function(currentItem,arrayOffers,next){
         function(offer,productid,totalPaginacaoReviews,callback){
           // for each review pagination
           var currentPaginationReview = 1;
-          crawlerByReviewPagination(offer,currentPaginationReview,productid,totalPaginacaoReviews,function(contReview){
-            console.log('total of reviews saved at the moment >> ',contReview);
-            callback(null,'arg'); 
+          crawlerByReviewPagination(offer,currentPaginationReview,productid,totalPaginacaoReviews,function(){
+            // console.log('total of reviews saved at the moment >> ',contReview);
+            callback(null,offer); 
           });
-        }
+        },
+        // step_03 >> update product
+        function(offer,callback){
+          productController.updateProductReviews(offer,function(){
+            callback(null,'product updated'); 
+          });
+        },
         ], function (err, result) {
           if(err){
             console.log("err >>",err);
@@ -219,7 +226,7 @@ var getJson = function(productid,pagination,next){
 		var url = "https://www.colombo.com.br/avaliacao-pagina?codProd=" + productid + "&pagina=" + pagination + "&ordemAvaliacao=1";
     console.log("getJson >> url >>",url);
 		var call = new requestUtile();
-		call.getJson(url,config.timeRequest,function(data){
+		call.getJson(url,config.timeRequest,function(error,response,data){
 			return next(data);
 		});
 	}catch(e){

@@ -5,7 +5,6 @@ var iconv = require('iconv-lite');
 var http = require("http");
 var config = require('../../config/config.js');
 
-
 module.exports = function(){
 
 
@@ -29,7 +28,7 @@ module.exports = function(){
     				console.log('\n');
  				}else{
     				var data = JSON.parse(body);
-    				return next(data,response,error);
+    				return next(error,response,data);
    				}	
 	  		});
 		});
@@ -40,7 +39,7 @@ module.exports = function(){
 
 		timeRequestHtml = timeRequest;
 
-		console.log("searchUrl",searchUrl);
+		console.log("searchUrl >> ",searchUrl);
 
     	setTimeout(timeControlCrawler,timeRequestHtml,function(){
     		request({
@@ -50,11 +49,11 @@ module.exports = function(){
 	      		method: 'GET', //Specify the method
 	      		headers: { //We can define headers too
 	        		'User-Agent': 'request',
-	         		'Content-Type': 'text/html',
+	         		'Content-Type': 'text/html;charset=UTF-8',
 	      		},
 	      		// timeout: 10000,
-  				//followRedirect: true,
-  				maxRedirects: 10
+  				// followRedirect: true,
+  				// maxRedirects: 50
 	  		},function(error,response,body){
 	  	 		if(error) {
 	     		   console.log("error get html >> ",error);

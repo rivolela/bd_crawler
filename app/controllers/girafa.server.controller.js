@@ -10,7 +10,7 @@ var reviewController = require('./review.server.controller.js');
 var contReview = 0;
 var callPhantom = new phantomUtile();
 var async = require('async');
-
+var productController = require('./product.server.controller.js');
 
 /**
  * [getTotalReviews description]
@@ -149,6 +149,8 @@ var crawlerPage = function(currentItem,arrayProducts,next){
   	  // for each product
       if(currentItem < arrayProducts.length){
 
+        var offer = arrayProducts[currentItem];
+
         async.waterfall([
           // step_01 >> get total of reviews
           function(callback){            
@@ -180,7 +182,13 @@ var crawlerPage = function(currentItem,arrayProducts,next){
               contReview = contReview + reviews.length;
               callback(null,'arg');
             });
-          }
+          },
+          // step_05 >> update product
+          function(arg,callback){
+            productController.updateProductReviews(offer,function(){
+              callback(null,'product updated'); 
+            });
+          },
           ], function (err, result) {
             if(err){
               console.log("err >>",err);

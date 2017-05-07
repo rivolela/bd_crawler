@@ -1,3 +1,6 @@
+// require('events').EventEmitter.prototype._maxListeners = 0;
+require('events').EventEmitter.defaultMaxListeners = Infinity;
+
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 var mongoose = require('./config/mongoose'),

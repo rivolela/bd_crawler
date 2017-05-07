@@ -17,7 +17,7 @@ String.prototype.removerAcento = function () {
   }
 
   return palavraSemAcento;
-}
+};
 
 
 

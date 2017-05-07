@@ -11,6 +11,7 @@ var reviewController = require('./review.server.controller.js');
 var contReview = 0;
 var callPhantom = new phantomUtile();
 var async = require('async');
+var productController = require('./product.server.controller.js');
 
 
 var getProductId = function(urlToCrawler,next){
@@ -141,9 +142,15 @@ var crawlerByProduct = function(currentItem,arrayOffers,next){
             var currentPaginationReview = 0;
             crawlerByReviewPagination(offer,currentPaginationReview,dataProductId,totalPaginacaoReviews,function(contReview){
               console.log('total of reviews saved at the moment >> ',contReview);
-              callback(null,'arg'); 
+              callback(null,offer); 
             });
-          }
+          },
+          // step_04 >> update product
+          function(offer,callback){
+            productController.updateProductReviews(offer,function(){
+              callback(null,'product updated'); 
+            });
+          },
           ], function (err, result) {
             if(err){
               console.log("err >>",err);

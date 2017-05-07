@@ -13,6 +13,7 @@ var contReview = 0;
 var Offer_CrawlerSchema = require('../models/offer.crawler.server.model');
 var Offer = mongoose.model( 'Offer_Crawler', Offer_CrawlerSchema);
 var async = require('async');
+var productController = require('./product.server.controller.js');
 
 
 var getProductContext = function(body,next){
@@ -94,9 +95,15 @@ var crawlerByProduct = function(currentItem,arrayOffers,next){
         var currentPaginationReview = 0;
         crawlerByReviewPagination(offer,currentPaginationReview,productid,totalPaginacaoReviews,function(contReview){
           console.log('total of reviews saved at the moment >> ',contReview);
-          callback(null,'arg'); 
+          callback(null,offer); 
         });
-      }
+      },
+      // step_03 >> update product
+      function(offer,callback){
+        productController.updateProductReviews(offer,function(){
+          callback(null,'product updated'); 
+        });
+      },
       ], function (err, result) {
         if(err){
           console.log("err >>",err);

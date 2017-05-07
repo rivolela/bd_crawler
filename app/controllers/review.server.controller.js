@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var ReviewSchema = require('../models/review.server.model');
 var Review = mongoose.model( 'Review', ReviewSchema);
-
+var config = require('../../config/config.js');
 var cheerio = require('cheerio');
 var requestUtile = require('../utile/requests.server.utile.js');
 var timeRequest = 3000;
@@ -61,6 +61,47 @@ var deleteAllReviews = function(next){
 };
 
 
+/**
+ * [getReviewsSummary description]
+ * @param  {Offer}   offer [description]
+ * @param  {Function} next  [description]
+ * @return {number,number,number} countSad,countHappy,totalReviews [description]
+ */
+var getReviewsSummary = function(offer,next){
+  
+  var url = config.bdService + "reviews/summary/ean/" + offer.ean;
+  var call = new requestUtile();
+  console.log("url >>",url);
+  
+  try{
+
+    call.getJson(url,config.timeRequest,function(error, response, body){
+
+      if(body.total > 0){
+        countSad = Number(body.docs[0].countSad);
+        countHappy = Number(body.docs[0].countHappy);
+        totalReviews = Number(body.docs[0].totalReviews);
+      }else{
+        countSad = 0;
+        countHappy = 0;
+        totalReviews = 0;
+      }
+
+      console.log("resume to search:");
+      console.log("countSad:", countSad);
+      console.log("countHappy:", countHappy);
+      console.log("totalReviews:", totalReviews);   
+      console.log('\n');
+
+      return next(countSad,countHappy,totalReviews);
+    });  
+  }catch(error){
+    console.log('An error has occurred >> review.server.controller >>  getReviewsSummary : '+ error.message);
+    throw error ;
+  }
+};
+
+
 var findOneAndUpdate = function(query,object,next){
 
   // if query null or empty, this query should be the default
@@ -104,6 +145,7 @@ var findOneAndUpdate = function(query,object,next){
 
 };
 
+exports.getReviewsSummary = getReviewsSummary;
 exports.saveArrayReviews = saveArrayReviews;
 exports.save = save;
 exports.deleteAllReviews = deleteAllReviews;

@@ -31,7 +31,7 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 			it('Should return productid = 226890 from product page html', function(done) {
 
-				this.timeout(10000);
+				this.timeout(90000);
 				
 				lcController.getProductContext(Context.body,function(productid,totalPaginacaoReviews){
 					productid.should.be.equal('226890');
@@ -108,7 +108,7 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 
 			it('Should contReview == 0', function(done) {
-				this.timeout(100000);
+				this.timeout(130000);
 				var currentItem = 0;
 				lcController.crawlerByProduct(	currentItem,
 												Context.arrayOffers,
@@ -127,7 +127,7 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 			before(function(done){
 				
-				this.timeout(10000);
+				this.timeout(34000);
 
 				var offer = new Object ({
 					name:'Depurador de Ar Consul 60 cm para Fogão de 4 Bocas - CAT60GB',
@@ -142,7 +142,7 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 				var call = new requestUtile();
 
-				call.getJson(json_with_reviews,config.timeRequest,function(data){
+				call.getJson(json_with_reviews,config.timeRequest,function(error,response,data){
 					Context.body = data;
 					done();
 				});
@@ -150,7 +150,7 @@ describe('Lojas Colombo BR unit tests:',function(done){
 
 
 			it('Should contain the data below >>', function(done) {
-				this.timeout(2000);
+				this.timeout(10000);
 				lcController.getReviewsFromJson(Context.body,
 										  		Context.offer,
 										  		function(arrayReviews){
