@@ -88,7 +88,7 @@ var updateProductReviews = function(offer,next){
             console.log("callback get json product >> ");
             console.log("body >>",body);
             if(body.total === undefined){
-				callback('error step_01 for save product >>');
+				      callback('error step_01 for save product >>');
             }else{
             	 callback(null,body);
             }
@@ -98,21 +98,21 @@ var updateProductReviews = function(offer,next){
       // step_02 >> save new product if necessary
       function(body,callback){
         var idProduct;
-        console.log("body.total",body.total);
-        if(body.total === 1){
+        console.log("body.total >> ",body.total);
+        if(body.total > 0){
           idProduct = body.docs[0]._id;
           console.log("idProduct already exists >> ",idProduct);
           callback(null,offer);
         }else{
-          	createProduct(offer,function(error, response, data){
-            	idProduct = data._id;
-            	console.log("product created >> ",idProduct);
-            	callback(null,'arg');
-          	});
+        	createProduct(offer,function(error, response, data){
+          	idProduct = data._id;
+          	console.log("product created >> ",idProduct);
+          	callback(null,offer);
+        	});
         }
       },
       // step_03 >> get summary reviews by ean
-      function(arg,callback){
+      function(offer,callback){
         if(offer.ean !== undefined){
           reviewController.getReviewsSummary(offer,function(countSad,countHappy,totalReviews){
           	console.log("Update product >> get summary >> ",offer.ean);

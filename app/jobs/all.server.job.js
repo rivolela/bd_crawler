@@ -75,7 +75,7 @@ function start(next){
 				console.log("err >>",err);
 				return next(err);
 			}else{
-				console.log("result >>",err);
+				console.log("result >>",result);
 				return next();
 			}
 	});

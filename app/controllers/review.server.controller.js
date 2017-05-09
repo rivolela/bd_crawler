@@ -72,6 +72,10 @@ var getReviewsSummary = function(offer,next){
   var url = config.bdService + "reviews/summary/ean/" + offer.ean;
   var call = new requestUtile();
   console.log("url >>",url);
+
+  var countSad;
+  var countHappy;
+  var totalReviews;
   
   try{
 
@@ -87,7 +91,7 @@ var getReviewsSummary = function(offer,next){
         totalReviews = 0;
       }
 
-      console.log("resume to search:");
+      console.log("getReviewsSummary >>");
       console.log("countSad:", countSad);
       console.log("countHappy:", countHappy);
       console.log("totalReviews:", totalReviews);   
