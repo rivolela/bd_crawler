@@ -120,6 +120,8 @@ var updateProductReviews = function(offer,next){
           reviewController.getReviewsSummary(offer,function(countSad,countHappy,totalReviews){
             callback(null,countSad,countHappy,totalReviews);
           }); 
+        }else{
+          callback("offer with totalReviews ean");
         }
       },
       // step_02 >> get product with totalReviews > 0
@@ -134,7 +136,7 @@ var updateProductReviews = function(offer,next){
 
               var idProduct;
 
-              if(body.total === undefined){
+              if(body.total === 0){
                 console.log("Step02 | create new product >> ",offer.ean);
                 createProduct(offer,function(error, response, data){
                   idProduct = data._id;
