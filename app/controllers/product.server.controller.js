@@ -1,11 +1,12 @@
 var cheerio = require('cheerio');
+var mongoose = require('mongoose');
+var ProductSchema = require('../models/product.server.model');
+var Product = mongoose.model( 'Product', ProductSchema);
 var requestUtile = require('../utile/requests.server.utile.js');
 var phantomUtile = require('../utile/phantomjs.server.utile.js');
 var config = require('../../config/config.js');
 var mongoose = require('mongoose');
-var ReviewSchema = require('../models/review.server.model');
 var ZanoxMerchant = require('../../config/merchants/zanox.merchant.js');
-var Review = mongoose.model( 'Review', ReviewSchema);
 var reviewController = require('./review.server.controller.js');
 var contReview = 0;
 var callPhantom = new phantomUtile();
@@ -13,7 +14,7 @@ var async = require('async');
 var request = require('request');
 
 
-var updateProduct = function(offer,countSad,countHappy,totalReviews,next){
+var updateProduct = function(offer,updateFields,next){
 
 	try{
 		var url = config.bdProductSrv + "/api/products/ean";
@@ -21,12 +22,20 @@ var updateProduct = function(offer,countSad,countHappy,totalReviews,next){
 	  	request.put({
 	    	headers: {'User-Agent': 'request','Content-Type' : 'application/json;charset=UTF-8'},
 	    	url: url,
-	      	form:{
-	        	ean: offer.ean,
-	        	countSad: countSad,
-	        	countHappy: countHappy,
-	        	totalReviews: totalReviews,
-	      	}
+	      	form:
+            updateFields,
+          //{
+          //   name: offer.name,
+	        	// ean: offer.ean,
+          //   manufacturer: offer.manufacturer,
+	         //  departamentBD: offer.departamentBD,
+          //   countSad: offer.countSad,
+          //   countHappy: offer.countHappy,
+          //   totalReviews: offer.totalReviews,
+	        	// totalReviews: totalReviews,
+          //   nameURL: offer.name,
+          //   image: offer.image
+	      	//}
 	  	},function(error, response, body){
 	    	return next(error, response, body);
   		});
@@ -74,6 +83,29 @@ var createProduct = function(offer,next){
 };
 
 
+var deleteProductByEAN = function(product,next){
+
+  console.log("product",product);
+
+ var url = config.bdProductSrv + 'products/ean/' + product.ean + '?connectid=A3697E2455EA755B758F';
+
+  console.log(url);
+
+  request.delete({
+    headers: {'User-Agent': 'request','Content-Type' : 'application/json;charset=UTF-8'},
+    url: url,
+  }, function(error, response, body){
+      if(error) {
+      console.log("error",error);
+      console.log("response",response);
+    }else{
+      var data = JSON.parse(body);
+      return next(error, response, data);
+    }
+  });
+};
+
+
 
 var updateProductReviews = function(offer,next){
 
@@ -85,28 +117,26 @@ var updateProductReviews = function(offer,next){
         console.log("urlService >>",urlService);
         var call = new requestUtile();
         call.getJson(urlService,config.timeRequest,function(error,response,body){
-            console.log("callback get json product >> ");
-            console.log("body >>",body);
             if(body.total === undefined){
-				      callback('error step_01 for save product >>');
+				      callback('Step01 | Error get product by EAN >>');
             }else{
-            	 callback(null,body);
+              console.log('Step01 | callback get product by EAN >>');
+            	callback(null,body);
             }
-           
         });
       },
-      // step_02 >> save new product if necessary
+      // step_02 >> check if product exists
       function(body,callback){
         var idProduct;
-        console.log("body.total >> ",body.total);
         if(body.total > 0){
           idProduct = body.docs[0]._id;
-          console.log("idProduct already exists >> ",idProduct);
+          console.log("Step02 |idProduct already exists >> ",idProduct);
           callback(null,offer);
         }else{
+          console.log("Step02 | create new product >> ");
         	createProduct(offer,function(error, response, data){
           	idProduct = data._id;
-          	console.log("product created >> ",idProduct);
+          	console.log("Step02 |idProduct already exists >> ",idProduct);
           	callback(null,offer);
         	});
         }
@@ -115,7 +145,7 @@ var updateProductReviews = function(offer,next){
       function(offer,callback){
         if(offer.ean !== undefined){
           reviewController.getReviewsSummary(offer,function(countSad,countHappy,totalReviews){
-          	console.log("Update product >> get summary >> ",offer.ean);
+            console.log("Step03 | get summary  >> ",offer.ean);
             callback(null,offer,countSad,countHappy,totalReviews);
           }); 
         }
@@ -123,13 +153,29 @@ var updateProductReviews = function(offer,next){
       // step_04 >> update product with reviews info
       function(offer,countSad,countHappy,totalReviews,callback){ 
         if(totalReviews > 0){
-        	updateProduct(offer,countSad,countHappy,totalReviews,function(error, response, body){
-            	console.log("Product updated");
+          console.log("Step04 | update product >> ",offer.ean);
+
+          if(offer.image_medium !== undefined){
+            image = offer.image_medium;
+          }else{
+            image = offer.image_large;
+          };
+
+          var updateFields = {
+            countSad:countSad,
+            countHappy:countHappy,
+            totalReviews:totalReviews,
+            image:image,
+            manufacturer: offer.manufacturer,
+          };
+
+        	updateProduct(offer,updateFields,function(error, response, body){
+            	// console.log("Product updated");
               console.log("\n");
-            	callback(null,'arg');
+            	callback(null,'Product updated');
           	});
         }else{
-        	callback(null,'arg');
+        	callback(null,'Product updated');
         }        
       },
       ], function (err, result) {
@@ -137,7 +183,7 @@ var updateProductReviews = function(offer,next){
           console.log("err >>",err);
           return next(err);
         }else{
-          return next();
+          return next(result);
         }
     });
 
@@ -149,3 +195,4 @@ var updateProductReviews = function(offer,next){
 exports.updateProductReviews = updateProductReviews;
 exports.createProduct = createProduct;
 exports.updateProduct = updateProduct;
+exports.deleteProductByEAN = deleteProductByEAN;
