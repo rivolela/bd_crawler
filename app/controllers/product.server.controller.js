@@ -16,8 +16,9 @@ var request = require('request');
 
 var updateProduct = function(offer,updateFields,next){
 
+  // console.log("updateFields",updateFields);
 	try{
-		var url = config.bdProductSrv + "/api/products/ean";
+		var url = config.bdProductSrv + "/api/products/ean?connectid=A3697E2455EA755B758F";
 
 	  	request.put({
 	    	headers: {'User-Agent': 'request','Content-Type' : 'application/json;charset=UTF-8'},
@@ -146,6 +147,9 @@ var updateProductReviews = function(offer,next){
         if(offer.ean !== undefined){
           reviewController.getReviewsSummary(offer,function(countSad,countHappy,totalReviews){
             console.log("Step03 | get summary  >> ",offer.ean);
+            console.log("Step03 | get summary  >> countSad >> ",countSad);
+            console.log("Step03 | get summary  >> countHappy >> ",countHappy);
+            console.log("Step03 | get summary  >> totalReviews >> ",totalReviews);
             callback(null,offer,countSad,countHappy,totalReviews);
           }); 
         }
@@ -154,6 +158,10 @@ var updateProductReviews = function(offer,next){
       function(offer,countSad,countHappy,totalReviews,callback){ 
         if(totalReviews > 0){
           console.log("Step04 | update product >> ",offer.ean);
+
+          var image;
+
+          console.log("offer",offer);
 
           if(offer.image_medium !== undefined){
             image = offer.image_medium;
