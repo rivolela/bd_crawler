@@ -55,7 +55,8 @@ function start(next){
 			}else{
 				return next();
 			}
-	});
+		}
+	);
 }
 
 var starJob = function(next){

@@ -18,16 +18,16 @@ describe('Product Unit Tests >>',function(done){
 	var Context = {};
 
 
-	describe('Testing save product function >>',function(done){
+	describe('Testing products function >>',function(done){
 
 		before(function(done){
 
 			this.timeout(2000);
 
-			var Offer = new Object ({
+			var Product = new Object ({
 				name:'Jogo The Sims 4 - PC"',
-	  			ean:7892110190213,
-	  			departamentBD:"eletrodomésticos",
+	  			ean:91919191919911,
+	  			departamentBD:"games",
 	  			countSad:2,
 	  			countHappy: 7,
 	  			totalReviews: 9,
@@ -35,47 +35,59 @@ describe('Product Unit Tests >>',function(done){
 	  			nameURL: "jogo-the-sims-4-pc",
 	  			image_medium: "https://static.wmobjects.com.br/imgres/arquivos/ids/8482269-250-250"
 			});
-
-			Context.Offer = Offer;
-
+			Context.Product = Product;
 			done();
 		});
 
 
-		it('Should return productid = 226890 from product page html', function(done) {
+		it('Should be ablet to create a new product >>', function(done) {
+			this.timeout(50000);
+			productController.createProduct(Context.Product,function(error, response, body){
+				console.log(body);
+				body.countSad.should.be.equal(2);
+				body.countHappy.should.be.equal(7);
+				body.totalReviews.should.be.equal(9);
+				done();
+			});
+		});
 
-			this.timeout(20000);
-			
-			productController.updateProductReviews(Context.Offer,function(error, response, data){
-				console.log("error >> ",error);
-				console.log("response >> ",response);
-				console.log("data >> ",data);
-				// productid.should.be.equal('226890');
-				// totalPaginacaoReviews.should.be.above(1);
+
+		it('Should be able to update product properties (countSad,countHappy and totalReviews) >>', function(done) {
+			this.timeout(50000);
+			var countSad = 2;
+			var countHappy = 2;
+			var totalReviews = 4;
+			productController.updateProduct(Context.Product,countSad,countHappy,totalReviews,function(error, response, data){
+				console.log(data);
+				data.should.have.property('countSad',2);
+				data.should.have.property('countHappy',2);
+				data.should.have.property('totalReviews',4);
 				done();
 			});
 		});
 
 
 		// it('Should return productid = 226890 from product page html', function(done) {
-
-		// 	this.timeout(20000);
-			
-		// 	request.del('https://da-product-srv.herokuapp.com/api/products/ean/7892110190213?connectid=A3697E2455EA755B758F')
-		// 		// .set('Accept','application/json')
-		// 		// .expect('Content-Type',/json/)
-		// 		.expect(200)
-		// 		.end(function(err,res){
-		// 			console.log(res);
-		// 			console.log(err);
-		// 			// res.body.should.have.property('message',"product with EAN >> 7892110190213 deleted");
-		// 			done();
+		// 	this.timeout(50000);
+		// 	productController.updateProductReviews(Context.Product,function(error, response, data){
+		// 		console.log("error >> ",error);
+		// 		console.log("response >> ",response);
+		// 		console.log("data >> ",data);
+		// 		// productid.should.be.equal('226890');
+		// 		// totalPaginacaoReviews.should.be.above(1);
+		// 		done();
 		// 	});
 		// });
 
 
-		after(function(){
+		it('Should be able to delete product with EAN === 91919191919911', function(done) {
+			this.timeout(20000);
+			productController.deleteProductByEAN(Context.Product,function(error, response, body){
+				body.message.should.be.equal('product with EAN >> 91919191919911 deleted');
+				done();
+			});
 		});
+
 	});
   
 

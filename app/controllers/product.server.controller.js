@@ -14,36 +14,42 @@ var async = require('async');
 var request = require('request');
 
 
-var updateProduct = function(offer,updateFields,next){
+var updateProduct = function(offer,countSad,countHappy,totalReviews,next){
 
-  // console.log("updateFields",updateFields);
+  console.log("offer",offer);
+
 	try{
-		var url = config.bdProductSrv + "/api/products/ean?connectid=A3697E2455EA755B758F";
 
-	  	request.put({
-	    	headers: {'User-Agent': 'request','Content-Type' : 'application/json;charset=UTF-8'},
-	    	url: url,
-	      	form:
-            updateFields,
-          //{
-          //   name: offer.name,
-	        	// ean: offer.ean,
-          //   manufacturer: offer.manufacturer,
-	         //  departamentBD: offer.departamentBD,
-          //   countSad: offer.countSad,
-          //   countHappy: offer.countHappy,
-          //   totalReviews: offer.totalReviews,
-	        	// totalReviews: totalReviews,
-          //   nameURL: offer.name,
-          //   image: offer.image
-	      	//}
-	  	},function(error, response, body){
-	    	return next(error, response, body);
-  		});
+    var image;
+
+    if(offer.image_medium !== undefined){
+      image = offer.image_medium;
+    }else{
+      image = offer.image_large;
+    };
+
+		var url = config.bdProductSrv + "products/ean?connectid=A3697E2455EA755B758F";
+
+  	request.put({
+       headers: {'User-Agent': 'request','Content-Type' : 'application/json;charset=UTF-8'},
+       url: url,
+       form: {
+        ean: offer.ean,
+        manufacturer: offer.manufacturer,
+        departamentBD: offer.departamentBD,
+        countSad: countSad,
+        countHappy: countHappy,
+        totalReviews: totalReviews,
+        image: image
+       }
+  	},function(error, response, body){
+      var data = JSON.parse(body);
+    	return next(error, response, data);
+		});
 
 	}catch(error){
 		console.log('An error has occurred >> product.server.controller >>  updateProduct : '+ error.message);
-    	throw error ;
+    throw error ;
 	}	
 };
 
@@ -121,7 +127,7 @@ var updateProductReviews = function(offer,next){
             callback(null,countSad,countHappy,totalReviews);
           }); 
         }else{
-          callback("offer with totalReviews ean");
+          callback("offer with ean undefined");
         }
       },
       // step_02 >> get product with totalReviews > 0
@@ -137,15 +143,14 @@ var updateProductReviews = function(offer,next){
               var idProduct;
 
               if(body.total === 0){
-                console.log("Step02 | create new product >> ",offer.ean);
                 createProduct(offer,function(error, response, data){
                   idProduct = data._id;
-                  console.log("Step01 |idProduct created >> ",idProduct);
+                  console.log("Step02 | create new product >> " + idProduct + "ean >>" + offer.ean);
                   callback(null,countSad,countHappy,totalReviews);
                 });
               }else{
                 idProduct = body.docs[0]._id;
-                console.log("Step02 |idProduct already exists >> ",offer.ean);
+                console.log("Step02 | Product already exists >> " + idProduct + "ean >>" + offer.ean);
                 callback(null,countSad,countHappy,totalReviews);
               }
           });
@@ -158,27 +163,9 @@ var updateProductReviews = function(offer,next){
       // step_03 >> update product with reviews info
       function(countSad,countHappy,totalReviews,callback){ 
 
-        console.log("Step03 | update product >> ",offer.ean);
+        console.log("Step03 | update product >> " + "ean >>" + offer.ean);
 
-        var image;
-
-        console.log("offer",offer);
-
-        if(offer.image_medium !== undefined){
-          image = offer.image_medium;
-        }else{
-          image = offer.image_large;
-        };
-
-        var updateFields = {
-          countSad:countSad,
-          countHappy:countHappy,
-          totalReviews:totalReviews,
-          image:image,
-          manufacturer: offer.manufacturer,
-        };
-
-      	updateProduct(offer,updateFields,function(error, response, body){
+       	updateProduct(offer,countSad,countHappy,totalReviews,function(error, response, body){
           	// console.log("Product updated");
             console.log("\n");
           	callback(null,'Product updated');
