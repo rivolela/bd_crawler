@@ -1,7 +1,7 @@
 module.exports = {
 
 	//schedule reviews job
-	all_schedule:'55 18 * * *',
+	all_schedule:'00 19 * * *',
 	walmart_schedule:'0 20 * * *',
 	ricardo_eletro_schedule:'40 18 * * *',
 	lojas_colombo_schedule:'25 17 * * *',
