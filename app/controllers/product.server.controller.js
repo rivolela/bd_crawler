@@ -18,11 +18,13 @@ var updateProduct = function(offer,countSad,countHappy,totalReviews,next){
 
   console.log("offer",offer);
 
+  console.log("offer image",offer.image_medium);
+
 	try{
 
     var image_product;
 
-    if(offer.image_medium !== undefined){
+    if(offer.image_medium){
       image_product = offer.image_medium; 
     }else{
       image_product = offer.image_large;
