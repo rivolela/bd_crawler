@@ -133,11 +133,18 @@ var updateProductReviews = function(offer,next){
       // step_02 >> get product with totalReviews > 0
       function(countSad,countHappy,totalReviews,callback){
 
+        console.log("countSad >>",countSad);
+        console.log("countHappy >>",countHappy);
+        console.log("totalReviews >>",totalReviews);
+        
         if(totalReviews > 0){
+
+          console.log("Step02 | get product from ean >> ",offer.ean);
 
           var urlService = config.bdProductSrv + "products/ean/" + offer.ean + "?connectid=" + config.connectid;
           console.log("urlService >>",urlService);
           var call = new requestUtile();
+
           call.getJson(urlService,config.timeRequest,function(error,response,body){
 
               var idProduct;
