@@ -20,15 +20,18 @@ var updateProduct = function(offer,countSad,countHappy,totalReviews,next){
 
 	try{
 
-    var image;
+    var image_product;
 
     if(offer.image_medium !== undefined){
-      image = offer.image_medium; 
+      image_product = offer.image_medium; 
     }else{
-      image = offer.image_large;
+      image_product = offer.image_large;
     };
 
 		var url = config.bdProductSrv + "products/ean?connectid=A3697E2455EA755B758F";
+
+    console.log("image_product",image_product);
+    console.log("url",url);
 
   	request.put({
        headers: {'User-Agent': 'request','Content-Type' : 'application/json;charset=UTF-8'},
@@ -40,11 +43,11 @@ var updateProduct = function(offer,countSad,countHappy,totalReviews,next){
         countSad: countSad,
         countHappy: countHappy,
         totalReviews: totalReviews,
-        image: image
+        image: image_product
        }
   	},function(error, response, body){
       var data = JSON.parse(body);
-    	return next(error, response, data);
+     	return next(error, response, data);
 		});
 
 	}catch(error){
