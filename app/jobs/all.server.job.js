@@ -34,7 +34,7 @@ function start(next){
 	var currentItem = 0;
 	console.log("initializing All job ...");	
 
-	async.parallel([
+	async.waterfall([
 		// step_01 >> nova ponto com
 		function(callback){
 			novaPontoComJob.start(function(){
@@ -50,12 +50,12 @@ function start(next){
 			});
 		},
 		// step_03 >> colomboJob
-		function(callback){
-			colomboJob.start(function(){
-				console.log('colomboJob finished >> ');
-				callback(null);	
-			});
-		},
+		// function(callback){
+		// 	colomboJob.start(function(){
+		// 		console.log('colomboJob finished >> ');
+		// 		callback(null);	
+		// 	});
+		// },
 		// step_04 >> ricardoJob
 		// function(callback){
 		// 	ricardoJob.start(function(){
