@@ -64,12 +64,12 @@ function start(next){
 		// 	});
 		// },
 		// step_06 >> walmartjob
-		function(callback){
-			walmartJob.start(function(){
-				console.log('walmartJob finished >> ');
-				callback(null);	
-			});
-		},
+		// function(callback){
+		// 	walmartJob.start(function(){
+		// 		console.log('walmartJob finished >> ');
+		// 		callback(null);	
+		// 	});
+		// },
 		],function (err, result) {
 			if(err){
 				console.log("err >>",err);
