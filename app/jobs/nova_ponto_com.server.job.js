@@ -19,7 +19,7 @@ var taskNova = cron.schedule(Jobs.nova_schedule, function(err){
 	var dateUtile = new DateUtile();
   	start(function(){
    		dateUtile.getJobTime(time_start,function(){
-  			console.log("Casas Bahia BR job finished !");
+  			console.log("Nova Ponto Com job finished !");
   		});
   });
 },false);
@@ -28,7 +28,7 @@ var taskNova = cron.schedule(Jobs.nova_schedule, function(err){
 function start(next){
 
 	var currentItem = 0;
-	console.log("initializing Casas Bahia BR job ...");	
+	console.log("initializing Nova Ponto Com job ...");	
 
 	async.waterfall([
 		// step_01 >> get offers

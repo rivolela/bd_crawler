@@ -43,12 +43,12 @@ function start(next){
 			});
 		},
 		// step_02 >> girafaJob
-		function(callback){
-			girafaJob.start(function(){
-				console.log('girafaJob finished >> ');
-				callback(null);	
-			});
-		},
+		// function(callback){
+		// 	girafaJob.start(function(){
+		// 		console.log('girafaJob finished >> ');
+		// 		callback(null);	
+		// 	});
+		// },
 		// step_03 >> colomboJob
 		// function(callback){
 		// 	colomboJob.start(function(){
