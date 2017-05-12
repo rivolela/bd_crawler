@@ -23,7 +23,7 @@ var updateProduct = function(offer,countSad,countHappy,totalReviews,next){
     var image;
 
     if(offer.image_medium !== undefined){
-      image = offer.image_medium;
+      image = offer.image_medium; 
     }else{
       image = offer.image_large;
     };
@@ -145,12 +145,12 @@ var updateProductReviews = function(offer,next){
               if(body.total === 0){
                 createProduct(offer,function(error, response, data){
                   idProduct = data._id;
-                  console.log("Step02 | create new product >> " + idProduct + "ean >>" + offer.ean);
+                  console.log("Step02 | Create new product >> " + idProduct + " >> ean >>" + offer.ean);
                   callback(null,countSad,countHappy,totalReviews);
                 });
               }else{
                 idProduct = body.docs[0]._id;
-                console.log("Step02 | Product already exists >> " + idProduct + "ean >>" + offer.ean);
+                console.log("Step02 | Product already exists >> " + idProduct + " >> ean >>" + offer.ean);
                 callback(null,countSad,countHappy,totalReviews);
               }
           });
@@ -166,7 +166,6 @@ var updateProductReviews = function(offer,next){
         console.log("Step03 | update product >> " + "ean >>" + offer.ean);
 
        	updateProduct(offer,countSad,countHappy,totalReviews,function(error, response, body){
-          	// console.log("Product updated");
             console.log("\n");
           	callback(null,'Product updated');
         });

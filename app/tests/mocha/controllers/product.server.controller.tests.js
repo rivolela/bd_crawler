@@ -33,7 +33,7 @@ describe('Product Unit Tests >>',function(done){
 	  			totalReviews: 9,
 	  			manufacturer: "Samsung",
 	  			nameURL: "jogo-the-sims-4-pc",
-	  			image_medium: "https://static.wmobjects.com.br/imgres/arquivos/ids/8482269-250-250"
+	  			image: "https://static.wmobjects.com.br/imgres/arquivos/ids/8482269-250-250"
 			});
 			Context.Product = Product;
 			done();
@@ -62,6 +62,7 @@ describe('Product Unit Tests >>',function(done){
 				data.should.have.property('countSad',2);
 				data.should.have.property('countHappy',2);
 				data.should.have.property('totalReviews',4);
+				data.should.have.property('image','https://static.wmobjects.com.br/imgres/arquivos/ids/8482269-250-250');
 				done();
 			});
 		});
