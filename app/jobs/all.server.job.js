@@ -63,7 +63,7 @@ function start(next){
 		// 		callback(null);	
 		// 	});
 		// },
-		step_06 >> walmartjob
+		// step_06 >> walmartjob
 		function(callback){
 			walmartJob.start(function(){
 				console.log('walmartJob finished >> ');
