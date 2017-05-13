@@ -35,59 +35,76 @@ describe('Product Unit Tests >>',function(done){
 	  			nameURL: "jogo-the-sims-4-pc",
 	  			image: "https://static.wmobjects.com.br/imgres/arquivos/ids/8482269-250-250"
 			});
+
+			var json = {
+			  _id: "590313e10b0b1f0004bd4cd3",
+			  name: "Ipad Mini 4 Apple Wi-Fi 128GB Tela Retina de 7,9\" Câmera 8MP e Processador M8 Dourado",
+			  ean: 888462369091,
+			  departamentBD: "informática",
+			  countSad: 2,
+			  countHappy: 14,
+			  totalReviews: 16,
+			  nameURL: "ipad-mini-4-apple-wifi-128gb-tela-retina-de-7-9-camera-8mp-e-processador-m8-dourado",
+			  image: "https://static.wmobjects.com.br/imgres/arquivos/ids/8482269-250-250",
+			  __v: 0,
+			  updated: "2017-04-28T10:05:21.291Z",
+			  created: "2017-04-28T10:05:21.291Z"
+			}
+
 			Context.Product = Product;
+			Context.json = json;
 			done();
 		});
 
 
-		it('Should be ablet to create a new product >>', function(done) {
-			this.timeout(50000);
-			productController.createProduct(Context.Product,function(error, response, body){
-				console.log(body);
-				body.countSad.should.be.equal(2);
-				body.countHappy.should.be.equal(7);
-				body.totalReviews.should.be.equal(9);
-				done();
-			});
-		});
-
-
-		it('Should be able to update product properties (countSad,countHappy and totalReviews) >>', function(done) {
-			this.timeout(50000);
-			var countSad = 2;
-			var countHappy = 2;
-			var totalReviews = 4;
-			productController.updateProduct(Context.Product,countSad,countHappy,totalReviews,function(error, response, data){
-				console.log(data);
-				data.should.have.property('countSad',2);
-				data.should.have.property('countHappy',2);
-				data.should.have.property('totalReviews',4);
-				data.should.have.property('image','https://static.wmobjects.com.br/imgres/arquivos/ids/8482269-250-250');
-				done();
-			});
-		});
-
-
-		// it('Should return productid = 226890 from product page html', function(done) {
+		// it('Should be ablet to create a new product >>', function(done) {
 		// 	this.timeout(50000);
-		// 	productController.updateProductReviews(Context.Product,function(error, response, data){
-		// 		console.log("error >> ",error);
-		// 		console.log("response >> ",response);
-		// 		console.log("data >> ",data);
-		// 		// productid.should.be.equal('226890');
-		// 		// totalPaginacaoReviews.should.be.above(1);
+		// 	productController.createProduct(Context.Product,function(error, response, body){
+		// 		console.log(body);
+		// 		body.countSad.should.be.equal(2);
+		// 		body.countHappy.should.be.equal(7);
+		// 		body.totalReviews.should.be.equal(9);
 		// 		done();
 		// 	});
 		// });
 
 
-		it('Should be able to delete product with EAN === 91919191919911', function(done) {
-			this.timeout(20000);
-			productController.deleteProductByEAN(Context.Product,function(error, response, body){
-				body.message.should.be.equal('product with EAN >> 91919191919911 deleted');
+		// it('Should be able to update product properties (countSad,countHappy and totalReviews) >>', function(done) {
+		// 	this.timeout(50000);
+		// 	var countSad = 2;
+		// 	var countHappy = 2;
+		// 	var totalReviews = 4;
+		// 	productController.updateProduct(Context.Product,countSad,countHappy,totalReviews,function(error, response, data){
+		// 		console.log(data);
+		// 		data.should.have.property('countSad',2);
+		// 		data.should.have.property('countHappy',2);
+		// 		data.should.have.property('totalReviews',4);
+		// 		data.should.have.property('image','https://static.wmobjects.com.br/imgres/arquivos/ids/8482269-250-250');
+		// 		done();
+		// 	});
+		// });
+
+
+		it('Should return productid = 226890 from product page html', function(done) {
+			this.timeout(50000);
+			productController.updateProductReviews(Context.json,function(error, response, data){
+				console.log("error >> ",error);
+				console.log("response >> ",response);
+				console.log("data >> ",data);
+				// productid.should.be.equal('226890');
+				// totalPaginacaoReviews.should.be.above(1);
 				done();
 			});
 		});
+
+
+		// it('Should be able to delete product with EAN === 91919191919911', function(done) {
+		// 	this.timeout(20000);
+		// 	productController.deleteProductByEAN(Context.Product,function(error, response, body){
+		// 		body.message.should.be.equal('product with EAN >> 91919191919911 deleted');
+		// 		done();
+		// 	});
+		// });
 
 	});
   

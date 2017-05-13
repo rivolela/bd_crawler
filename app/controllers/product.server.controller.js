@@ -2,6 +2,8 @@ var cheerio = require('cheerio');
 var mongoose = require('mongoose');
 var ProductSchema = require('../models/product.server.model');
 var Product = mongoose.model( 'Product', ProductSchema);
+var Offer_CrawlerSchema = require('../models/offer.crawler.server.model');
+var Offer = mongoose.model( 'Offer_Crawler', Offer_CrawlerSchema);
 var requestUtile = require('../utile/requests.server.utile.js');
 var phantomUtile = require('../utile/phantomjs.server.utile.js');
 var config = require('../../config/config.js');
@@ -15,11 +17,6 @@ var request = require('request');
 
 
 var updateProduct = function(offer,countSad,countHappy,totalReviews,next){
-
-  var data = JSON.parse(offer);
-  
-  console.log("offer",offer);
-
 
 	try{
 
@@ -122,14 +119,19 @@ var deleteProductByEAN = function(product,next){
 
 var updateProductReviews = function(offer,next){
 
+  var myArr = JSON.stringify(offer);
+  var myObj = JSON.parse(myArr);
+
+  console.log("offer updateProductReviews >>",myObj);
+
    try{
      async.waterfall([
     
       // step_01 >> get summary reviews by ean
       function(callback){
         if(offer.ean !== undefined){
-          console.log("Step01 | get reviews from ean >> ",offer.ean);
-          reviewController.getReviewsSummary(offer,function(countSad,countHappy,totalReviews){
+          console.log("Step01 | get reviews from ean >> ",myObj.ean);
+          reviewController.getReviewsSummary(myObj,function(countSad,countHappy,totalReviews){
             callback(null,countSad,countHappy,totalReviews);
           }); 
         }else{
@@ -145,9 +147,9 @@ var updateProductReviews = function(offer,next){
         
         if(totalReviews > 0){
 
-          console.log("Step02 | get product from ean >> ",offer.ean);
+          console.log("Step02 | get product from ean >> ",myObj.ean);
 
-          var urlService = config.bdProductSrv + "products/ean/" + offer.ean + "?connectid=" + config.connectid;
+          var urlService = config.bdProductSrv + "products/ean/" + myObj.ean + "?connectid=" + config.connectid;
           console.log("urlService >>",urlService);
           var call = new requestUtile();
 
@@ -156,29 +158,29 @@ var updateProductReviews = function(offer,next){
               var idProduct;
 
               if(body.total === 0){
-                createProduct(offer,function(error, response, data){
+                createProduct(myObj,function(error, response, data){
                   idProduct = data._id;
-                  console.log("Step02 | Create new product >> " + idProduct + " >> ean >>" + offer.ean);
+                  console.log("Step02 | Create new product >> " + idProduct + " >> ean >>" + myObj.ean);
                   callback(null,countSad,countHappy,totalReviews);
                 });
               }else{
                 idProduct = body.docs[0]._id;
-                console.log("Step02 | Product already exists >> " + idProduct + " >> ean >>" + offer.ean);
+                console.log("Step02 | Product already exists >> " + idProduct + " >> ean >>" + myObj.ean);
                 callback(null,countSad,countHappy,totalReviews);
               }
           });
 
         }else{
-          callback('offer ' + offer.ean + " with totalReviews < 0");
+          callback('offer ' + myObj.ean + " with totalReviews < 0");
         }
      
       },
       // step_03 >> update product with reviews info
       function(countSad,countHappy,totalReviews,callback){ 
 
-        console.log("Step03 | update product >> " + "ean >>" + offer.ean);
+        console.log("Step03 | update product >> " + "ean >>" + myObj.ean);
 
-       	updateProduct(offer,countSad,countHappy,totalReviews,function(error, response, body){
+       	updateProduct(myObj,countSad,countHappy,totalReviews,function(error, response, body){
             console.log("\n");
           	callback(null,'Product updated');
         });
