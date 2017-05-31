@@ -76,7 +76,6 @@ var getReviewsSummary = function(offer,next){
   var countSad;
   var countHappy;
   var totalReviews;
-  var countSad;
   var totalWorstRating;
   var totalBestRating;
   var ratingValue;
