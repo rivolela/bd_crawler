@@ -35,6 +35,9 @@ var ProductSchema = new Schema({
   nameURL: {
     type:String,
   },
+  totalWorstRating: Number,
+  totalBestRating: Number,
+  ratingValue: Number,
 });
 
 // ProductSchema.plugin(uniqueValidator,{ type:'ean-unique-validator'});

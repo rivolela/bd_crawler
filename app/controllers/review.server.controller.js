@@ -76,6 +76,12 @@ var getReviewsSummary = function(offer,next){
   var countSad;
   var countHappy;
   var totalReviews;
+  var countSad;
+  var totalWorstRating;
+  var totalBestRating;
+  var ratingValue;
+  var worstRating;
+  var bestRating;
   
   try{
 
@@ -85,19 +91,34 @@ var getReviewsSummary = function(offer,next){
         countSad = Number(body.docs[0].countSad);
         countHappy = Number(body.docs[0].countHappy);
         totalReviews = Number(body.docs[0].totalReviews);
+        totalWorstRating = Number(body.docs[0].totalWorstRating);
+        totalBestRating = Number(body.docs[0].totalBestRating);
+        ratingValue = Number(body.docs[0].ratingValue);
+        worstRating = Number(body.docs[0].worstRating);
+        bestRating = Number(body.docs[0].bestRating);
       }else{
         countSad = 0;
         countHappy = 0;
         totalReviews = 0;
+        totalWorstRating = 0;
+        totalBestRating = 0;
+        ratingValue = 0;
+        worstRating = 0;
+        bestRating = 0;
       }
 
       console.log("getReviewsSummary >>");
       console.log("countSad:", countSad);
       console.log("countHappy:", countHappy);
-      console.log("totalReviews:", totalReviews);   
+      console.log("totalReviews:", totalReviews);
+      console.log("totalWorstRating:", totalWorstRating);
+      console.log("totalBestRating:", totalBestRating);
+      console.log("ratingValue:", ratingValue); 
+      console.log("worstRating:", worstRating);
+      console.log("bestRating:", bestRating);      
       console.log('\n');
 
-      return next(countSad,countHappy,totalReviews);
+      return next(countSad,countHappy,totalReviews,ratingValue,worstRating,bestRating);
     });  
   }catch(error){
     console.log('An error has occurred >> review.server.controller >>  getReviewsSummary : '+ error.message);
