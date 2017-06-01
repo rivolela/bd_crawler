@@ -60,7 +60,7 @@ var updateProduct = function(offer,countSad,countHappy,totalReviews,ratingValue,
 };
 
 
-var createProduct = function(offer,next){
+var createProduct = function(offer,countSad,countHappy,totalReviews,ratingValue,worstRating,bestRating,next){
 
 	var url = config.bdProductSrv + 'products?connectid=A3697E2455EA755B758F';
 
@@ -160,7 +160,7 @@ var updateProductReviews = function(offer,next){
               var idProduct;
 
               if(body.total === 0){
-                createProduct(myObj,function(error, response, data){
+                createProduct(myObj,countSad,countHappy,totalReviews,ratingValue,worstRating,bestRating,function(error, response, data){
                   idProduct = data._id;
                   console.log("Step02 | Create new product >> " + idProduct + " >> ean >>" + myObj.ean);
                   callback(null,countSad,countHappy,totalReviews,ratingValue,worstRating,bestRating);
